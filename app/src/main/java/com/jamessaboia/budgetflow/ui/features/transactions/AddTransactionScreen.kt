@@ -3,7 +3,7 @@ package com.jamessaboia.budgetflow.ui.features.transactions
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jamessaboia.budgetflow.domain.model.TransactionType
 import java.text.SimpleDateFormat
 import java.util.*
@@ -24,10 +24,19 @@ fun AddTransactionScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     var showDatePicker by remember { mutableStateOf(false) }
+    val snackbarHostState = remember { SnackbarHostState() }
 
-    if (uiState.isSuccess) {
-        LaunchedEffect(Unit) {
+    LaunchedEffect(uiState.isSuccess) {
+        if (uiState.isSuccess) {
+            snackbarHostState.showSnackbar("Transação salva com sucesso!")
+            kotlinx.coroutines.delay(1500)
             onBack()
+        }
+    }
+
+    LaunchedEffect(uiState.error) {
+        uiState.error?.let {
+            snackbarHostState.showSnackbar(it)
         }
     }
 
@@ -37,11 +46,12 @@ fun AddTransactionScreen(
                 title = { Text("Nova Transação") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Voltar")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Voltar")
                     }
                 }
             )
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -93,7 +103,7 @@ fun AddTransactionScreen(
                     label = { Text("Categoria") },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                     modifier = Modifier
-                        .menuAnchor()
+                        .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable, true)
                         .fillMaxWidth()
                 )
                 ExposedDropdownMenu(
@@ -135,14 +145,6 @@ fun AddTransactionScreen(
                 label = { Text("Descrição (Opcional)") },
                 modifier = Modifier.fillMaxWidth()
             )
-
-            if (uiState.error != null) {
-                Text(
-                    text = uiState.error!!,
-                    color = MaterialTheme.colorScheme.error,
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
 
             Spacer(modifier = Modifier.weight(1f))
 
