@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.jamessaboia.budgetflow.ui.features.dashboard.DashboardScreen
 import com.jamessaboia.budgetflow.ui.features.onboarding.OnboardingScreen
 
 @Composable
@@ -25,8 +26,7 @@ fun AppNavigation(
             )
         }
         composable(Screen.Dashboard.route) {
-            // Placeholder for Dashboard
-            androidx.compose.material3.Text("Dashboard (Em breve)")
+            DashboardScreen()
         }
     }
 }
