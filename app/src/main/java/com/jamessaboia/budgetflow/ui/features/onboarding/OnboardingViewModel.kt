@@ -29,6 +29,10 @@ class OnboardingViewModel @Inject constructor(
         _uiState.update { it.copy(baseIncome = income) }
     }
 
+    fun onExtraIncomeChange(income: String) {
+        _uiState.update { it.copy(extraIncome = income) }
+    }
+
     fun onPercentagesChange(needs: Int, wants: Int, savings: Int) {
         _uiState.update { 
             it.copy(
@@ -68,12 +72,14 @@ class OnboardingViewModel @Inject constructor(
             _uiState.update { it.copy(isLoading = true) }
             try {
                 val incomeValue = _uiState.value.baseIncome.toDoubleOrNull() ?: 0.0
+                val extraIncomeValue = _uiState.value.extraIncome.toDoubleOrNull() ?: 0.0
                 val currentMonth = SimpleDateFormat("yyyy-MM", Locale.getDefault()).format(Calendar.getInstance().time)
 
                 // 1. Save initial budget
                 val initialBudget = MonthlyBudget(
                     monthYear = currentMonth,
                     baseIncome = incomeValue,
+                    extraIncome = extraIncomeValue,
                     needsPercentage = _uiState.value.needsPercent,
                     wantsPercentage = _uiState.value.wantsPercent,
                     savingsPercentage = _uiState.value.savingsPercent

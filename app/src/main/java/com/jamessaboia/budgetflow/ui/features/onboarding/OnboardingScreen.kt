@@ -44,7 +44,9 @@ fun OnboardingScreen(
                     OnboardingStep.WELCOME -> WelcomeStep(onNext = { viewModel.nextStep() })
                     OnboardingStep.INCOME -> IncomeStep(
                         income = uiState.baseIncome,
+                        extraIncome = uiState.extraIncome,
                         onIncomeChange = viewModel::onIncomeChange,
+                        onExtraIncomeChange = viewModel::onExtraIncomeChange,
                         onNext = { viewModel.nextStep() },
                         onBack = { viewModel.previousStep() }
                     )
@@ -58,6 +60,7 @@ fun OnboardingScreen(
                     )
                     OnboardingStep.SUMMARY -> SummaryStep(
                         income = uiState.baseIncome,
+                        extraIncome = uiState.extraIncome,
                         needs = uiState.needsPercent,
                         wants = uiState.wantsPercent,
                         savings = uiState.savingsPercent,
@@ -96,19 +99,21 @@ fun WelcomeStep(onNext: () -> Unit) {
 @Composable
 fun IncomeStep(
     income: String,
+    extraIncome: String,
     onIncomeChange: (String) -> Unit,
+    onExtraIncomeChange: (String) -> Unit,
     onNext: () -> Unit,
     onBack: () -> Unit
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = "Qual seu salário líquido?",
+            text = "Qual sua renda?",
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Informe quanto você recebe mensalmente após os descontos.",
+            text = "Informe seu salário principal e, se houver, uma renda extra mensal.",
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center
         )
@@ -116,7 +121,17 @@ fun IncomeStep(
         OutlinedTextField(
             value = income,
             onValueChange = onIncomeChange,
-            label = { Text("Renda Mensal") },
+            label = { Text("Renda Principal") },
+            prefix = { Text("R$ ") },
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        OutlinedTextField(
+            value = extraIncome,
+            onValueChange = onExtraIncomeChange,
+            label = { Text("Renda Extra (Opcional)") },
             prefix = { Text("R$ ") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             modifier = Modifier.fillMaxWidth(),
@@ -154,18 +169,50 @@ fun PercentagesStep(
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(16.dp))
         
-        PercentageItem("Essenciais (Necessidades)", needs)
-        PercentageItem("Estilo de Vida (Desejos)", wants)
-        PercentageItem("Reserva / Investimentos", savings)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            FilterChip(
+                selected = needs == 50 && wants == 30 && savings == 20,
+                onClick = { onPercentagesChange(50, 30, 20) },
+                label = { Text("50/30/20") }
+            )
+            FilterChip(
+                selected = needs == 60 && wants == 20 && savings == 20,
+                onClick = { onPercentagesChange(60, 20, 20) },
+                label = { Text("60/20/20") }
+            )
+            FilterChip(
+                selected = needs == 50 && wants == 20 && savings == 30,
+                onClick = { onPercentagesChange(50, 20, 30) },
+                label = { Text("50/20/30") }
+            )
+        }
         
         Spacer(modifier = Modifier.height(16.dp))
+        
+        PercentageSlider("Essenciais", needs) { onPercentagesChange(it, wants, savings) }
+        PercentageSlider("Estilo de Vida", wants) { onPercentagesChange(needs, it, savings) }
+        PercentageSlider("Reserva", savings) { onPercentagesChange(needs, wants, it) }
+        
+        Spacer(modifier = Modifier.height(16.dp))
+        val total = needs + wants + savings
         Text(
-            text = "Sugerimos 50/30/20, mas você pode personalizar depois.",
-            style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.secondary
+            text = "Total: $total%",
+            style = MaterialTheme.typography.titleMedium,
+            color = if (total == 100) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
+            fontWeight = FontWeight.Bold
         )
+        if (total != 100) {
+            Text(
+                text = "A soma deve ser exatamente 100%.",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.error
+            )
+        }
         
         Spacer(modifier = Modifier.height(32.dp))
         Row(modifier = Modifier.fillMaxWidth()) {
@@ -173,7 +220,11 @@ fun PercentagesStep(
                 Text("Voltar")
             }
             Spacer(modifier = Modifier.width(16.dp))
-            Button(onClick = onNext, modifier = Modifier.weight(1f)) {
+            Button(
+                onClick = onNext, 
+                modifier = Modifier.weight(1f),
+                enabled = total == 100
+            ) {
                 Text("Próximo")
             }
         }
@@ -181,19 +232,17 @@ fun PercentagesStep(
 }
 
 @Composable
-fun PercentageItem(label: String, value: Int) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(text = label, style = MaterialTheme.typography.bodyLarge)
-        Text(
-            text = "$value%",
-            style = MaterialTheme.typography.bodyLarge,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
+fun PercentageSlider(label: String, value: Int, onValueChange: (Int) -> Unit) {
+    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Text(text = label, style = MaterialTheme.typography.bodyMedium)
+            Text(text = "$value%", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+        }
+        Slider(
+            value = value.toFloat(),
+            onValueChange = { onValueChange(it.toInt()) },
+            valueRange = 0f..100f,
+            steps = 100
         )
     }
 }
@@ -201,6 +250,7 @@ fun PercentageItem(label: String, value: Int) {
 @Composable
 fun SummaryStep(
     income: String,
+    extraIncome: String,
     needs: Int,
     wants: Int,
     savings: Int,
@@ -209,6 +259,8 @@ fun SummaryStep(
     onBack: () -> Unit
 ) {
     val incomeValue = income.toDoubleOrNull() ?: 0.0
+    val extraIncomeValue = extraIncome.toDoubleOrNull() ?: 0.0
+    val totalIncome = incomeValue + extraIncomeValue
     
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
@@ -223,11 +275,11 @@ fun SummaryStep(
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                SummaryRow("Renda Mensal", "R$ %.2f".format(incomeValue))
+                SummaryRow("Renda Total", "R$ %.2f".format(totalIncome))
                 HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-                SummaryRow("Essenciais ($needs%)", "R$ %.2f".format(incomeValue * needs / 100))
-                SummaryRow("Estilo de Vida ($wants%)", "R$ %.2f".format(incomeValue * wants / 100))
-                SummaryRow("Reserva ($savings%)", "R$ %.2f".format(incomeValue * savings / 100))
+                SummaryRow("Essenciais ($needs%)", "R$ %.2f".format(totalIncome * needs / 100))
+                SummaryRow("Estilo de Vida ($wants%)", "R$ %.2f".format(totalIncome * wants / 100))
+                SummaryRow("Reserva ($savings%)", "R$ %.2f".format(totalIncome * savings / 100))
             }
         }
         
