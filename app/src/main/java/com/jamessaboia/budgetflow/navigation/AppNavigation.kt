@@ -6,6 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.jamessaboia.budgetflow.ui.features.dashboard.DashboardScreen
 import com.jamessaboia.budgetflow.ui.features.onboarding.OnboardingScreen
+import com.jamessaboia.budgetflow.ui.features.transactions.AddTransactionScreen
+import com.jamessaboia.budgetflow.ui.features.transactions.TransactionsScreen
 
 @Composable
 fun AppNavigation(
@@ -26,7 +28,24 @@ fun AppNavigation(
             )
         }
         composable(Screen.Dashboard.route) {
-            DashboardScreen()
+            DashboardScreen(
+                onNavigateToAddTransaction = {
+                    navController.navigate(Screen.AddTransaction.route)
+                },
+                onNavigateToTransactions = {
+                    navController.navigate(Screen.Transactions.route)
+                }
+            )
+        }
+        composable(Screen.AddTransaction.route) {
+            AddTransactionScreen(
+                onBack = { navController.popBackStack() }
+            )
+        }
+        composable(Screen.Transactions.route) {
+            TransactionsScreen(
+                onBack = { navController.popBackStack() }
+            )
         }
     }
 }

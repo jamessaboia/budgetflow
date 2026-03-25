@@ -2,16 +2,10 @@ package com.jamessaboia.budgetflow.ui.features.dashboard
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LargeTopAppBar
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -27,6 +21,8 @@ import com.jamessaboia.budgetflow.domain.model.GroupSummary
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen(
+    onNavigateToAddTransaction: () -> Unit,
+    onNavigateToTransactions: () -> Unit,
     viewModel: DashboardViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -35,11 +31,21 @@ fun DashboardScreen(
         topBar = {
             LargeTopAppBar(
                 title = { Text("BudgetFlow") },
+                actions = {
+                    IconButton(onClick = onNavigateToTransactions) {
+                        Icon(Icons.Default.List, contentDescription = "Histórico")
+                    }
+                },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = onNavigateToAddTransaction) {
+                Icon(Icons.Default.Add, contentDescription = "Adicionar Transação")
+            }
         }
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding).fillMaxSize()) {
