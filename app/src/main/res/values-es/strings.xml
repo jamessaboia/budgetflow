@@ -97,9 +97,9 @@
     <string name="preset_custom">Personalizado</string>
 
     <!-- Educational Hints -->
-    <string name="hint_group_needs" formatted="false">Si este grupo supera el 50%, es posible que lleves un estilo de vida superior a tus ingresos actuales.</string>
-    <string name="hint_group_lifestyle">Gastos que mejoran tu qualidade de vida pero no son vitales (Ocio, Suscripciones, etc).</string>
-    <string name="hint_group_savings">Trata este valor como una factura obligatoria. Págate a ti mismo primero en cuanto recibas tus ingresos.</string>
+    <string name="hint_group_needs" formatted="false">Gastos vitales para la supervivencia (Vivienda, Alimentación, Salud). TIP: Si este grupo supera el 50%, es posible que estés viviendo por encima de tus medios actuales.</string>
+    <string name="hint_group_lifestyle">Gastos de comodidad y placer, pero no vitales (Ocio, Suscripciones, Pasatiempos). TIP: Este es el primer lugar para reducir gastos si necesitas ahorrar.</string>
+    <string name="hint_group_savings">Dinero destinado a tu futuro y seguridad (Fondo de Emergencia, Inversiones). TIP: Trata esta cantidad como una factura obligatoria. Págate a ti mismo primero tan pronto como recibas tus ingresos.</string>
     <string name="hint_general">Evita la trampa de subir tu costo de vida cada vez que aumenten tus ingresos.</string>
 
     <!-- Settings -->

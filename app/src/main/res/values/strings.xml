@@ -97,9 +97,9 @@
     <string name="preset_custom">Personalizado</string>
 
     <!-- Educational Hints -->
-    <string name="hint_group_needs" formatted="false">Se este grupo passar de 50%, você pode estar vivendo um padrão acima da sua renda atual.</string>
-    <string name="hint_group_lifestyle">Gastos que melhoram sua qualidade de vida, mas não são vitais (Lazer, Assinaturas, etc).</string>
-    <string name="hint_group_savings">Trate este valor como um boleto obrigatório. Pague-se primeiro assim que receber sua renda.</string>
+    <string name="hint_group_needs" formatted="false">Gastos vitais para sua sobrevivência e manutenção (Moradia, Alimentação, Saúde). DICA: Se este grupo passar de 50%, você pode estar vivendo um padrão acima da sua renda atual.</string>
+    <string name="hint_group_lifestyle">Gastos que trazem conforto e prazer, mas não são vitais (Lazer, Assinaturas, Hobbies). DICA: Este é o primeiro lugar para reduzir custos se precisar economizar.</string>
+    <string name="hint_group_savings">Dinheiro destinado ao seu futuro e segurança (Reserva, Investimentos). DICA: Trate este valor como um boleto obrigatório. Pague-se primeiro assim que receber sua renda.</string>
     <string name="hint_general">Evite a armadilha de subir seu custo de vida sempre que sua renda aumentar.</string>
 
     <!-- Settings -->

@@ -97,9 +97,9 @@
     <string name="preset_custom">Custom</string>
 
     <!-- Educational Hints -->
-    <string name="hint_group_needs" formatted="false">If this group exceeds 50%, you might be living a lifestyle above your current income.</string>
-    <string name="hint_group_lifestyle">Expenses that improve your quality of life but are not vital (Leisure, Subscriptions, etc).</string>
-    <string name="hint_group_savings">Treat this amount as a mandatory bill. Pay yourself first as soon as you receive your income.</string>
+    <string name="hint_group_needs" formatted="false">Vital expenses for survival (Housing, Food, Health). TIP: If this group exceeds 50%, you might be living above your current means.</string>
+    <string name="hint_group_lifestyle">Expenses for comfort and pleasure, but not vital (Leisure, Subscriptions, Hobbies). TIP: This is the first place to cut costs if you need to save.</string>
+    <string name="hint_group_savings">Money destined for your future and security (Emergency Fund, Investments). TIP: Treat this amount as a mandatory bill. Pay yourself first as soon as you receive your income.</string>
     <string name="hint_general">Avoid the trap of increasing your cost of living whenever your income increases.</string>
 
     <!-- Settings -->
