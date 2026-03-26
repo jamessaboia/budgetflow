@@ -32,6 +32,18 @@ android {
             )
         }
     }
+
+    flavorDimensions += "version"
+    productFlavors {
+        create("default") {
+            dimension = "version"
+        }
+    }
+
+    base {
+        archivesName.set("BudgetFlow-v${defaultConfig.versionName}")
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11

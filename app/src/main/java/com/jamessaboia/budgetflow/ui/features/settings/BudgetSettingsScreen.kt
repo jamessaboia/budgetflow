@@ -88,8 +88,9 @@ fun BudgetSettingsScreen(
                 OutlinedTextField(
                     value = uiState.extraIncome,
                     onValueChange = { input ->
-                        val filtered = input.replace(",", ".").filterIndexed { index, char ->
-                            char.isDigit() || (char == '.' && input.indexOf('.') == index)
+                        val normalized = input.replace(",", ".")
+                        val filtered = normalized.filterIndexed { index, char ->
+                            char.isDigit() || (char == '.' && normalized.indexOf('.') == index)
                         }
                         viewModel.onExtraIncomeChange(filtered)
                     },

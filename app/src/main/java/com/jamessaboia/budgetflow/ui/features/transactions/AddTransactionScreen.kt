@@ -71,8 +71,9 @@ fun AddTransactionScreen(
                 value = uiState.amount,
                 onValueChange = { input ->
                     // Allow only digits and a single dot or comma
-                    val filtered = input.replace(",", ".").filterIndexed { index, char ->
-                        char.isDigit() || (char == '.' && input.indexOf('.') == index)
+                    val normalized = input.replace(",", ".")
+                    val filtered = normalized.filterIndexed { index, char ->
+                        char.isDigit() || (char == '.' && normalized.indexOf('.') == index)
                     }
                     viewModel.onAmountChange(filtered)
                 },

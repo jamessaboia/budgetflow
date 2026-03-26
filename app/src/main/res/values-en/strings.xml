@@ -87,7 +87,7 @@
     <!-- Groups -->
     <string name="group_needs">Essentials</string>
     <string name="group_wants">Lifestyle</string>
-    <string name="group_savings">Savings</string>
+    <string name="group_savings">Savings / Investments</string>
     
     <!-- Presets -->
     <string name="preset_balanced">Balanced Method (50/30/20)</string>
@@ -111,7 +111,7 @@
     <string name="percentage_value">%1$d%%</string>
     <string name="group_needs_summary">Essentials (%1$d%%)</string>
     <string name="group_wants_summary">Lifestyle (%1$d%%)</string>
-    <string name="group_savings_summary">Savings (%1$d%%)</string>
+    <string name="group_savings_summary">Savings / Investments (%1$d%%)</string>
     <string name="currency_format">$ %1$.2f</string>
     <string name="transaction_income_format">+ $ %1$.2f</string>
     <string name="transaction_expense_format">- $ %1$.2f</string>

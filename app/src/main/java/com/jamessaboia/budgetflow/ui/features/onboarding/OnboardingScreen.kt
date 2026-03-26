@@ -143,8 +143,9 @@ fun IncomeStep(
         OutlinedTextField(
             value = extraIncome,
             onValueChange = { input ->
-                val filtered = input.replace(",", ".").filterIndexed { index, char ->
-                    char.isDigit() || (char == '.' && input.indexOf('.') == index)
+                val normalized = input.replace(",", ".")
+                val filtered = normalized.filterIndexed { index, char ->
+                    char.isDigit() || (char == '.' && normalized.indexOf('.') == index)
                 }
                 onExtraIncomeChange(filtered)
             },

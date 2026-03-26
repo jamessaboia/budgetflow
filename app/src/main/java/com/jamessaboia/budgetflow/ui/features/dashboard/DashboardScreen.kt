@@ -10,6 +10,7 @@ import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -42,7 +43,7 @@ fun DashboardScreen(
                     Text(
                         stringResource(R.string.app_name),
                         fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSecondary
+                        color = MaterialTheme.colorScheme.onPrimary
                     ) 
                 },
                 actions = {
@@ -50,19 +51,19 @@ fun DashboardScreen(
                         Icon(
                             Icons.AutoMirrored.Filled.List, 
                             contentDescription = stringResource(R.string.history),
-                            tint = MaterialTheme.colorScheme.onSecondary
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                     IconButton(onClick = onNavigateToSettings) {
                         Icon(
                             Icons.Default.Settings, 
                             contentDescription = stringResource(R.string.settings),
-                            tint = MaterialTheme.colorScheme.onSecondary
+                            tint = MaterialTheme.colorScheme.onPrimary
                         )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.secondary,
+                    containerColor = MaterialTheme.colorScheme.primary,
                 )
             )
         },
@@ -112,13 +113,13 @@ fun DashboardContent(summary: DashboardSummary) {
             )
         }
         item {
-            GroupCard(stringResource(R.string.group_needs), summary.needsSummary)
+            GroupCard(stringResource(R.string.group_needs), summary.needsSummary, stringResource(R.string.hint_group_needs))
         }
         item {
-            GroupCard(stringResource(R.string.group_wants), summary.wantsSummary)
+            GroupCard(stringResource(R.string.group_wants), summary.wantsSummary, stringResource(R.string.hint_group_lifestyle))
         }
         item {
-            GroupCard(stringResource(R.string.group_savings), summary.savingsSummary)
+            GroupCard(stringResource(R.string.group_savings), summary.savingsSummary, stringResource(R.string.hint_group_savings))
         }
         item {
             Spacer(modifier = Modifier.height(16.dp))
@@ -131,8 +132,8 @@ fun BalanceHeader(summary: DashboardSummary) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.secondary,
-            contentColor = MaterialTheme.colorScheme.onSecondary
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
         ),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
@@ -143,13 +144,13 @@ fun BalanceHeader(summary: DashboardSummary) {
             Text(
                 text = stringResource(R.string.available_balance),
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.8f)
+                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
             )
             Text(
                 text = stringResource(R.string.currency_format, summary.remainingBalance),
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Black,
-                color = MaterialTheme.colorScheme.onSecondary
+                color = MaterialTheme.colorScheme.onPrimary
             )
             Spacer(modifier = Modifier.height(16.dp))
             Row(
@@ -172,14 +173,15 @@ fun BalanceHeader(summary: DashboardSummary) {
 @Composable
 fun SummaryInfoItem(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.7f))
-        Text(text = value, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSecondary)
+        Text(text = label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f))
+        Text(text = value, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimary)
     }
 }
 
 @Composable
-fun GroupCard(title: String, summary: GroupSummary) {
+fun GroupCard(title: String, summary: GroupSummary, hint: String) {
     var expanded by remember { mutableStateOf(false) }
+    var showHint by remember { mutableStateOf(false) }
     val isExceeded = summary.percentageSpent > 1f
     val mainColor = if (isExceeded) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
 
@@ -199,6 +201,14 @@ fun GroupCard(title: String, summary: GroupSummary) {
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(text = title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    IconButton(onClick = { showHint = !showHint }, modifier = Modifier.size(32.dp)) {
+                        Icon(
+                            imageVector = Icons.Default.Info,
+                            contentDescription = "Info",
+                            modifier = Modifier.size(16.dp),
+                            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
+                        )
+                    }
                     if (summary.categorySpending.isNotEmpty()) {
                         Icon(
                             imageVector = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
@@ -215,6 +225,16 @@ fun GroupCard(title: String, summary: GroupSummary) {
                     color = mainColor
                 )
             }
+            
+            AnimatedVisibility(visible = showHint) {
+                Text(
+                    text = hint,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier.padding(bottom = 8.dp)
+                )
+            }
+
             Spacer(modifier = Modifier.height(12.dp))
             
             val progress = summary.percentageSpent.coerceIn(0f, 1f)

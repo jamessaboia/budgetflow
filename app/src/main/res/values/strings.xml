@@ -87,7 +87,7 @@
     <!-- Groups -->
     <string name="group_needs">Essenciais</string>
     <string name="group_wants">Estilo de Vida</string>
-    <string name="group_savings">Reserva</string>
+    <string name="group_savings">Reserva / Investimentos</string>
     
     <!-- Presets -->
     <string name="preset_balanced">Método Equilibrado (50/30/20)</string>
@@ -111,7 +111,7 @@
     <string name="percentage_value">%1$d%%</string>
     <string name="group_needs_summary">Essenciais (%1$d%%)</string>
     <string name="group_wants_summary">Estilo de Vida (%1$d%%)</string>
-    <string name="group_savings_summary">Reserva (%1$d%%)</string>
+    <string name="group_savings_summary">Reserva / Investimentos (%1$d%%)</string>
     <string name="currency_format">R$ %1$.2f</string>
     <string name="transaction_income_format">+ R$ %1$.2f</string>
     <string name="transaction_expense_format">- R$ %1$.2f</string>
