@@ -16,6 +16,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jamessaboia.budgetflow.R
+import com.jamessaboia.budgetflow.core.CurrencyVisualTransformation
 import com.jamessaboia.budgetflow.ui.features.onboarding.PercentageSlider
 import com.jamessaboia.budgetflow.ui.features.onboarding.PresetOption
 
@@ -70,20 +71,32 @@ fun BudgetSettingsScreen(
 
                 OutlinedTextField(
                     value = uiState.baseIncome,
-                    onValueChange = viewModel::onBaseIncomeChange,
+                    onValueChange = { input ->
+                        val filtered = input.replace(",", ".").filterIndexed { index, char ->
+                            char.isDigit() || (char == '.' && input.indexOf('.') == index)
+                        }
+                        viewModel.onBaseIncomeChange(filtered)
+                    },
                     label = { Text(stringResource(R.string.income_main_label)) },
                     prefix = { Text(stringResource(R.string.currency_prefix)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    visualTransformation = CurrencyVisualTransformation(),
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
 
                 OutlinedTextField(
                     value = uiState.extraIncome,
-                    onValueChange = viewModel::onExtraIncomeChange,
+                    onValueChange = { input ->
+                        val filtered = input.replace(",", ".").filterIndexed { index, char ->
+                            char.isDigit() || (char == '.' && input.indexOf('.') == index)
+                        }
+                        viewModel.onExtraIncomeChange(filtered)
+                    },
                     label = { Text(stringResource(R.string.income_extra_label)) },
                     prefix = { Text(stringResource(R.string.currency_prefix)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    visualTransformation = CurrencyVisualTransformation(),
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
@@ -122,14 +135,14 @@ fun BudgetSettingsScreen(
                     label = stringResource(R.string.group_wants),
                     value = uiState.wantsPercent,
                     hint = stringResource(R.string.hint_group_lifestyle),
-                    color = MaterialTheme.colorScheme.secondary,
+                    color = MaterialTheme.colorScheme.primary,
                     onValueChange = { viewModel.onPercentagesChange(uiState.needsPercent, it, uiState.savingsPercent) }
                 )
                 PercentageSlider(
                     label = stringResource(R.string.group_savings),
                     value = uiState.savingsPercent,
                     hint = stringResource(R.string.hint_group_savings),
-                    color = MaterialTheme.colorScheme.tertiary,
+                    color = MaterialTheme.colorScheme.primary,
                     onValueChange = { viewModel.onPercentagesChange(uiState.needsPercent, uiState.wantsPercent, it) }
                 )
 

@@ -19,6 +19,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jamessaboia.budgetflow.R
+import com.jamessaboia.budgetflow.core.CurrencyVisualTransformation
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -125,20 +126,32 @@ fun IncomeStep(
         Spacer(modifier = Modifier.height(24.dp))
         OutlinedTextField(
             value = income,
-            onValueChange = onIncomeChange,
+            onValueChange = { input ->
+                val filtered = input.replace(",", ".").filterIndexed { index, char ->
+                    char.isDigit() || (char == '.' && input.indexOf('.') == index)
+                }
+                onIncomeChange(filtered)
+            },
             label = { Text(stringResource(R.string.income_main_label)) },
             prefix = { Text(stringResource(R.string.currency_prefix)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            visualTransformation = CurrencyVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
             value = extraIncome,
-            onValueChange = onExtraIncomeChange,
+            onValueChange = { input ->
+                val filtered = input.replace(",", ".").filterIndexed { index, char ->
+                    char.isDigit() || (char == '.' && input.indexOf('.') == index)
+                }
+                onExtraIncomeChange(filtered)
+            },
             label = { Text(stringResource(R.string.income_extra_label)) },
             prefix = { Text(stringResource(R.string.currency_prefix)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+            visualTransformation = CurrencyVisualTransformation(),
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
         )
@@ -151,7 +164,7 @@ fun IncomeStep(
             Button(
                 onClick = onNext,
                 modifier = Modifier.weight(1f),
-                enabled = income.toDoubleOrNull() != null && income.toDouble() > 0
+                enabled = income.replace(",", ".").toDoubleOrNull() != null && income.replace(",", ".").toDouble() > 0
             ) {
                 Text(stringResource(R.string.next))
             }
@@ -208,14 +221,14 @@ fun PercentagesStep(
             label = stringResource(R.string.group_wants),
             value = wants,
             hint = stringResource(R.string.hint_group_lifestyle),
-            color = MaterialTheme.colorScheme.secondary,
+            color = MaterialTheme.colorScheme.primary,
             onValueChange = { onPercentagesChange(needs, it, savings) }
         )
         PercentageSlider(
             label = stringResource(R.string.group_savings),
             value = savings,
             hint = stringResource(R.string.hint_group_savings),
-            color = MaterialTheme.colorScheme.tertiary,
+            color = MaterialTheme.colorScheme.primary,
             onValueChange = { onPercentagesChange(needs, wants, it) }
         )
         
@@ -263,7 +276,7 @@ fun PresetOption(
         onClick = onClick,
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(
-            containerColor = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface,
+            containerColor = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surfaceContainer,
         ),
         border = if (selected) null else CardDefaults.outlinedCardBorder()
     ) {
@@ -342,8 +355,8 @@ fun SummaryStep(
     onConfirm: () -> Unit,
     onBack: () -> Unit
 ) {
-    val incomeValue = income.toDoubleOrNull() ?: 0.0
-    val extraIncomeValue = extraIncome.toDoubleOrNull() ?: 0.0
+    val incomeValue = income.replace(",", ".").toDoubleOrNull() ?: 0.0
+    val extraIncomeValue = extraIncome.replace(",", ".").toDoubleOrNull() ?: 0.0
     val totalIncome = incomeValue + extraIncomeValue
     
     Column(horizontalAlignment = Alignment.CenterHorizontally) {

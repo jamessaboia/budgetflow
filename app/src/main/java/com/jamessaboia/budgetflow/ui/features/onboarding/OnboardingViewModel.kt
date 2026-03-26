@@ -71,8 +71,8 @@ class OnboardingViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             try {
-                val incomeValue = _uiState.value.baseIncome.toDoubleOrNull() ?: 0.0
-                val extraIncomeValue = _uiState.value.extraIncome.toDoubleOrNull() ?: 0.0
+                val incomeValue = _uiState.value.baseIncome.replace(",", ".").toDoubleOrNull() ?: 0.0
+                val extraIncomeValue = _uiState.value.extraIncome.replace(",", ".").toDoubleOrNull() ?: 0.0
                 val currentMonth = SimpleDateFormat("yyyy-MM", Locale.getDefault()).format(Calendar.getInstance().time)
 
                 // 1. Save initial budget

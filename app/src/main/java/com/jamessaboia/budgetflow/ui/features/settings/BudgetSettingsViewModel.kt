@@ -66,8 +66,8 @@ class BudgetSettingsViewModel @Inject constructor(
     }
 
     fun saveChanges() {
-        val incomeValue = _uiState.value.baseIncome.toDoubleOrNull() ?: 0.0
-        val extraIncomeValue = _uiState.value.extraIncome.toDoubleOrNull() ?: 0.0
+        val incomeValue = _uiState.value.baseIncome.replace(",", ".").toDoubleOrNull() ?: 0.0
+        val extraIncomeValue = _uiState.value.extraIncome.replace(",", ".").toDoubleOrNull() ?: 0.0
         
         if (incomeValue <= 0) {
             _uiState.update { it.copy(error = "Renda deve ser maior que zero") }

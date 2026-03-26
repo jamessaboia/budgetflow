@@ -57,7 +57,7 @@ class AddTransactionViewModel @Inject constructor(
     }
 
     fun saveTransaction() {
-        val amountValue = _uiState.value.amount.toDoubleOrNull() ?: 0.0
+        val amountValue = _uiState.value.amount.replace(",", ".").toDoubleOrNull() ?: 0.0
         val categoryId = _uiState.value.selectedCategory?.id
         
         if (amountValue <= 0) {

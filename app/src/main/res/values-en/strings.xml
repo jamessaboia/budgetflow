@@ -15,7 +15,7 @@
     
     <string name="percentages_title">How do you want to divide your income?</string>
     <string name="total_label">Total: %1$d%%</string>
-    <string name="total_error">The sum must be exactly 100%%.</string>
+    <string name="total_error" formatted="false">The sum must be exactly 100%.</string>
     
     <string name="summary_title">All set!</string>
     <string name="summary_income_total">Total Income</string>
@@ -91,13 +91,13 @@
     
     <!-- Presets -->
     <string name="preset_balanced">Balanced Method (50/30/20)</string>
-    <string name="preset_balanced_desc">Focus on balance: 50%% for basics, 30%% for enjoying today, and 20%% for your future.</string>
+    <string name="preset_balanced_desc" formatted="false">Focus on balance: 50% for basics, 30% for enjoying today, and 20% for your future.</string>
     <string name="preset_accelerated">Accelerator Method (50/25/25)</string>
-    <string name="preset_accelerated_desc">Focus on freedom: Keeps essentials at 50%% and increases investment to 25%% to speed up your independence.</string>
+    <string name="preset_accelerated_desc" formatted="false">Focus on freedom: Keeps essentials at 50% and increases investment to 25% to speed up your independence.</string>
     <string name="preset_custom">Custom</string>
 
     <!-- Educational Hints -->
-    <string name="hint_group_needs">If this group exceeds 50%%, you might be living a lifestyle above your current income.</string>
+    <string name="hint_group_needs" formatted="false">If this group exceeds 50%, you might be living a lifestyle above your current income.</string>
     <string name="hint_group_lifestyle">Expenses that improve your quality of life but are not vital (Leisure, Subscriptions, etc).</string>
     <string name="hint_group_savings">Treat this amount as a mandatory bill. Pay yourself first as soon as you receive your income.</string>
     <string name="hint_general">Avoid the trap of increasing your cost of living whenever your income increases.</string>

@@ -15,6 +15,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jamessaboia.budgetflow.R
+import com.jamessaboia.budgetflow.core.CurrencyVisualTransformation
 import com.jamessaboia.budgetflow.core.getCategoryDisplayName
 import com.jamessaboia.budgetflow.domain.model.TransactionType
 import java.text.SimpleDateFormat
@@ -68,11 +69,18 @@ fun AddTransactionScreen(
             // Amount
             OutlinedTextField(
                 value = uiState.amount,
-                onValueChange = viewModel::onAmountChange,
+                onValueChange = { input ->
+                    // Allow only digits and a single dot or comma
+                    val filtered = input.replace(",", ".").filterIndexed { index, char ->
+                        char.isDigit() || (char == '.' && input.indexOf('.') == index)
+                    }
+                    viewModel.onAmountChange(filtered)
+                },
                 label = { Text(stringResource(R.string.value_label)) },
                 prefix = { Text(stringResource(R.string.currency_prefix)) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                visualTransformation = CurrencyVisualTransformation(),
                 singleLine = true
             )
 
