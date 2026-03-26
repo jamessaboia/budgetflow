@@ -1,15 +1,17 @@
 package com.jamessaboia.budgetflow.ui.features.onboarding
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -37,7 +39,8 @@ fun OnboardingScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(24.dp),
+                .padding(24.dp)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -156,6 +159,7 @@ fun IncomeStep(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PercentagesStep(
     needs: Int,
@@ -173,32 +177,47 @@ fun PercentagesStep(
         )
         Spacer(modifier = Modifier.height(16.dp))
         
-        Row(
+        Column(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            FilterChip(
+            PresetOption(
                 selected = needs == 50 && wants == 30 && savings == 20,
-                onClick = { onPercentagesChange(50, 30, 20) },
-                label = { Text("50/30/20") }
+                title = stringResource(R.string.preset_balanced),
+                description = stringResource(R.string.preset_balanced_desc),
+                onClick = { onPercentagesChange(50, 30, 20) }
             )
-            FilterChip(
-                selected = needs == 60 && wants == 20 && savings == 20,
-                onClick = { onPercentagesChange(60, 20, 20) },
-                label = { Text("60/20/20") }
-            )
-            FilterChip(
-                selected = needs == 50 && wants == 20 && savings == 30,
-                onClick = { onPercentagesChange(50, 20, 30) },
-                label = { Text("50/20/30") }
+            PresetOption(
+                selected = needs == 50 && wants == 25 && savings == 25,
+                title = stringResource(R.string.preset_accelerated),
+                description = stringResource(R.string.preset_accelerated_desc),
+                onClick = { onPercentagesChange(50, 25, 25) }
             )
         }
         
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(24.dp))
         
-        PercentageSlider(stringResource(R.string.group_needs), needs) { onPercentagesChange(it, wants, savings) }
-        PercentageSlider(stringResource(R.string.group_wants), wants) { onPercentagesChange(needs, it, savings) }
-        PercentageSlider(stringResource(R.string.group_savings), savings) { onPercentagesChange(needs, wants, it) }
+        PercentageSlider(
+            label = stringResource(R.string.group_needs),
+            value = needs,
+            hint = stringResource(R.string.hint_essentials),
+            color = MaterialTheme.colorScheme.primary,
+            onValueChange = { onPercentagesChange(it, wants, savings) }
+        )
+        PercentageSlider(
+            label = stringResource(R.string.group_wants),
+            value = wants,
+            hint = stringResource(R.string.hint_lifestyle),
+            color = MaterialTheme.colorScheme.secondary,
+            onValueChange = { onPercentagesChange(needs, it, savings) }
+        )
+        PercentageSlider(
+            label = stringResource(R.string.group_savings),
+            value = savings,
+            hint = stringResource(R.string.hint_investments),
+            color = MaterialTheme.colorScheme.tertiary,
+            onValueChange = { onPercentagesChange(needs, wants, it) }
+        )
         
         Spacer(modifier = Modifier.height(16.dp))
         val total = needs + wants + savings
@@ -234,17 +253,80 @@ fun PercentagesStep(
 }
 
 @Composable
-fun PercentageSlider(label: String, value: Int, onValueChange: (Int) -> Unit) {
-    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(text = label, style = MaterialTheme.typography.bodyMedium)
-            Text(text = stringResource(R.string.percentage_value, value), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+fun PresetOption(
+    selected: Boolean,
+    title: String,
+    description: String,
+    onClick: () -> Unit
+) {
+    Card(
+        onClick = onClick,
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(
+            containerColor = if (selected) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.surface,
+        ),
+        border = if (selected) null else CardDefaults.outlinedCardBorder()
+    ) {
+        Column(modifier = Modifier.padding(12.dp)) {
+            Text(text = title, style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+            Text(text = description, style = MaterialTheme.typography.bodySmall)
         }
+    }
+}
+
+@Composable
+fun PercentageSlider(
+    label: String,
+    value: Int,
+    hint: String,
+    color: Color,
+    onValueChange: (Int) -> Unit
+) {
+    var showHint by remember { mutableStateOf(false) }
+
+    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(text = label, style = MaterialTheme.typography.bodyMedium)
+                IconButton(onClick = { showHint = !showHint }, modifier = Modifier.size(32.dp)) {
+                    Icon(
+                        Icons.Default.Info, 
+                        contentDescription = "Hint", 
+                        modifier = Modifier.size(16.dp),
+                        tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
+                    )
+                }
+            }
+            Text(
+                text = stringResource(R.string.percentage_value, value),
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Bold,
+                color = color
+            )
+        }
+        
+        if (showHint) {
+            Text(
+                text = hint,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+        }
+
         Slider(
             value = value.toFloat(),
             onValueChange = { onValueChange(it.toInt()) },
             valueRange = 0f..100f,
-            steps = 100
+            steps = 100,
+            colors = SliderDefaults.colors(
+                thumbColor = color,
+                activeTrackColor = color
+            )
         )
     }
 }

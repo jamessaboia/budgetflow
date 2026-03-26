@@ -60,6 +60,26 @@
     <string name="group_needs">Essentials</string>
     <string name="group_wants">Lifestyle</string>
     <string name="group_savings">Savings</string>
+    
+    <!-- Presets -->
+    <string name="preset_balanced">Balanced Method (50/30/20)</string>
+    <string name="preset_balanced_desc">Focus on balance: 50% for basics, 30% for enjoying today, and 20% for your future.</string>
+    <string name="preset_accelerated">Accelerator Method (50/25/25)</string>
+    <string name="preset_accelerated_desc">Focus on freedom: Keeps essentials at 50% and increases investment to 25% to speed up your independence.</string>
+    <string name="preset_custom">Custom</string>
+
+    <!-- Educational Hints -->
+    <string name="hint_essentials">If this group exceeds 50%, you might be living a lifestyle above your current income.</string>
+    <string name="hint_lifestyle">Expenses that improve your quality of life but are not vital (Leisure, Subscriptions, etc).</string>
+    <string name="hint_investments">Treat this amount as a mandatory bill. Pay yourself first as soon as you receive your income.</string>
+    <string name="hint_general">Avoid the trap of increasing your cost of living whenever your income increases.</string>
+
+    <!-- Settings -->
+    <string name="settings">Settings</string>
+    <string name="budget_settings">Budget Settings</string>
+    <string name="save_changes">Save Changes</string>
+    <string name="update_success">Budget updated successfully!</string>
+
     <string name="percentage_value">%1$d%%</string>
     <string name="group_needs_summary">Essentials (%1$d%%)</string>
     <string name="group_wants_summary">Lifestyle (%1$d%%)</string>

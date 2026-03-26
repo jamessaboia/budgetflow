@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -25,6 +26,7 @@ import com.jamessaboia.budgetflow.domain.model.GroupSummary
 fun DashboardScreen(
     onNavigateToAddTransaction: () -> Unit,
     onNavigateToTransactions: () -> Unit,
+    onNavigateToSettings: () -> Unit,
     viewModel: DashboardViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -44,6 +46,13 @@ fun DashboardScreen(
                         Icon(
                             Icons.AutoMirrored.Filled.List, 
                             contentDescription = stringResource(R.string.history),
+                            tint = MaterialTheme.colorScheme.onSecondary
+                        )
+                    }
+                    IconButton(onClick = onNavigateToSettings) {
+                        Icon(
+                            Icons.Default.Settings, 
+                            contentDescription = stringResource(R.string.settings),
                             tint = MaterialTheme.colorScheme.onSecondary
                         )
                     }
@@ -235,4 +244,8 @@ fun GroupCard(title: String, summary: GroupSummary) {
             }
         }
     }
+}
+
+fun formatCurrency(value: Double): String {
+    return "R$ %.2f".format(value)
 }

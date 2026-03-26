@@ -60,6 +60,26 @@
     <string name="group_needs">Essenciais</string>
     <string name="group_wants">Estilo de Vida</string>
     <string name="group_savings">Reserva</string>
+    
+    <!-- Presets -->
+    <string name="preset_balanced">Método Equilibrado (50/30/20)</string>
+    <string name="preset_balanced_desc">Foco no equilíbrio: 50% para o básico, 30% para viver o hoje e 20% para o seu futuro.</string>
+    <string name="preset_accelerated">Método Acelerador (50/25/25)</string>
+    <string name="preset_accelerated_desc">Foco em liberdade: Mantém o essencial em 50% e aumenta o aporte para 25% para acelerar sua independência.</string>
+    <string name="preset_custom">Personalizado</string>
+
+    <!-- Educational Hints -->
+    <string name="hint_essentials">Se este grupo passar de 50%, você pode estar vivendo um padrão acima da sua renda atual.</string>
+    <string name="hint_lifestyle">Gastos que melhoram sua qualidade de vida, mas não são vitais (Lazer, Assinaturas, etc).</string>
+    <string name="hint_investments">Trate este valor como um boleto obrigatório. Pague-se primeiro assim que receber sua renda.</string>
+    <string name="hint_general">Evite a armadilha de subir seu custo de vida sempre que sua renda aumentar.</string>
+
+    <!-- Settings -->
+    <string name="settings">Configurações</string>
+    <string name="budget_settings">Configurações de Orçamento</string>
+    <string name="save_changes">Salvar Alterações</string>
+    <string name="update_success">Orçamento atualizado com sucesso!</string>
+
     <string name="percentage_value">%1$d%%</string>
     <string name="group_needs_summary">Essenciais (%1$d%%)</string>
     <string name="group_wants_summary">Estilo de Vida (%1$d%%)</string>
