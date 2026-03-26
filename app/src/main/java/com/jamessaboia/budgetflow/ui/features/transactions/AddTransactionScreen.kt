@@ -9,9 +9,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.jamessaboia.budgetflow.R
 import com.jamessaboia.budgetflow.domain.model.TransactionType
 import java.text.SimpleDateFormat
 import java.util.*
@@ -26,9 +28,10 @@ fun AddTransactionScreen(
     var showDatePicker by remember { mutableStateOf(false) }
     val snackbarHostState = remember { SnackbarHostState() }
 
+    val successMessage = stringResource(R.string.saving_success)
     LaunchedEffect(uiState.isSuccess) {
         if (uiState.isSuccess) {
-            snackbarHostState.showSnackbar("Transação salva com sucesso!")
+            snackbarHostState.showSnackbar(successMessage)
             kotlinx.coroutines.delay(1500)
             onBack()
         }
@@ -43,10 +46,10 @@ fun AddTransactionScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Nova Transação") },
+                title = { Text(stringResource(R.string.new_transaction)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Voltar")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -64,8 +67,8 @@ fun AddTransactionScreen(
             OutlinedTextField(
                 value = uiState.amount,
                 onValueChange = viewModel::onAmountChange,
-                label = { Text("Valor") },
-                prefix = { Text("R$ ") },
+                label = { Text(stringResource(R.string.value_label)) },
+                prefix = { Text(stringResource(R.string.currency_prefix)) },
                 modifier = Modifier.fillMaxWidth(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                 singleLine = true
@@ -79,14 +82,22 @@ fun AddTransactionScreen(
                 FilterChip(
                     selected = uiState.type == TransactionType.EXPENSE,
                     onClick = { viewModel.onTypeChange(TransactionType.EXPENSE) },
-                    label = { Text("Despesa") },
-                    modifier = Modifier.weight(1f)
+                    label = { Text(stringResource(R.string.expense)) },
+                    modifier = Modifier.weight(1f),
+                    colors = FilterChipDefaults.filterChipColors(
+                        selectedContainerColor = MaterialTheme.colorScheme.error,
+                        selectedLabelColor = MaterialTheme.colorScheme.onError
+                    )
                 )
                 FilterChip(
                     selected = uiState.type == TransactionType.INCOME,
                     onClick = { viewModel.onTypeChange(TransactionType.INCOME) },
-                    label = { Text("Receita") },
-                    modifier = Modifier.weight(1f)
+                    label = { Text(stringResource(R.string.income)) },
+                    modifier = Modifier.weight(1f),
+                    colors = FilterChipDefaults.filterChipColors(
+                        selectedContainerColor = MaterialTheme.colorScheme.primary,
+                        selectedLabelColor = MaterialTheme.colorScheme.onPrimary
+                    )
                 )
             }
 
@@ -97,10 +108,10 @@ fun AddTransactionScreen(
                 onExpandedChange = { expanded = !expanded }
             ) {
                 OutlinedTextField(
-                    value = uiState.selectedCategory?.name ?: "Selecione a Categoria",
+                    value = uiState.selectedCategory?.name ?: stringResource(R.string.select_category),
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("Categoria") },
+                    label = { Text(stringResource(R.string.category_label)) },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                     modifier = Modifier
                         .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable, true)
@@ -129,10 +140,10 @@ fun AddTransactionScreen(
                 value = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(uiState.date),
                 onValueChange = {},
                 readOnly = true,
-                label = { Text("Data") },
+                label = { Text(stringResource(R.string.date_label)) },
                 trailingIcon = {
                     IconButton(onClick = { showDatePicker = true }) {
-                        Icon(Icons.Default.DateRange, contentDescription = "Selecionar Data")
+                        Icon(Icons.Default.DateRange, contentDescription = stringResource(R.string.select_date))
                     }
                 },
                 modifier = Modifier.fillMaxWidth()
@@ -142,7 +153,7 @@ fun AddTransactionScreen(
             OutlinedTextField(
                 value = uiState.description,
                 onValueChange = viewModel::onDescriptionChange,
-                label = { Text("Descrição (Opcional)") },
+                label = { Text(stringResource(R.string.description_label)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -159,7 +170,7 @@ fun AddTransactionScreen(
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                 } else {
-                    Text("Salvar Transação")
+                    Text(stringResource(R.string.save_transaction))
                 }
             }
         }
@@ -178,12 +189,12 @@ fun AddTransactionScreen(
                     }
                     showDatePicker = false
                 }) {
-                    Text("Confirmar")
+                    Text(stringResource(R.string.confirm))
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDatePicker = false }) {
-                    Text("Cancelar")
+                    Text(stringResource(R.string.cancel))
                 }
             }
         ) {

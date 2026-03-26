@@ -12,9 +12,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.jamessaboia.budgetflow.R
 import com.jamessaboia.budgetflow.domain.model.DashboardSummary
 import com.jamessaboia.budgetflow.domain.model.GroupSummary
 
@@ -29,22 +31,35 @@ fun DashboardScreen(
 
     Scaffold(
         topBar = {
-            LargeTopAppBar(
-                title = { Text("BudgetFlow") },
+            TopAppBar(
+                title = { 
+                    Text(
+                        stringResource(R.string.app_name),
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onSecondary
+                    ) 
+                },
                 actions = {
                     IconButton(onClick = onNavigateToTransactions) {
-                        Icon(Icons.AutoMirrored.Filled.List, contentDescription = "Histórico")
+                        Icon(
+                            Icons.AutoMirrored.Filled.List, 
+                            contentDescription = stringResource(R.string.history),
+                            tint = MaterialTheme.colorScheme.onSecondary
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    containerColor = MaterialTheme.colorScheme.secondary,
                 )
             )
         },
         floatingActionButton = {
-            FloatingActionButton(onClick = onNavigateToAddTransaction) {
-                Icon(Icons.Default.Add, contentDescription = "Adicionar Transação")
+            FloatingActionButton(
+                onClick = onNavigateToAddTransaction,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            ) {
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.new_transaction))
             }
         }
     ) { innerPadding ->
@@ -53,7 +68,7 @@ fun DashboardScreen(
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             } else if (uiState.error != null) {
                 Text(
-                    text = "Erro: ${uiState.error}",
+                    text = stringResource(R.string.error_generic, uiState.error!!),
                     color = MaterialTheme.colorScheme.error,
                     modifier = Modifier.align(Alignment.Center)
                 )
@@ -77,19 +92,20 @@ fun DashboardContent(summary: DashboardSummary) {
         }
         item {
             Text(
-                text = "Meus Grupos",
+                text = stringResource(R.string.my_groups),
                 style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.secondary
             )
         }
         item {
-            GroupCard("Essenciais (Necessidades)", summary.needsSummary, MaterialTheme.colorScheme.primary)
+            GroupCard(stringResource(R.string.group_needs), summary.needsSummary)
         }
         item {
-            GroupCard("Estilo de Vida (Desejos)", summary.wantsSummary, MaterialTheme.colorScheme.secondary)
+            GroupCard(stringResource(R.string.group_wants), summary.wantsSummary)
         }
         item {
-            GroupCard("Reserva / Investimentos", summary.savingsSummary, MaterialTheme.colorScheme.tertiary)
+            GroupCard(stringResource(R.string.group_savings), summary.savingsSummary)
         }
         item {
             Spacer(modifier = Modifier.height(16.dp))
@@ -101,48 +117,62 @@ fun DashboardContent(summary: DashboardSummary) {
 fun BalanceHeader(summary: DashboardSummary) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondary,
+            contentColor = MaterialTheme.colorScheme.onSecondary
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
         Column(
             modifier = Modifier.padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Saldo Disponível",
+                text = stringResource(R.string.available_balance),
                 style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.8f)
             )
             Text(
-                text = formatCurrency(summary.remainingBalance),
+                text = stringResource(R.string.currency_format, summary.remainingBalance),
                 style = MaterialTheme.typography.headlineLarge,
                 fontWeight = FontWeight.Black,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                color = MaterialTheme.colorScheme.onSecondary
             )
             Spacer(modifier = Modifier.height(16.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                SummaryInfoItem("Renda", formatCurrency(summary.totalIncome), MaterialTheme.colorScheme.onPrimaryContainer)
-                SummaryInfoItem("Gasto", formatCurrency(summary.totalSpent), MaterialTheme.colorScheme.onPrimaryContainer)
+                SummaryInfoItem(
+                    stringResource(R.string.income_label), 
+                    stringResource(R.string.currency_format, summary.totalIncome)
+                )
+                SummaryInfoItem(
+                    stringResource(R.string.spent_label), 
+                    stringResource(R.string.currency_format, summary.totalSpent)
+                )
             }
         }
     }
 }
 
 @Composable
-fun SummaryInfoItem(label: String, value: String, color: Color) {
+fun SummaryInfoItem(label: String, value: String) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = label, style = MaterialTheme.typography.labelMedium, color = color.copy(alpha = 0.7f))
-        Text(text = value, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = color)
+        Text(text = label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onSecondary.copy(alpha = 0.7f))
+        Text(text = value, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSecondary)
     }
 }
 
 @Composable
-fun GroupCard(title: String, summary: GroupSummary, color: Color) {
+fun GroupCard(title: String, summary: GroupSummary) {
+    val isExceeded = summary.percentageSpent > 1f
+    val mainColor = if (isExceeded) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
+
     Card(
         modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Row(
@@ -152,10 +182,10 @@ fun GroupCard(title: String, summary: GroupSummary, color: Color) {
             ) {
                 Text(text = title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                 Text(
-                    text = "${(summary.percentageSpent * 100).toInt()}%",
+                    text = stringResource(R.string.percentage_value, (summary.percentageSpent * 100).toInt()),
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
-                    color = if (summary.percentageSpent > 1f) MaterialTheme.colorScheme.error else color
+                    color = mainColor
                 )
             }
             Spacer(modifier = Modifier.height(12.dp))
@@ -166,8 +196,8 @@ fun GroupCard(title: String, summary: GroupSummary, color: Color) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(8.dp),
-                color = if (summary.percentageSpent > 1f) MaterialTheme.colorScheme.error else color,
-                trackColor = color.copy(alpha = 0.2f),
+                color = mainColor,
+                trackColor = mainColor.copy(alpha = 0.1f),
             )
             
             Spacer(modifier = Modifier.height(12.dp))
@@ -176,17 +206,19 @@ fun GroupCard(title: String, summary: GroupSummary, color: Color) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
-                    text = "Gasto: ${formatCurrency(summary.spent)}",
-                    style = MaterialTheme.typography.bodySmall
+                    text = stringResource(R.string.spent_value, stringResource(R.string.currency_format, summary.spent)),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.tertiary
                 )
                 Text(
-                    text = "Limite: ${formatCurrency(summary.limit)}",
-                    style = MaterialTheme.typography.bodySmall
+                    text = stringResource(R.string.limit_value, stringResource(R.string.currency_format, summary.limit)),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.tertiary
                 )
             }
-            if (summary.remaining < 0) {
+            if (isExceeded) {
                 Text(
-                    text = "Excedido em ${formatCurrency(-summary.remaining)}",
+                    text = stringResource(R.string.exceeded_by, stringResource(R.string.currency_format, -summary.remaining)),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.error,
                     fontWeight = FontWeight.Bold,
@@ -194,17 +226,13 @@ fun GroupCard(title: String, summary: GroupSummary, color: Color) {
                 )
             } else {
                 Text(
-                    text = "Resta ${formatCurrency(summary.remaining)}",
+                    text = stringResource(R.string.remains_value, stringResource(R.string.currency_format, summary.remaining)),
                     style = MaterialTheme.typography.bodySmall,
-                    color = color,
+                    color = mainColor,
                     fontWeight = FontWeight.Bold,
                     modifier = Modifier.padding(top = 4.dp)
                 )
             }
         }
     }
-}
-
-fun formatCurrency(value: Double): String {
-    return "R$ %.2f".format(value)
 }

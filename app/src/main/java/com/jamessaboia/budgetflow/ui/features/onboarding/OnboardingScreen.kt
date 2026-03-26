@@ -10,11 +10,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.jamessaboia.budgetflow.R
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
@@ -78,20 +80,20 @@ fun OnboardingScreen(
 fun WelcomeStep(onNext: () -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = "Bem-vindo ao BudgetFlow",
+            text = stringResource(R.string.welcome_title),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            text = "Vamos organizar suas finanças usando a regra 50/30/20 de forma simples e prática.",
+            text = stringResource(R.string.welcome_description),
             style = MaterialTheme.typography.bodyLarge,
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(32.dp))
         Button(onClick = onNext, modifier = Modifier.fillMaxWidth()) {
-            Text("Começar Agora")
+            Text(stringResource(R.string.start_now))
         }
     }
 }
@@ -107,13 +109,13 @@ fun IncomeStep(
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = "Qual sua renda?",
+            text = stringResource(R.string.income_title),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-            text = "Informe seu salário principal e, se houver, uma renda extra mensal.",
+            text = stringResource(R.string.income_description),
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center
         )
@@ -121,8 +123,8 @@ fun IncomeStep(
         OutlinedTextField(
             value = income,
             onValueChange = onIncomeChange,
-            label = { Text("Renda Principal") },
-            prefix = { Text("R$ ") },
+            label = { Text(stringResource(R.string.income_main_label)) },
+            prefix = { Text(stringResource(R.string.currency_prefix)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
@@ -131,8 +133,8 @@ fun IncomeStep(
         OutlinedTextField(
             value = extraIncome,
             onValueChange = onExtraIncomeChange,
-            label = { Text("Renda Extra (Opcional)") },
-            prefix = { Text("R$ ") },
+            label = { Text(stringResource(R.string.income_extra_label)) },
+            prefix = { Text(stringResource(R.string.currency_prefix)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             modifier = Modifier.fillMaxWidth(),
             singleLine = true
@@ -140,7 +142,7 @@ fun IncomeStep(
         Spacer(modifier = Modifier.height(32.dp))
         Row(modifier = Modifier.fillMaxWidth()) {
             OutlinedButton(onClick = onBack, modifier = Modifier.weight(1f)) {
-                Text("Voltar")
+                Text(stringResource(R.string.back))
             }
             Spacer(modifier = Modifier.width(16.dp))
             Button(
@@ -148,7 +150,7 @@ fun IncomeStep(
                 modifier = Modifier.weight(1f),
                 enabled = income.toDoubleOrNull() != null && income.toDouble() > 0
             ) {
-                Text("Próximo")
+                Text(stringResource(R.string.next))
             }
         }
     }
@@ -165,7 +167,7 @@ fun PercentagesStep(
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = "Como quer dividir sua renda?",
+            text = stringResource(R.string.percentages_title),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
@@ -194,21 +196,21 @@ fun PercentagesStep(
         
         Spacer(modifier = Modifier.height(16.dp))
         
-        PercentageSlider("Essenciais", needs) { onPercentagesChange(it, wants, savings) }
-        PercentageSlider("Estilo de Vida", wants) { onPercentagesChange(needs, it, savings) }
-        PercentageSlider("Reserva", savings) { onPercentagesChange(needs, wants, it) }
+        PercentageSlider(stringResource(R.string.group_needs), needs) { onPercentagesChange(it, wants, savings) }
+        PercentageSlider(stringResource(R.string.group_wants), wants) { onPercentagesChange(needs, it, savings) }
+        PercentageSlider(stringResource(R.string.group_savings), savings) { onPercentagesChange(needs, wants, it) }
         
         Spacer(modifier = Modifier.height(16.dp))
         val total = needs + wants + savings
         Text(
-            text = "Total: $total%",
+            text = stringResource(R.string.total_label, total),
             style = MaterialTheme.typography.titleMedium,
             color = if (total == 100) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error,
             fontWeight = FontWeight.Bold
         )
         if (total != 100) {
             Text(
-                text = "A soma deve ser exatamente 100%.",
+                text = stringResource(R.string.total_error),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.error
             )
@@ -217,7 +219,7 @@ fun PercentagesStep(
         Spacer(modifier = Modifier.height(32.dp))
         Row(modifier = Modifier.fillMaxWidth()) {
             OutlinedButton(onClick = onBack, modifier = Modifier.weight(1f)) {
-                Text("Voltar")
+                Text(stringResource(R.string.back))
             }
             Spacer(modifier = Modifier.width(16.dp))
             Button(
@@ -225,7 +227,7 @@ fun PercentagesStep(
                 modifier = Modifier.weight(1f),
                 enabled = total == 100
             ) {
-                Text("Próximo")
+                Text(stringResource(R.string.next))
             }
         }
     }
@@ -236,7 +238,7 @@ fun PercentageSlider(label: String, value: Int, onValueChange: (Int) -> Unit) {
     Column(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
             Text(text = label, style = MaterialTheme.typography.bodyMedium)
-            Text(text = "$value%", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
+            Text(text = stringResource(R.string.percentage_value, value), style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Bold)
         }
         Slider(
             value = value.toFloat(),
@@ -264,7 +266,7 @@ fun SummaryStep(
     
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         Text(
-            text = "Tudo pronto!",
+            text = stringResource(R.string.summary_title),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold
         )
@@ -275,11 +277,11 @@ fun SummaryStep(
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
         ) {
             Column(modifier = Modifier.padding(16.dp)) {
-                SummaryRow("Renda Total", "R$ %.2f".format(totalIncome))
+                SummaryRow(stringResource(R.string.summary_income_total), stringResource(R.string.currency_format, totalIncome))
                 HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-                SummaryRow("Essenciais ($needs%)", "R$ %.2f".format(totalIncome * needs / 100))
-                SummaryRow("Estilo de Vida ($wants%)", "R$ %.2f".format(totalIncome * wants / 100))
-                SummaryRow("Reserva ($savings%)", "R$ %.2f".format(totalIncome * savings / 100))
+                SummaryRow(stringResource(R.string.group_needs_summary, needs), stringResource(R.string.currency_format, totalIncome * needs / 100))
+                SummaryRow(stringResource(R.string.group_wants_summary, wants), stringResource(R.string.currency_format, totalIncome * wants / 100))
+                SummaryRow(stringResource(R.string.group_savings_summary, savings), stringResource(R.string.currency_format, totalIncome * savings / 100))
             }
         }
         
@@ -289,11 +291,11 @@ fun SummaryStep(
         } else {
             Row(modifier = Modifier.fillMaxWidth()) {
                 OutlinedButton(onClick = onBack, modifier = Modifier.weight(1f)) {
-                    Text("Voltar")
+                    Text(stringResource(R.string.back))
                 }
                 Spacer(modifier = Modifier.width(16.dp))
                 Button(onClick = onConfirm, modifier = Modifier.weight(1f)) {
-                    Text("Finalizar")
+                    Text(stringResource(R.string.finish))
                 }
             }
         }

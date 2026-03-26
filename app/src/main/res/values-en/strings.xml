@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">BudgetFlow</string>
+
+    <!-- Onboarding -->
+    <string name="welcome_title">Welcome to BudgetFlow</string>
+    <string name="welcome_description">Organize your income with methods proven by top financial educators.</string>
+    <string name="start_now">Start Now</string>
+    
+    <string name="income_title">What is your income?</string>
+    <string name="income_description">Enter your main salary and, if any, an optional monthly extra income.</string>
+    <string name="income_main_label">Main Income</string>
+    <string name="income_extra_label">Extra Income (Optional)</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
+    
+    <string name="percentages_title">How do you want to divide your income?</string>
+    <string name="total_label">Total: %1$d%%</string>
+    <string name="total_error">The sum must be exactly 100%%.</string>
+    
+    <string name="summary_title">All set!</string>
+    <string name="summary_income_total">Total Income</string>
+    <string name="finish">Finish</string>
+    <string name="saving_success">Transaction saved successfully!</string>
+
+    <!-- Dashboard -->
+    <string name="available_balance">Available Balance</string>
+    <string name="income_label">Income</string>
+    <string name="spent_label">Spent</string>
+    <string name="my_groups">My Groups</string>
+    <string name="spent_value">Spent: %1$s</string>
+    <string name="limit_value">Limit: %1$s</string>
+    <string name="exceeded_by">Exceeded by %1$s</string>
+    <string name="remains_value">%1$s remaining</string>
+    <string name="history">History</string>
+
+    <!-- Transactions -->
+    <string name="new_transaction">New Transaction</string>
+    <string name="value_label">Amount</string>
+    <string name="expense">Expense</string>
+    <string name="income">Income</string>
+    <string name="category_label">Category</string>
+    <string name="select_category">Select Category</string>
+    <string name="date_label">Date</string>
+    <string name="description_label">Description (Optional)</string>
+    <string name="save_transaction">Save Transaction</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
+    <string name="no_description">No description</string>
+    <string name="history_title">Transaction History</string>
+    <string name="no_transactions">No transactions found this month.</string>
+    <string name="select_date">Select Date</string>
+    <string name="delete">Delete</string>
+    
+    <!-- Errors -->
+    <string name="error_amount_zero">Amount must be greater than zero</string>
+    <string name="error_select_category">Please select a category</string>
+    <string name="error_generic">Error: %1$s</string>
+
+    <!-- Groups -->
+    <string name="group_needs">Essentials</string>
+    <string name="group_wants">Lifestyle</string>
+    <string name="group_savings">Savings</string>
+    <string name="percentage_value">%1$d%%</string>
+    <string name="group_needs_summary">Essentials (%1$d%%)</string>
+    <string name="group_wants_summary">Lifestyle (%1$d%%)</string>
+    <string name="group_savings_summary">Savings (%1$d%%)</string>
+    <string name="currency_format">$ %1$.2f</string>
+    <string name="transaction_income_format">+ $ %1$.2f</string>
+    <string name="transaction_expense_format">- $ %1$.2f</string>
+    <string name="currency_prefix">$ </string>
+</resources>

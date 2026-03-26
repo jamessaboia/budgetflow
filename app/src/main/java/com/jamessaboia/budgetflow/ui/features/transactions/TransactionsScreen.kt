@@ -14,9 +14,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import com.jamessaboia.budgetflow.R
 import com.jamessaboia.budgetflow.domain.model.Transaction
 import com.jamessaboia.budgetflow.domain.model.TransactionType
 import java.text.SimpleDateFormat
@@ -34,10 +36,10 @@ fun TransactionsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Histórico de Transações") },
+                title = { Text(stringResource(R.string.history_title)) },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Voltar")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
                 }
             )
@@ -49,7 +51,7 @@ fun TransactionsScreen(
                 CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
             } else if (uiState.transactions.isEmpty()) {
                 Text(
-                    text = "Nenhuma transação encontrada este mês.",
+                    text = stringResource(R.string.no_transactions),
                     modifier = Modifier.align(Alignment.Center),
                     style = MaterialTheme.typography.bodyLarge
                 )
@@ -89,7 +91,7 @@ fun TransactionItem(
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = if (transaction.description.isNotBlank()) transaction.description else "Sem descrição",
+                    text = if (transaction.description.isNotBlank()) transaction.description else stringResource(R.string.no_description),
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold
                 )
@@ -101,15 +103,19 @@ fun TransactionItem(
             
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    text = "${if (transaction.type == TransactionType.INCOME) "+" else "-"} R$ %.2f".format(transaction.amount),
+                    text = if (transaction.type == TransactionType.INCOME) {
+                        stringResource(R.string.transaction_income_format, transaction.amount)
+                    } else {
+                        stringResource(R.string.transaction_expense_format, transaction.amount)
+                    },
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold,
-                    color = if (transaction.type == TransactionType.INCOME) Color(0xFF4CAF50) else MaterialTheme.colorScheme.error
+                    color = if (transaction.type == TransactionType.INCOME) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
                 )
                 IconButton(onClick = onDelete) {
                     Icon(
                         Icons.Default.Delete,
-                        contentDescription = "Deletar",
+                        contentDescription = stringResource(R.string.delete),
                         tint = MaterialTheme.colorScheme.error.copy(alpha = 0.6f)
                     )
                 }

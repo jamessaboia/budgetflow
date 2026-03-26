@@ -1,3 +1,71 @@
 <resources>
     <string name="app_name">BudgetFlow</string>
+
+    <!-- Onboarding -->
+    <string name="welcome_title">Bem-vindo ao BudgetFlow</string>
+    <string name="welcome_description">Organize sua renda com métodos comprovados pelos maiores educadores financeiros.</string>
+    <string name="start_now">Começar Agora</string>
+    
+    <string name="income_title">Qual sua renda?</string>
+    <string name="income_description">Informe seu salário principal e, se houver, uma renda extra mensal.</string>
+    <string name="income_main_label">Renda Principal</string>
+    <string name="income_extra_label">Renda Extra (Opcional)</string>
+    <string name="next">Próximo</string>
+    <string name="back">Voltar</string>
+    
+    <string name="percentages_title">Como quer dividir sua renda?</string>
+    <string name="total_label">Total: %1$d%%</string>
+    <string name="total_error">A soma deve ser exatamente 100%%.</string>
+    
+    <string name="summary_title">Tudo pronto!</string>
+    <string name="summary_income_total">Renda Total</string>
+    <string name="finish">Finalizar</string>
+    <string name="saving_success">Transação salva com sucesso!</string>
+
+    <!-- Dashboard -->
+    <string name="available_balance">Saldo Disponível</string>
+    <string name="income_label">Renda</string>
+    <string name="spent_label">Gasto</string>
+    <string name="my_groups">Meus Grupos</string>
+    <string name="spent_value">Gasto: %1$s</string>
+    <string name="limit_value">Limite: %1$s</string>
+    <string name="exceeded_by">Excedido em %1$s</string>
+    <string name="remains_value">Resta %1$s</string>
+    <string name="history">Histórico</string>
+
+    <!-- Transactions -->
+    <string name="new_transaction">Nova Transação</string>
+    <string name="value_label">Valor</string>
+    <string name="expense">Despesa</string>
+    <string name="income">Receita</string>
+    <string name="category_label">Categoria</string>
+    <string name="select_category">Selecione a Categoria</string>
+    <string name="date_label">Data</string>
+    <string name="description_label">Descrição (Opcional)</string>
+    <string name="save_transaction">Salvar Transação</string>
+    <string name="confirm">Confirmar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="no_description">Sem descrição</string>
+    <string name="history_title">Histórico de Transações</string>
+    <string name="no_transactions">Nenhuma transação encontrada este mês.</string>
+    <string name="select_date">Selecionar Data</string>
+    <string name="delete">Deletar</string>
+    
+    <!-- Errors -->
+    <string name="error_amount_zero">Valor deve ser maior que zero</string>
+    <string name="error_select_category">Selecione uma categoria</string>
+    <string name="error_generic">Erro: %1$s</string>
+
+    <!-- Groups -->
+    <string name="group_needs">Essenciais</string>
+    <string name="group_wants">Estilo de Vida</string>
+    <string name="group_savings">Reserva</string>
+    <string name="percentage_value">%1$d%%</string>
+    <string name="group_needs_summary">Essenciais (%1$d%%)</string>
+    <string name="group_wants_summary">Estilo de Vida (%1$d%%)</string>
+    <string name="group_savings_summary">Reserva (%1$d%%)</string>
+    <string name="currency_format">R$ %1$.2f</string>
+    <string name="transaction_income_format">+ R$ %1$.2f</string>
+    <string name="transaction_expense_format">- R$ %1$.2f</string>
+    <string name="currency_prefix">R$ </string>
 </resources>
