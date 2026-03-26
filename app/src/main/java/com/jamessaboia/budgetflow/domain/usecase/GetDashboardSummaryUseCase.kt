@@ -1,6 +1,7 @@
 package com.jamessaboia.budgetflow.domain.usecase
 
 import com.jamessaboia.budgetflow.domain.model.BudgetGroup
+import com.jamessaboia.budgetflow.domain.model.CategorySpent
 import com.jamessaboia.budgetflow.domain.model.DashboardSummary
 import com.jamessaboia.budgetflow.domain.model.GroupSummary
 import com.jamessaboia.budgetflow.domain.model.TransactionType
@@ -30,9 +31,14 @@ class GetDashboardSummaryUseCase @Inject constructor(
             val categoryGroupMap = categories.associateBy({ it.id }, { it.groupType })
             
             val expensesByGroup = transactions
-                .filter { it.type == TransactionType.EXPENSE }
-                .groupBy { categoryGroupMap[it.categoryId] ?: BudgetGroup.NEEDS }
-                .mapValues { entry -> entry.value.sumOf { it.amount } }
+                .filter { it.transaction.type == TransactionType.EXPENSE }
+                .groupBy { categoryGroupMap[it.transaction.categoryId] ?: BudgetGroup.NEEDS }
+                .mapValues { entry -> entry.value.sumOf { it.transaction.amount } }
+
+            val expensesByCategory = transactions
+                .filter { it.transaction.type == TransactionType.EXPENSE }
+                .groupBy { it.transaction.categoryId }
+                .mapValues { entry -> entry.value.sumOf { it.transaction.amount } }
 
             val totalIncome = budget.totalIncome
             
@@ -41,14 +47,23 @@ class GetDashboardSummaryUseCase @Inject constructor(
                 val spent = expensesByGroup[group] ?: 0.0
                 val percentageSpent = if (limit > 0) (spent / limit).toFloat() else 0f
                 val remaining = limit - spent
-                return GroupSummary(limit, spent, percentageSpent, remaining)
+                
+                val groupCategories = categories.filter { it.groupType == group }
+                val categorySpendingList = groupCategories.map { category ->
+                    CategorySpent(
+                        categoryName = category.name,
+                        amount = expensesByCategory[category.id] ?: 0.0
+                    )
+                }.filter { it.amount > 0 } // Only show categories with spending
+                
+                return GroupSummary(limit, spent, percentageSpent, remaining, categorySpendingList)
             }
 
             val needsSummary = createGroupSummary(BudgetGroup.NEEDS, budget.needsPercentage)
             val wantsSummary = createGroupSummary(BudgetGroup.WANTS, budget.wantsPercentage)
             val savingsSummary = createGroupSummary(BudgetGroup.SAVINGS, budget.savingsPercentage)
 
-            val totalSpent = transactions.filter { it.type == TransactionType.EXPENSE }.sumOf { it.amount }
+            val totalSpent = transactions.filter { it.transaction.type == TransactionType.EXPENSE }.sumOf { it.transaction.amount }
             val remainingBalance = totalIncome - totalSpent
 
             DashboardSummary(

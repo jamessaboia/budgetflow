@@ -101,13 +101,23 @@ class OnboardingViewModel @Inject constructor(
 
     private suspend fun saveDefaultCategories() {
         val defaults = listOf(
-            Category(name = "Aluguel/Moradia", groupType = BudgetGroup.NEEDS, isDefault = true),
-            Category(name = "Supermercado", groupType = BudgetGroup.NEEDS, isDefault = true),
-            Category(name = "Transporte", groupType = BudgetGroup.NEEDS, isDefault = true),
-            Category(name = "Lazer", groupType = BudgetGroup.WANTS, isDefault = true),
-            Category(name = "Assinaturas", groupType = BudgetGroup.WANTS, isDefault = true),
-            Category(name = "Reserva de Emergência", groupType = BudgetGroup.SAVINGS, isDefault = true),
-            Category(name = "Investimentos", groupType = BudgetGroup.SAVINGS, isDefault = true)
+            // NEEDS
+            Category(name = "cat_housing", groupType = BudgetGroup.NEEDS, isDefault = true),
+            Category(name = "cat_food", groupType = BudgetGroup.NEEDS, isDefault = true),
+            Category(name = "cat_transport", groupType = BudgetGroup.NEEDS, isDefault = true),
+            Category(name = "cat_health", groupType = BudgetGroup.NEEDS, isDefault = true),
+            Category(name = "cat_education", groupType = BudgetGroup.NEEDS, isDefault = true),
+            
+            // WANTS
+            Category(name = "cat_leisure", groupType = BudgetGroup.WANTS, isDefault = true),
+            Category(name = "cat_lifestyle", groupType = BudgetGroup.WANTS, isDefault = true),
+            Category(name = "cat_shopping", groupType = BudgetGroup.WANTS, isDefault = true),
+            Category(name = "cat_subscriptions", groupType = BudgetGroup.WANTS, isDefault = true),
+            
+            // SAVINGS
+            Category(name = "cat_emergency", groupType = BudgetGroup.SAVINGS, isDefault = true),
+            Category(name = "cat_investments", groupType = BudgetGroup.SAVINGS, isDefault = true),
+            Category(name = "cat_goals", groupType = BudgetGroup.SAVINGS, isDefault = true)
         )
         defaults.forEach { budgetRepository.saveCategory(it) }
     }

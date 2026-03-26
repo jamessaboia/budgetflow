@@ -1,9 +1,9 @@
 package com.jamessaboia.budgetflow.ui.features.transactions
 
-import com.jamessaboia.budgetflow.domain.model.Transaction
+import com.jamessaboia.budgetflow.domain.model.TransactionWithCategory
 
 data class TransactionsUiState(
     val isLoading: Boolean = true,
-    val transactions: List<Transaction> = emptyList(),
+    val transactions: List<TransactionWithCategory> = emptyList(),
     val error: String? = null
 )

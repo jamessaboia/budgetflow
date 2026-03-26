@@ -200,21 +200,21 @@ fun PercentagesStep(
         PercentageSlider(
             label = stringResource(R.string.group_needs),
             value = needs,
-            hint = stringResource(R.string.hint_essentials),
+            hint = stringResource(R.string.hint_group_needs),
             color = MaterialTheme.colorScheme.primary,
             onValueChange = { onPercentagesChange(it, wants, savings) }
         )
         PercentageSlider(
             label = stringResource(R.string.group_wants),
             value = wants,
-            hint = stringResource(R.string.hint_lifestyle),
+            hint = stringResource(R.string.hint_group_lifestyle),
             color = MaterialTheme.colorScheme.secondary,
             onValueChange = { onPercentagesChange(needs, it, savings) }
         )
         PercentageSlider(
             label = stringResource(R.string.group_savings),
             value = savings,
-            hint = stringResource(R.string.hint_investments),
+            hint = stringResource(R.string.hint_group_savings),
             color = MaterialTheme.colorScheme.tertiary,
             onValueChange = { onPercentagesChange(needs, wants, it) }
         )

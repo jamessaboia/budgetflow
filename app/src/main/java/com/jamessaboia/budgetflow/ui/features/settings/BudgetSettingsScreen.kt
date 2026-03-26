@@ -114,21 +114,21 @@ fun BudgetSettingsScreen(
                 PercentageSlider(
                     label = stringResource(R.string.group_needs),
                     value = uiState.needsPercent,
-                    hint = stringResource(R.string.hint_essentials),
+                    hint = stringResource(R.string.hint_group_needs),
                     color = MaterialTheme.colorScheme.primary,
                     onValueChange = { viewModel.onPercentagesChange(it, uiState.wantsPercent, uiState.savingsPercent) }
                 )
                 PercentageSlider(
                     label = stringResource(R.string.group_wants),
                     value = uiState.wantsPercent,
-                    hint = stringResource(R.string.hint_lifestyle),
+                    hint = stringResource(R.string.hint_group_lifestyle),
                     color = MaterialTheme.colorScheme.secondary,
                     onValueChange = { viewModel.onPercentagesChange(uiState.needsPercent, it, uiState.savingsPercent) }
                 )
                 PercentageSlider(
                     label = stringResource(R.string.group_savings),
                     value = uiState.savingsPercent,
-                    hint = stringResource(R.string.hint_investments),
+                    hint = stringResource(R.string.hint_group_savings),
                     color = MaterialTheme.colorScheme.tertiary,
                     onValueChange = { viewModel.onPercentagesChange(uiState.needsPercent, uiState.wantsPercent, it) }
                 )

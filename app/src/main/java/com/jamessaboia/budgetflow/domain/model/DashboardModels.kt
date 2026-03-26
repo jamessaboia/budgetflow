@@ -1,10 +1,16 @@
 package com.jamessaboia.budgetflow.domain.model
 
+data class CategorySpent(
+    val categoryName: String,
+    val amount: Double
+)
+
 data class GroupSummary(
     val limit: Double,
     val spent: Double,
     val percentageSpent: Float, // 0..1
-    val remaining: Double
+    val remaining: Double,
+    val categorySpending: List<CategorySpent> = emptyList()
 )
 
 data class DashboardSummary(

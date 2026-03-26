@@ -13,14 +13,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jamessaboia.budgetflow.R
-import com.jamessaboia.budgetflow.domain.model.Transaction
+import com.jamessaboia.budgetflow.core.getCategoryDisplayName
 import com.jamessaboia.budgetflow.domain.model.TransactionType
+import com.jamessaboia.budgetflow.domain.model.TransactionWithCategory
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -61,10 +61,10 @@ fun TransactionsScreen(
                     contentPadding = PaddingValues(16.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(uiState.transactions) { transaction ->
+                    items(uiState.transactions) { transactionWithCategory ->
                         TransactionItem(
-                            transaction = transaction,
-                            onDelete = { viewModel.deleteTransaction(transaction) }
+                            transactionWithCategory = transactionWithCategory,
+                            onDelete = { viewModel.deleteTransaction(transactionWithCategory) }
                         )
                     }
                 }
@@ -75,9 +75,10 @@ fun TransactionsScreen(
 
 @Composable
 fun TransactionItem(
-    transaction: Transaction,
+    transactionWithCategory: TransactionWithCategory,
     onDelete: () -> Unit
 ) {
+    val transaction = transactionWithCategory.transaction
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -94,6 +95,12 @@ fun TransactionItem(
                     text = if (transaction.description.isNotBlank()) transaction.description else stringResource(R.string.no_description),
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold
+                )
+                Text(
+                    text = getCategoryDisplayName(transactionWithCategory.categoryName),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.primary,
+                    fontWeight = FontWeight.Medium
                 )
                 Text(
                     text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(transaction.date),

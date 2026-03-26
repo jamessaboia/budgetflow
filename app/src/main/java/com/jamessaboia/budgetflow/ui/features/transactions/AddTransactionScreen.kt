@@ -5,6 +5,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,6 +15,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jamessaboia.budgetflow.R
+import com.jamessaboia.budgetflow.core.getCategoryDisplayName
 import com.jamessaboia.budgetflow.domain.model.TransactionType
 import java.text.SimpleDateFormat
 import java.util.*
@@ -108,7 +110,7 @@ fun AddTransactionScreen(
                 onExpandedChange = { expanded = !expanded }
             ) {
                 OutlinedTextField(
-                    value = uiState.selectedCategory?.name ?: stringResource(R.string.select_category),
+                    value = uiState.selectedCategory?.let { getCategoryDisplayName(it.name) } ?: stringResource(R.string.select_category),
                     onValueChange = {},
                     readOnly = true,
                     label = { Text(stringResource(R.string.category_label)) },
@@ -125,12 +127,43 @@ fun AddTransactionScreen(
                         if (uiState.type == TransactionType.EXPENSE) true else it.groupType != null // For MVP we keep it simple
                     }.forEach { category ->
                         DropdownMenuItem(
-                            text = { Text(category.name) },
+                            text = { Text(getCategoryDisplayName(category.name)) },
                             onClick = {
                                 viewModel.onCategoryChange(category)
                                 expanded = false
                             }
                         )
+                    }
+                }
+            }
+
+            // Category Hint
+            uiState.selectedCategory?.let { category ->
+                val hintRes = getCategoryHint(category.name)
+                if (hintRes != null) {
+                    Card(
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.4f)
+                        ),
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(12.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Icon(
+                                Icons.Default.Info,
+                                contentDescription = null,
+                                modifier = Modifier.size(16.dp),
+                                tint = MaterialTheme.colorScheme.tertiary
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = stringResource(hintRes),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.onTertiaryContainer
+                            )
+                        }
                     }
                 }
             }
@@ -200,5 +233,23 @@ fun AddTransactionScreen(
         ) {
             DatePicker(state = datePickerState)
         }
+    }
+}
+
+fun getCategoryHint(categoryName: String): Int? {
+    return when (categoryName) {
+        "Moradia", "cat_housing" -> R.string.hint_housing
+        "Alimentação", "cat_food" -> R.string.hint_food
+        "Transporte", "cat_transport" -> R.string.hint_transport
+        "Saúde", "cat_health" -> R.string.hint_health
+        "Educação", "cat_education" -> R.string.hint_education
+        "Lazer", "cat_leisure" -> R.string.hint_leisure
+        "Estilo de Vida", "cat_lifestyle" -> R.string.hint_lifestyle
+        "Compras", "cat_shopping" -> R.string.hint_shopping
+        "Assinaturas", "cat_subscriptions" -> R.string.hint_subscriptions
+        "Reserva de Emergência", "cat_emergency" -> R.string.hint_emergency
+        "Investimentos", "cat_investments" -> R.string.hint_investments
+        "Objetivos", "cat_goals" -> R.string.hint_goals
+        else -> null
     }
 }

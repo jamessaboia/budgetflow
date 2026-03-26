@@ -51,6 +51,34 @@
     <string name="select_date">Seleccionar Fecha</string>
     <string name="delete">Eliminar</string>
     
+    <!-- Category Names -->
+    <string name="cat_housing">Vivienda</string>
+    <string name="cat_food">Alimentación</string>
+    <string name="cat_transport">Transporte</string>
+    <string name="cat_health">Salud</string>
+    <string name="cat_education">Educación</string>
+    <string name="cat_leisure">Ocio</string>
+    <string name="cat_lifestyle">Estilo de Vida</string>
+    <string name="cat_shopping">Compras</string>
+    <string name="cat_subscriptions">Suscripciones</string>
+    <string name="cat_emergency">Reserva de Emergencia</string>
+    <string name="cat_investments">Inversiones</string>
+    <string name="cat_goals">Objetivos Financieros</string>
+
+    <!-- Category Hints -->
+    <string name="hint_housing">Gastos vitales de alquiler, comunidad, luz, agua e internet.</string>
+    <string name="hint_food">Supermercado y artículos esenciales de alimentación.</string>
+    <string name="hint_transport">Combustible, transporte público o mantenimiento del vehículo.</string>
+    <string name="hint_health">Farmacia, seguros de salud o consultas médicas.</string>
+    <string name="hint_education">Cursos, libros o cuotas escolares.</string>
+    <string name="hint_leisure">Cine, salidas, viajes y pasatiempos.</string>
+    <string name="hint_lifestyle">Gastos que mejoran tu calidad de vida (ej: gimnasio, peluquería).</string>
+    <string name="hint_shopping">Ropa, electrónica y otros artículos no esenciales.</string>
+    <string name="hint_subscriptions">Netflix, Spotify, apps y servicios recurrentes.</string>
+    <string name="hint_emergency">Dinero guardado para imprevistos y seguridad inmediata.</string>
+    <string name="hint_investments">Dinero destinado a generar ingresos pasivos a largo plazo.</string>
+    <string name="hint_goals">Ahorro destinado a sueños específicos (ej: viajes, coche).</string>
+
     <!-- Errors -->
     <string name="error_amount_zero">El valor debe ser mayor que cero</string>
     <string name="error_select_category">Por favor selecciona una categoría</string>
@@ -63,15 +91,15 @@
     
     <!-- Presets -->
     <string name="preset_balanced">Método Equilibrado (50/30/20)</string>
-    <string name="preset_balanced_desc">Foco en el equilibrio: 50% para lo básico, 30% para vivir el hoy y 20% para tu futuro.</string>
+    <string name="preset_balanced_desc">Foco en el equilibrio: 50%% para lo básico, 30%% para vivir el hoy y 20%% para tu futuro.</string>
     <string name="preset_accelerated">Método Acelerador (50/25/25)</string>
-    <string name="preset_accelerated_desc">Foco en libertad: Mantiene lo esencial en 50% y aumenta el aporte al 25% para acelerar tu independencia.</string>
+    <string name="preset_accelerated_desc">Foco en libertad: Mantiene lo esencial en 50%% y aumenta el aporte al 25%% para acelerar tu independencia.</string>
     <string name="preset_custom">Personalizado</string>
 
     <!-- Educational Hints -->
-    <string name="hint_essentials">Si este grupo supera el 50%, es posible que lleves un estilo de vida superior a tus ingresos actuales.</string>
-    <string name="hint_lifestyle">Gastos que mejoran tu calidad de vida pero no son vitales (Ocio, Suscripciones, etc).</string>
-    <string name="hint_investments">Trata este valor como una factura obligatoria. Págate a ti mismo primero en cuanto recibas tus ingresos.</string>
+    <string name="hint_group_needs">Si este grupo supera el 50%%, es posible que lleves un estilo de vida superior a tus ingresos actuales.</string>
+    <string name="hint_group_lifestyle">Gastos que mejoran tu qualidade de vida pero no son vitales (Ocio, Suscripciones, etc).</string>
+    <string name="hint_group_savings">Trata este valor como una factura obligatoria. Págate a ti mismo primero en cuanto recibas tus ingresos.</string>
     <string name="hint_general">Evita la trampa de subir tu costo de vida cada vez que aumenten tus ingresos.</string>
 
     <!-- Settings -->

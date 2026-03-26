@@ -2,7 +2,7 @@ package com.jamessaboia.budgetflow.ui.features.transactions
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jamessaboia.budgetflow.domain.model.Transaction
+import com.jamessaboia.budgetflow.domain.model.TransactionWithCategory
 import com.jamessaboia.budgetflow.domain.repository.TransactionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
@@ -31,9 +31,9 @@ class TransactionsViewModel @Inject constructor(
             initialValue = TransactionsUiState(isLoading = true)
         )
 
-    fun deleteTransaction(transaction: Transaction) {
+    fun deleteTransaction(transactionWithCategory: TransactionWithCategory) {
         viewModelScope.launch {
-            transactionRepository.deleteTransaction(transaction)
+            transactionRepository.deleteTransaction(transactionWithCategory.transaction)
         }
     }
 }

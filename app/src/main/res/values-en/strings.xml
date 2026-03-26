@@ -51,6 +51,34 @@
     <string name="select_date">Select Date</string>
     <string name="delete">Delete</string>
     
+    <!-- Category Names -->
+    <string name="cat_housing">Housing</string>
+    <string name="cat_food">Food</string>
+    <string name="cat_transport">Transport</string>
+    <string name="cat_health">Health</string>
+    <string name="cat_education">Education</string>
+    <string name="cat_leisure">Leisure</string>
+    <string name="cat_lifestyle">Lifestyle</string>
+    <string name="cat_shopping">Shopping</string>
+    <string name="cat_subscriptions">Subscriptions</string>
+    <string name="cat_emergency">Emergency Fund</string>
+    <string name="cat_investments">Investments</string>
+    <string name="cat_goals">Financial Goals</string>
+
+    <!-- Category Hints -->
+    <string name="hint_housing">Vital expenses for rent, mortgage, utilities, and internet.</string>
+    <string name="hint_food">Groceries and essential market items.</string>
+    <string name="hint_transport">Fuel, public transportation, or vehicle maintenance.</string>
+    <string name="hint_health">Pharmacy, health plans, or medical appointments.</string>
+    <string name="hint_education">Courses, books, or school tuition fees.</string>
+    <string name="hint_leisure">Movies, outings, travel, and hobbies.</string>
+    <string name="hint_lifestyle">Expenses that improve your quality of life (e.g., gym, grooming).</string>
+    <string name="hint_shopping">Clothing, electronics, and other non-essential items.</string>
+    <string name="hint_subscriptions">Netflix, Spotify, apps, and recurring services.</string>
+    <string name="hint_emergency">Money set aside for unforeseen events and immediate security.</string>
+    <string name="hint_investments">Funds allocated to generate passive income in the long term.</string>
+    <string name="hint_goals">Targeted savings for specific dreams (e.g., travel, car).</string>
+    
     <!-- Errors -->
     <string name="error_amount_zero">Amount must be greater than zero</string>
     <string name="error_select_category">Please select a category</string>
@@ -63,15 +91,15 @@
     
     <!-- Presets -->
     <string name="preset_balanced">Balanced Method (50/30/20)</string>
-    <string name="preset_balanced_desc">Focus on balance: 50% for basics, 30% for enjoying today, and 20% for your future.</string>
+    <string name="preset_balanced_desc">Focus on balance: 50%% for basics, 30%% for enjoying today, and 20%% for your future.</string>
     <string name="preset_accelerated">Accelerator Method (50/25/25)</string>
-    <string name="preset_accelerated_desc">Focus on freedom: Keeps essentials at 50% and increases investment to 25% to speed up your independence.</string>
+    <string name="preset_accelerated_desc">Focus on freedom: Keeps essentials at 50%% and increases investment to 25%% to speed up your independence.</string>
     <string name="preset_custom">Custom</string>
 
     <!-- Educational Hints -->
-    <string name="hint_essentials">If this group exceeds 50%, you might be living a lifestyle above your current income.</string>
-    <string name="hint_lifestyle">Expenses that improve your quality of life but are not vital (Leisure, Subscriptions, etc).</string>
-    <string name="hint_investments">Treat this amount as a mandatory bill. Pay yourself first as soon as you receive your income.</string>
+    <string name="hint_group_needs">If this group exceeds 50%%, you might be living a lifestyle above your current income.</string>
+    <string name="hint_group_lifestyle">Expenses that improve your quality of life but are not vital (Leisure, Subscriptions, etc).</string>
+    <string name="hint_group_savings">Treat this amount as a mandatory bill. Pay yourself first as soon as you receive your income.</string>
     <string name="hint_general">Avoid the trap of increasing your cost of living whenever your income increases.</string>
 
     <!-- Settings -->
