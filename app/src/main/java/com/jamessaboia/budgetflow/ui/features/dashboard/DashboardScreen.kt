@@ -25,6 +25,7 @@ import com.jamessaboia.budgetflow.R
 import com.jamessaboia.budgetflow.core.getCategoryDisplayName
 import com.jamessaboia.budgetflow.domain.model.DashboardSummary
 import com.jamessaboia.budgetflow.domain.model.GroupSummary
+import com.valentinilk.shimmer.shimmer
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,7 +80,7 @@ fun DashboardScreen(
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding).fillMaxSize()) {
             if (uiState.isLoading) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                DashboardSkeleton()
             } else if (uiState.error != null) {
                 Text(
                     text = stringResource(R.string.error_generic, uiState.error!!),
@@ -89,6 +90,49 @@ fun DashboardScreen(
             } else if (uiState.summary != null) {
                 DashboardContent(uiState.summary!!)
             }
+        }
+    }
+}
+
+@Composable
+fun DashboardSkeleton() {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .shimmer(),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        item {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(180.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            ) {}
+        }
+        item {
+            Box(
+                modifier = Modifier
+                    .width(120.dp)
+                    .height(24.dp),
+            ) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    shape = MaterialTheme.shapes.small
+                ) {}
+            }
+        }
+        items(3) {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            ) {}
         }
     }
 }

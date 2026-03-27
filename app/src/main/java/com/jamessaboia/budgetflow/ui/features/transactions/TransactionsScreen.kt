@@ -21,6 +21,7 @@ import com.jamessaboia.budgetflow.R
 import com.jamessaboia.budgetflow.core.getCategoryDisplayName
 import com.jamessaboia.budgetflow.domain.model.TransactionType
 import com.jamessaboia.budgetflow.domain.model.TransactionWithCategory
+import com.valentinilk.shimmer.shimmer
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -48,7 +49,7 @@ fun TransactionsScreen(
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding).fillMaxSize()) {
             if (uiState.isLoading) {
-                CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                TransactionsSkeleton()
             } else if (uiState.transactions.isEmpty()) {
                 Text(
                     text = stringResource(R.string.no_transactions),
@@ -69,6 +70,26 @@ fun TransactionsScreen(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun TransactionsSkeleton() {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+            .shimmer(),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        items(6) {
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+            ) {}
         }
     }
 }
