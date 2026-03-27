@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jamessaboia.budgetflow.R
 import com.jamessaboia.budgetflow.core.CurrencyVisualTransformation
+import com.jamessaboia.budgetflow.core.StatusBarSpacer
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -45,12 +46,15 @@ fun OnboardingScreen(
     ) {
         Scaffold(
             topBar = {
-                TopAppBar(
-                    title = {},
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = Color.Transparent
+                Column {
+                    StatusBarSpacer()
+                    TopAppBar(
+                        title = {},
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            containerColor = Color.Transparent
+                        )
                     )
-                )
+                }
             }
         ) { innerPadding ->
             Box(
