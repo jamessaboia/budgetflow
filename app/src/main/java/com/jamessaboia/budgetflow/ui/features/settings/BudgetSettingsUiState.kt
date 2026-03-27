@@ -8,5 +8,6 @@ data class BudgetSettingsUiState(
     val savingsPercent: Int = 20,
     val isLoading: Boolean = false,
     val isUpdateSuccess: Boolean = false,
+    val isDirty: Boolean = false,
     val error: String? = null
 )

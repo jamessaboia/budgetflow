@@ -21,6 +21,7 @@ class BudgetSettingsViewModel @Inject constructor(
 
     private val currentMonth = SimpleDateFormat("yyyy-MM", Locale.getDefault()).format(Calendar.getInstance().time)
     private var currentBudgetId: Long = 0
+    private var initialSavedState: BudgetSettingsUiState? = null
 
     init {
         loadCurrentBudget()
@@ -31,16 +32,16 @@ class BudgetSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             budgetRepository.getBudgetByMonth(currentMonth).first()?.let { budget ->
                 currentBudgetId = budget.id
-                _uiState.update {
-                    it.copy(
-                        baseIncome = budget.baseIncome.toString(),
-                        extraIncome = budget.extraIncome.toString(),
-                        needsPercent = budget.needsPercentage,
-                        wantsPercent = budget.wantsPercentage,
-                        savingsPercent = budget.savingsPercentage,
-                        isLoading = false
-                    )
-                }
+                val loadedState = BudgetSettingsUiState(
+                    baseIncome = budget.baseIncome.toString(),
+                    extraIncome = budget.extraIncome.toString(),
+                    needsPercent = budget.needsPercentage,
+                    wantsPercent = budget.wantsPercentage,
+                    savingsPercent = budget.savingsPercentage,
+                    isLoading = false
+                )
+                initialSavedState = loadedState
+                _uiState.value = loadedState
             } ?: run {
                 _uiState.update { it.copy(isLoading = false) }
             }
@@ -48,11 +49,15 @@ class BudgetSettingsViewModel @Inject constructor(
     }
 
     fun onBaseIncomeChange(value: String) {
-        _uiState.update { it.copy(baseIncome = value) }
+        _uiState.update { 
+            it.copy(baseIncome = value).validateDirty(initialSavedState)
+        }
     }
 
     fun onExtraIncomeChange(value: String) {
-        _uiState.update { it.copy(extraIncome = value) }
+        _uiState.update { 
+            it.copy(extraIncome = value).validateDirty(initialSavedState)
+        }
     }
 
     fun onPercentagesChange(needs: Int, wants: Int, savings: Int) {
@@ -61,8 +66,22 @@ class BudgetSettingsViewModel @Inject constructor(
                 needsPercent = needs,
                 wantsPercent = wants,
                 savingsPercent = savings
-            )
+            ).validateDirty(initialSavedState)
         }
+    }
+
+    fun resetUpdateSuccess() {
+        _uiState.update { it.copy(isUpdateSuccess = false) }
+    }
+
+    private fun BudgetSettingsUiState.validateDirty(initial: BudgetSettingsUiState?): BudgetSettingsUiState {
+        if (initial == null) return this.copy(isDirty = true)
+        val hasChanges = baseIncome != initial.baseIncome ||
+                extraIncome != initial.extraIncome ||
+                needsPercent != initial.needsPercent ||
+                wantsPercent != initial.wantsPercent ||
+                savingsPercent != initial.savingsPercent
+        return this.copy(isDirty = hasChanges)
     }
 
     fun saveChanges() {
@@ -87,7 +106,11 @@ class BudgetSettingsViewModel @Inject constructor(
                     savingsPercentage = _uiState.value.savingsPercent
                 )
                 budgetRepository.saveBudget(updatedBudget)
-                _uiState.update { it.copy(isLoading = false, isUpdateSuccess = true) }
+                
+                // Update initial state to the new saved state
+                val newState = _uiState.value.copy(isLoading = false, isUpdateSuccess = true, isDirty = false)
+                initialSavedState = newState.copy(isUpdateSuccess = false)
+                _uiState.value = newState
             } catch (e: Exception) {
                 _uiState.update { it.copy(isLoading = false, error = e.message) }
             }

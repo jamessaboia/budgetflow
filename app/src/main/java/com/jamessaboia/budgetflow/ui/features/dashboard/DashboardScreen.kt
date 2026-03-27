@@ -5,13 +5,10 @@ import androidx.compose.animation.core.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ExpandLess
-import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -22,7 +19,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jamessaboia.budgetflow.R
-import com.jamessaboia.budgetflow.core.getCategoryDisplayName
 import com.jamessaboia.budgetflow.domain.model.DashboardSummary
 import com.jamessaboia.budgetflow.domain.model.GroupSummary
 import com.valentinilk.shimmer.shimmer
@@ -139,34 +135,38 @@ fun DashboardSkeleton() {
 
 @Composable
 fun DashboardContent(summary: DashboardSummary) {
-    LazyColumn(
+    Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
+            .padding(horizontal = 16.dp)
+            .padding(top = 16.dp)
     ) {
-        item {
-            BalanceHeader(summary)
-        }
-        item {
-            Text(
-                text = stringResource(R.string.my_groups),
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.secondary
-            )
-        }
-        item {
-            GroupCard(stringResource(R.string.group_needs), summary.needsSummary, stringResource(R.string.hint_group_needs))
-        }
-        item {
-            GroupCard(stringResource(R.string.group_wants), summary.wantsSummary, stringResource(R.string.hint_group_lifestyle))
-        }
-        item {
-            GroupCard(stringResource(R.string.group_savings), summary.savingsSummary, stringResource(R.string.hint_group_savings))
-        }
-        item {
-            Spacer(modifier = Modifier.height(16.dp))
+        BalanceHeader(summary)
+        
+        Spacer(modifier = Modifier.height(16.dp))
+
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            contentPadding = PaddingValues(bottom = 16.dp)
+        ) {
+            item {
+                Text(
+                    text = stringResource(R.string.my_groups),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.secondary
+                )
+            }
+            item {
+                GroupCard(stringResource(R.string.group_needs), summary.needsSummary, stringResource(R.string.hint_group_needs))
+            }
+            item {
+                GroupCard(stringResource(R.string.group_wants), summary.wantsSummary, stringResource(R.string.hint_group_lifestyle))
+            }
+            item {
+                GroupCard(stringResource(R.string.group_savings), summary.savingsSummary, stringResource(R.string.hint_group_savings))
+            }
         }
     }
 }
@@ -244,15 +244,19 @@ fun GroupCard(title: String, summary: GroupSummary, hint: String) {
     val isExceeded = summary.percentageSpent > 1f
     val mainColor = if (isExceeded) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
 
-    Card(
+    ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { if (summary.categorySpending.isNotEmpty()) expanded = !expanded }
-            .animateContentSize(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+            .padding(vertical = 4.dp)
+            .clickable { if (summary.categorySpending.isNotEmpty()) expanded = !expanded },
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .animateContentSize()
+        ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -354,7 +358,7 @@ fun GroupCard(title: String, summary: GroupSummary, hint: String) {
                             horizontalArrangement = Arrangement.SpaceBetween
                         ) {
                             Text(
-                                text = getCategoryDisplayName(categorySpent.categoryName),
+                                text = com.jamessaboia.budgetflow.core.getCategoryDisplayName(categorySpent.categoryName),
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )

@@ -2,6 +2,7 @@ package com.jamessaboia.budgetflow
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Box
@@ -29,7 +30,17 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        
+        // Define system bars style
+        // statusBarStyle: .dark(color) means "the background is dark, so use light icons"
+        // navigationBarStyle: .light(color, color) means "the background is light, so use dark icons"
+        enableEdgeToEdge(
+            statusBarStyle = SystemBarStyle.dark(0xFF3C6939.toInt()),
+            navigationBarStyle = SystemBarStyle.light(
+                android.graphics.Color.WHITE,
+                android.graphics.Color.WHITE
+            )
+        )
 
         // Simple animated exit for splash screen
         splashScreen.setOnExitAnimationListener { splashScreenProvider ->

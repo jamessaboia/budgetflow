@@ -10,6 +10,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -34,6 +35,7 @@ fun BudgetSettingsScreen(
     LaunchedEffect(uiState.isUpdateSuccess) {
         if (uiState.isUpdateSuccess) {
             snackbarHostState.showSnackbar(successMessage)
+            viewModel.resetUpdateSuccess()
         }
     }
 
@@ -45,7 +47,12 @@ fun BudgetSettingsScreen(
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
                     }
-                }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = Color.Transparent,
+                    titleContentColor = MaterialTheme.colorScheme.onSurface,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onSurface
+                )
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -72,8 +79,9 @@ fun BudgetSettingsScreen(
                 OutlinedTextField(
                     value = uiState.baseIncome,
                     onValueChange = { input ->
-                        val filtered = input.replace(",", ".").filterIndexed { index, char ->
-                            char.isDigit() || (char == '.' && input.indexOf('.') == index)
+                        val normalized = input.replace(",", ".")
+                        val filtered = normalized.filterIndexed { index, char ->
+                            char.isDigit() || (char == '.' && normalized.indexOf('.') == index)
                         }
                         viewModel.onBaseIncomeChange(filtered)
                     },
@@ -159,7 +167,7 @@ fun BudgetSettingsScreen(
                 Button(
                     onClick = viewModel::saveChanges,
                     modifier = Modifier.fillMaxWidth(),
-                    enabled = total == 100 && !uiState.isLoading
+                    enabled = total == 100 && uiState.isDirty && !uiState.isLoading
                 ) {
                     if (uiState.isLoading) {
                         CircularProgressIndicator(modifier = Modifier.size(24.dp), color = MaterialTheme.colorScheme.onPrimary)

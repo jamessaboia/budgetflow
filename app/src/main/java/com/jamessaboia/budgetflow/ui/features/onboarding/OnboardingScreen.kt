@@ -1,6 +1,8 @@
 package com.jamessaboia.budgetflow.ui.features.onboarding
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.*
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -12,6 +14,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -21,7 +25,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jamessaboia.budgetflow.R
 import com.jamessaboia.budgetflow.core.CurrencyVisualTransformation
 
-@OptIn(ExperimentalAnimationApi::class)
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun OnboardingScreen(
     onOnboardingComplete: () -> Unit,
@@ -30,50 +34,73 @@ fun OnboardingScreen(
     val uiState by viewModel.uiState.collectAsState()
 
     if (uiState.isComplete) {
-        onOnboardingComplete()
+        LaunchedEffect(Unit) {
+            onOnboardingComplete()
+        }
     }
 
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(24.dp)
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            AnimatedContent(targetState = uiState.step, label = "OnboardingTransition") { step ->
-                when (step) {
-                    OnboardingStep.WELCOME -> WelcomeStep(onNext = { viewModel.nextStep() })
-                    OnboardingStep.INCOME -> IncomeStep(
-                        income = uiState.baseIncome,
-                        extraIncome = uiState.extraIncome,
-                        onIncomeChange = viewModel::onIncomeChange,
-                        onExtraIncomeChange = viewModel::onExtraIncomeChange,
-                        onNext = { viewModel.nextStep() },
-                        onBack = { viewModel.previousStep() }
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    title = {},
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = Color.Transparent
                     )
-                    OnboardingStep.PERCENTAGES -> PercentagesStep(
-                        needs = uiState.needsPercent,
-                        wants = uiState.wantsPercent,
-                        savings = uiState.savingsPercent,
-                        onPercentagesChange = viewModel::onPercentagesChange,
-                        onNext = { viewModel.nextStep() },
-                        onBack = { viewModel.previousStep() }
-                    )
-                    OnboardingStep.SUMMARY -> SummaryStep(
-                        income = uiState.baseIncome,
-                        extraIncome = uiState.extraIncome,
-                        needs = uiState.needsPercent,
-                        wants = uiState.wantsPercent,
-                        savings = uiState.savingsPercent,
-                        isLoading = uiState.isLoading,
-                        onConfirm = { viewModel.completeOnboarding() },
-                        onBack = { viewModel.previousStep() }
-                    )
+                )
+            }
+        ) { innerPadding ->
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+            ) {
+                AnimatedContent(
+                    targetState = uiState.step, 
+                    label = "OnboardingTransition",
+                    modifier = Modifier.fillMaxSize()
+                ) { step ->
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(24.dp)
+                            .verticalScroll(rememberScrollState()),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        when (step) {
+                            OnboardingStep.WELCOME -> WelcomeStep(onNext = { viewModel.nextStep() })
+                            OnboardingStep.INCOME -> IncomeStep(
+                                income = uiState.baseIncome,
+                                extraIncome = uiState.extraIncome,
+                                onIncomeChange = viewModel::onIncomeChange,
+                                onExtraIncomeChange = viewModel::onExtraIncomeChange,
+                                onNext = { viewModel.nextStep() },
+                                onBack = { viewModel.previousStep() }
+                            )
+                            OnboardingStep.PERCENTAGES -> PercentagesStep(
+                                needs = uiState.needsPercent,
+                                wants = uiState.wantsPercent,
+                                savings = uiState.savingsPercent,
+                                onPercentagesChange = viewModel::onPercentagesChange,
+                                onNext = { viewModel.nextStep() },
+                                onBack = { viewModel.previousStep() }
+                            )
+                            OnboardingStep.SUMMARY -> SummaryStep(
+                                income = uiState.baseIncome,
+                                extraIncome = uiState.extraIncome,
+                                needs = uiState.needsPercent,
+                                wants = uiState.wantsPercent,
+                                savings = uiState.savingsPercent,
+                                isLoading = uiState.isLoading,
+                                onConfirm = { viewModel.completeOnboarding() },
+                                onBack = { viewModel.previousStep() }
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -81,8 +108,35 @@ fun OnboardingScreen(
 }
 
 @Composable
+fun AnimatedAppIcon() {
+    val infiniteTransition = rememberInfiniteTransition(label = "IconPulse")
+    val scale by infiniteTransition.animateFloat(
+        initialValue = 1f,
+        targetValue = 1.1f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(1000, easing = FastOutSlowInEasing),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "Scale"
+    )
+
+    Image(
+        painter = painterResource(id = R.drawable.ic_launcher_foreground),
+        contentDescription = null,
+        modifier = Modifier
+            .size(120.dp)
+            .graphicsLayer {
+                scaleX = scale
+                scaleY = scale
+            }
+    )
+}
+
+@Composable
 fun WelcomeStep(onNext: () -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        AnimatedAppIcon()
+        Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = stringResource(R.string.welcome_title),
             style = MaterialTheme.typography.headlineMedium,
@@ -127,8 +181,9 @@ fun IncomeStep(
         OutlinedTextField(
             value = income,
             onValueChange = { input ->
-                val filtered = input.replace(",", ".").filterIndexed { index, char ->
-                    char.isDigit() || (char == '.' && input.indexOf('.') == index)
+                val normalized = input.replace(",", ".")
+                val filtered = normalized.filterIndexed { index, char ->
+                    char.isDigit() || (char == '.' && normalized.indexOf('.') == index)
                 }
                 onIncomeChange(filtered)
             },
@@ -357,10 +412,12 @@ fun SummaryStep(
     onBack: () -> Unit
 ) {
     val incomeValue = income.replace(",", ".").toDoubleOrNull() ?: 0.0
-    val extraIncomeValue = extraIncome.replace(",", ".").toDoubleOrNull() ?: 0.0
+    val extraIncomeValue = extraIncome.toDoubleOrNull() ?: 0.0
     val totalIncome = incomeValue + extraIncomeValue
     
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        AnimatedAppIcon()
+        Spacer(modifier = Modifier.height(24.dp))
         Text(
             text = stringResource(R.string.summary_title),
             style = MaterialTheme.typography.headlineSmall,
