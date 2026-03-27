@@ -65,6 +65,7 @@ dependencies {
     implementation(libs.androidx.compose.material.icons.extended)
     implementation(libs.androidx.compose.ui.text.google.fonts)
     implementation(libs.compose.shimmer)
+    implementation(libs.androidx.core.splashscreen)
     
     // Hilt
     implementation(libs.hilt.android)

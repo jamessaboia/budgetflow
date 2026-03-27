@@ -1,7 +1,7 @@
 package com.jamessaboia.budgetflow.ui.features.dashboard
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -190,12 +190,27 @@ fun BalanceHeader(summary: DashboardSummary) {
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
             )
-            Text(
-                text = stringResource(R.string.currency_format, summary.remainingBalance),
-                style = MaterialTheme.typography.headlineLarge,
-                fontWeight = FontWeight.Black,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
+            AnimatedContent(
+                targetState = summary.remainingBalance,
+                transitionSpec = {
+                    if (targetState > initialState) {
+                        (slideInVertically { height -> height } + fadeIn()).togetherWith(
+                            slideOutVertically { height -> -height } + fadeOut())
+                    } else {
+                        (slideInVertically { height -> -height } + fadeIn()).togetherWith(
+                            slideOutVertically { height -> height } + fadeOut())
+                    }.using(
+                        SizeTransform(clip = false)
+                    )
+                }, label = "BalanceAnimation"
+            ) { balance ->
+                Text(
+                    text = stringResource(R.string.currency_format, balance),
+                    style = MaterialTheme.typography.headlineLarge,
+                    fontWeight = FontWeight.Black,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
             Spacer(modifier = Modifier.height(16.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),

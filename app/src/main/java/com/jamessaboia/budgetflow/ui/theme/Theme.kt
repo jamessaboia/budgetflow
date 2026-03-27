@@ -1,16 +1,8 @@
 package com.jamessaboia.budgetflow.ui.theme
 
-import android.app.Activity
-import android.os.Build
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -30,8 +22,8 @@ private val lightScheme = lightColorScheme(
     errorContainer = errorContainerLight,
     onErrorContainer = onErrorContainerLight,
     background = backgroundLight,
-    onBackground = onBackgroundLight,
     surface = surfaceLight,
+    onBackground = onBackgroundLight,
     onSurface = onSurfaceLight,
     surfaceVariant = surfaceVariantLight,
     onSurfaceVariant = onSurfaceVariantLight,
@@ -50,63 +42,16 @@ private val lightScheme = lightColorScheme(
     surfaceContainerHighest = surfaceContainerHighestLight,
 )
 
-private val darkScheme = darkColorScheme(
-    primary = primaryDark,
-    onPrimary = onPrimaryDark,
-    primaryContainer = primaryContainerDark,
-    onPrimaryContainer = onPrimaryContainerDark,
-    secondary = secondaryDark,
-    onSecondary = onSecondaryDark,
-    secondaryContainer = secondaryContainerDark,
-    onSecondaryContainer = onSecondaryContainerDark,
-    tertiary = tertiaryDark,
-    onTertiary = onTertiaryDark,
-    tertiaryContainer = tertiaryContainerDark,
-    onTertiaryContainer = onTertiaryContainerDark,
-    error = errorDark,
-    onError = onErrorDark,
-    errorContainer = errorContainerDark,
-    onErrorContainer = onErrorContainerDark,
-    background = backgroundDark,
-    onBackground = onBackgroundDark,
-    surface = surfaceDark,
-    onSurface = onSurfaceDark,
-    surfaceVariant = surfaceVariantDark,
-    onSurfaceVariant = onSurfaceVariantDark,
-    outline = outlineDark,
-    outlineVariant = outlineVariantDark,
-    scrim = scrimDark,
-    inverseSurface = inverseSurfaceDark,
-    inverseOnSurface = inverseOnSurfaceDark,
-    inversePrimary = inversePrimaryDark,
-    surfaceDim = surfaceDimDark,
-    surfaceBright = surfaceBrightDark,
-    surfaceContainerLowest = surfaceContainerLowestDark,
-    surfaceContainerLow = surfaceContainerLowDark,
-    surfaceContainer = surfaceContainerDark,
-    surfaceContainerHigh = surfaceContainerHighDark,
-    surfaceContainerHighest = surfaceContainerHighestDark,
-)
-
 @Composable
 fun BudgetFlowTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
-    // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = false, // Set to false to prioritize your custom theme
+    // darkTheme and dynamicColor parameters kept for compatibility but ignored
+    darkTheme: Boolean = false,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
-
-        darkTheme -> darkScheme
-        else -> lightScheme
-    }
-
+    // Always use the lightScheme as per user requirement
     MaterialTheme(
-        colorScheme = colorScheme,
+        colorScheme = lightScheme,
         typography = AppTypography,
         content = content
     )

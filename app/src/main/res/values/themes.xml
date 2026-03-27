@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base application theme. -->
+    <style name="Theme.BudgetFlow" parent="android:Theme.Material.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+    </style>
 
-    <style name="Theme.BudgetFlow" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- Splash Screen theme. -->
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="windowSplashScreenBackground">@color/white</item> <!-- backgroundLight is #F7FBF1, but white is safer for initial boot -->
+        <item name="postSplashScreenTheme">@style/Theme.BudgetFlow</item>
+    </style>
 </resources>

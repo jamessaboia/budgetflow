@@ -1,5 +1,8 @@
 package com.jamessaboia.budgetflow.domain.model
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class MonthlyBudget(
     val id: Long = 0,
     val monthYear: String, // Format: "yyyy-MM"

@@ -1,5 +1,6 @@
 package com.jamessaboia.budgetflow.navigation
 
+import androidx.compose.animation.*
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -17,7 +18,19 @@ fun AppNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = startDestination
+        startDestination = startDestination,
+        enterTransition = {
+            slideInHorizontally(initialOffsetX = { it }) + fadeIn()
+        },
+        exitTransition = {
+            slideOutHorizontally(targetOffsetX = { -it }) + fadeOut()
+        },
+        popEnterTransition = {
+            slideInHorizontally(initialOffsetX = { -it }) + fadeIn()
+        },
+        popExitTransition = {
+            slideOutHorizontally(targetOffsetX = { it }) + fadeOut()
+        }
     ) {
         composable(Screen.Onboarding.route) {
             OnboardingScreen(

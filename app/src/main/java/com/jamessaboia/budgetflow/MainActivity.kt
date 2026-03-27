@@ -11,6 +11,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import com.jamessaboia.budgetflow.domain.repository.BudgetRepository
 import com.jamessaboia.budgetflow.navigation.AppNavigation
@@ -26,8 +27,22 @@ class MainActivity : ComponentActivity() {
     lateinit var budgetRepository: BudgetRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+
+        // Simple animated exit for splash screen
+        splashScreen.setOnExitAnimationListener { splashScreenProvider ->
+            val iconView = splashScreenProvider.iconView
+            iconView.animate()
+                .scaleX(0f)
+                .scaleY(0f)
+                .alpha(0f)
+                .setDuration(500L)
+                .withEndAction { splashScreenProvider.remove() }
+                .start()
+        }
+
         setContent {
             BudgetFlowTheme {
                 val userPrefs by budgetRepository.getUserPreferences().collectAsState(initial = null)
