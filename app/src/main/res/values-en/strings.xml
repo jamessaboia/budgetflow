@@ -52,6 +52,8 @@
     <string name="no_transactions">No transactions found this month.</string>
     <string name="select_date">Select Date</string>
     <string name="delete">Delete</string>
+    <string name="transaction_deleted">Transaction deleted</string>
+    <string name="undo">Undo</string>
     
     <!-- Category Names -->
     <string name="cat_housing">Housing</string>

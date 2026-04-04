@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jamessaboia.budgetflow.R
 import com.jamessaboia.budgetflow.core.CurrencyVisualTransformation
+import com.jamessaboia.budgetflow.core.NavigationBarSpacer
 import com.jamessaboia.budgetflow.core.StatusBarSpacer
 import com.jamessaboia.budgetflow.ui.features.onboarding.PercentageSlider
 import com.jamessaboia.budgetflow.ui.features.onboarding.PresetOption
@@ -59,7 +60,10 @@ fun BudgetSettingsScreen(
                 )
             }
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        bottomBar = {
+            NavigationBarSpacer()
+        }
     ) { innerPadding ->
         if (uiState.isLoading && uiState.baseIncome.isEmpty()) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {

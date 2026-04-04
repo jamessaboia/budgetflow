@@ -52,6 +52,8 @@
     <string name="no_transactions">No se encontraron transacciones este mes.</string>
     <string name="select_date">Seleccionar Fecha</string>
     <string name="delete">Eliminar</string>
+    <string name="transaction_deleted">Transacción eliminada</string>
+    <string name="undo">Deshacer</string>
     
     <!-- Category Names -->
     <string name="cat_housing">Vivienda</string>

@@ -58,17 +58,7 @@ class AddTransactionViewModel @Inject constructor(
 
     fun saveTransaction() {
         val amountValue = _uiState.value.amount.replace(",", ".").toDoubleOrNull() ?: 0.0
-        val categoryId = _uiState.value.selectedCategory?.id
-        
-        if (amountValue <= 0) {
-            _uiState.update { it.copy(error = "Valor deve ser maior que zero") }
-            return
-        }
-        
-        if (categoryId == null) {
-            _uiState.update { it.copy(error = "Selecione uma categoria") }
-            return
-        }
+        val categoryId = _uiState.value.selectedCategory?.id ?: return
 
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }

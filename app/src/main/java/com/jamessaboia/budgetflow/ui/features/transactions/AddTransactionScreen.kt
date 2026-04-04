@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jamessaboia.budgetflow.R
 import com.jamessaboia.budgetflow.core.CurrencyVisualTransformation
+import com.jamessaboia.budgetflow.core.NavigationBarSpacer
 import com.jamessaboia.budgetflow.core.StatusBarSpacer
 import com.jamessaboia.budgetflow.core.getCategoryDisplayName
 import com.jamessaboia.budgetflow.domain.model.TransactionType
@@ -39,12 +40,6 @@ fun AddTransactionScreen(
         }
     }
 
-    LaunchedEffect(uiState.error) {
-        uiState.error?.let {
-            snackbarHostState.showSnackbar(it)
-        }
-    }
-
     Scaffold(
         topBar = {
             Column {
@@ -64,7 +59,10 @@ fun AddTransactionScreen(
                 )
             }
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        bottomBar = {
+            NavigationBarSpacer()
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -211,7 +209,7 @@ fun AddTransactionScreen(
             Button(
                 onClick = viewModel::saveTransaction,
                 modifier = Modifier.fillMaxWidth(),
-                enabled = !uiState.isLoading
+                enabled = uiState.canSave
             ) {
                 if (uiState.isLoading) {
                     CircularProgressIndicator(

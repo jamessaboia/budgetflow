@@ -2,6 +2,7 @@ package com.jamessaboia.budgetflow.ui.features.transactions
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jamessaboia.budgetflow.domain.model.Transaction
 import com.jamessaboia.budgetflow.domain.model.TransactionWithCategory
 import com.jamessaboia.budgetflow.domain.repository.TransactionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -59,9 +60,25 @@ class TransactionsViewModel @Inject constructor(
         }
     }
 
+    private val _lastDeletedTransaction = MutableStateFlow<Transaction?>(null)
+
+    private val _showUndoSnackbar = MutableSharedFlow<Unit>()
+    val showUndoSnackbar: SharedFlow<Unit> = _showUndoSnackbar.asSharedFlow()
+
     fun deleteTransaction(transactionWithCategory: TransactionWithCategory) {
         viewModelScope.launch {
+            _lastDeletedTransaction.value = transactionWithCategory.transaction
             transactionRepository.deleteTransaction(transactionWithCategory.transaction)
+            _showUndoSnackbar.emit(Unit)
+        }
+    }
+
+    fun undoDelete() {
+        viewModelScope.launch {
+            _lastDeletedTransaction.value?.let { transaction ->
+                transactionRepository.addTransaction(transaction)
+                _lastDeletedTransaction.value = null
+            }
         }
     }
 }

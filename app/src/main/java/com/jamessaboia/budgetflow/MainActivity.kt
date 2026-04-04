@@ -5,9 +5,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -33,11 +35,12 @@ class MainActivity : ComponentActivity() {
         
         // Define system bars style
         // statusBarStyle: .dark(color) means "the background is dark, so use light icons"
-        // navigationBarStyle: .light(color, color) means "the background is light, so use dark icons"
+        // navigationBarStyle: .dark(color) means "the background is dark, so use light icons"
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.dark(0xFF3C6939.toInt()),
             navigationBarStyle = SystemBarStyle.dark(0xFF3C6939.toInt())
         )
+
 
         // Simple animated exit for splash screen
         splashScreen.setOnExitAnimationListener { splashScreenProvider ->
@@ -56,10 +59,17 @@ class MainActivity : ComponentActivity() {
                 val userPrefs by budgetRepository.getUserPreferences().collectAsState(initial = null)
                 val navController = rememberNavController()
 
-                Box(modifier = Modifier.fillMaxSize()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.primary)
+                ) {
                     val prefs = userPrefs
                     if (prefs == null) {
-                        CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center),
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
                     } else {
                         val startDestination = if (prefs.isOnboardingComplete) {
                             Screen.Dashboard.route

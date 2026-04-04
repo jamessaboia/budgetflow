@@ -2,6 +2,7 @@ package com.jamessaboia.budgetflow.ui.features.dashboard
 
 import androidx.compose.animation.*
 import androidx.compose.animation.core.*
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -20,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jamessaboia.budgetflow.R
 import com.jamessaboia.budgetflow.core.MonthPicker
+import com.jamessaboia.budgetflow.core.NavigationBarSpacer
 import com.jamessaboia.budgetflow.domain.model.DashboardSummary
 import com.jamessaboia.budgetflow.domain.model.GroupSummary
 import com.valentinilk.shimmer.shimmer
@@ -81,6 +83,9 @@ fun DashboardScreen(
             ) {
                 Icon(Icons.Default.Add, contentDescription = stringResource(R.string.new_transaction))
             }
+        },
+        bottomBar = {
+            NavigationBarSpacer()
         }
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding).fillMaxSize()) {

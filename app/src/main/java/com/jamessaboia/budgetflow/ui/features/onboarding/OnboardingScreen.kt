@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jamessaboia.budgetflow.R
 import com.jamessaboia.budgetflow.core.CurrencyVisualTransformation
+import com.jamessaboia.budgetflow.core.NavigationBarSpacer
 import com.jamessaboia.budgetflow.core.StatusBarSpacer
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
@@ -55,6 +56,9 @@ fun OnboardingScreen(
                         )
                     )
                 }
+            },
+            bottomBar = {
+                NavigationBarSpacer()
             }
         ) { innerPadding ->
             Box(

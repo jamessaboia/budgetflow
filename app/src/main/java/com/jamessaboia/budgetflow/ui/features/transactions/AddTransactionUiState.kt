@@ -14,4 +14,10 @@ data class AddTransactionUiState(
     val isLoading: Boolean = false,
     val isSuccess: Boolean = false,
     val error: String? = null
-)
+) {
+    val canSave: Boolean
+        get() {
+            val amountValue = amount.replace(",", ".").toDoubleOrNull() ?: 0.0
+            return amountValue > 0 && selectedCategory != null && !isLoading
+        }
+}
