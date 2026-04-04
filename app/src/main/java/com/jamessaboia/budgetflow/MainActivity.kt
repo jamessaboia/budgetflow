@@ -36,10 +36,7 @@ class MainActivity : ComponentActivity() {
         // navigationBarStyle: .light(color, color) means "the background is light, so use dark icons"
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.dark(0xFF3C6939.toInt()),
-            navigationBarStyle = SystemBarStyle.light(
-                android.graphics.Color.WHITE,
-                android.graphics.Color.WHITE
-            )
+            navigationBarStyle = SystemBarStyle.dark(0xFF3C6939.toInt())
         )
 
         // Simple animated exit for splash screen
