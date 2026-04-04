@@ -19,6 +19,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jamessaboia.budgetflow.R
+import com.jamessaboia.budgetflow.core.MonthPicker
 import com.jamessaboia.budgetflow.domain.model.DashboardSummary
 import com.jamessaboia.budgetflow.domain.model.GroupSummary
 import com.valentinilk.shimmer.shimmer
@@ -32,37 +33,45 @@ fun DashboardScreen(
     viewModel: DashboardViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val selectedMonth by viewModel.selectedMonth.collectAsState()
 
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { 
-                    Text(
-                        stringResource(R.string.app_name),
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimary
-                    ) 
-                },
-                actions = {
-                    IconButton(onClick = onNavigateToTransactions) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.List, 
-                            contentDescription = stringResource(R.string.history),
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
-                    IconButton(onClick = onNavigateToSettings) {
-                        Icon(
-                            Icons.Default.Settings, 
-                            contentDescription = stringResource(R.string.settings),
-                            tint = MaterialTheme.colorScheme.onPrimary
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
+            Column {
+                TopAppBar(
+                    title = { 
+                        Text(
+                            stringResource(R.string.app_name),
+                            fontWeight = FontWeight.Bold,
+                            color = MaterialTheme.colorScheme.onPrimary
+                        ) 
+                    },
+                    actions = {
+                        IconButton(onClick = onNavigateToTransactions) {
+                            Icon(
+                                Icons.AutoMirrored.Filled.List, 
+                                contentDescription = stringResource(R.string.history),
+                                tint = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
+                        IconButton(onClick = onNavigateToSettings) {
+                            Icon(
+                                Icons.Default.Settings, 
+                                contentDescription = stringResource(R.string.settings),
+                                tint = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(
+                        containerColor = MaterialTheme.colorScheme.primary,
+                    )
                 )
-            )
+                MonthPicker(
+                    selectedMonth = selectedMonth,
+                    onPreviousMonth = viewModel::onPreviousMonth,
+                    onNextMonth = viewModel::onNextMonth
+                )
+            }
         },
         floatingActionButton = {
             FloatingActionButton(

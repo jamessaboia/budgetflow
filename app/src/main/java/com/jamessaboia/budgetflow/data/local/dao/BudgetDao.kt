@@ -15,6 +15,6 @@ interface BudgetDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertBudget(budget: MonthlyBudgetEntity)
 
-    @Query("DELETE FROM monthly_budgets WHERE monthYear = :monthYear")
-    suspend fun deleteBudgetByMonth(monthYear: String)
+    @Query("SELECT * FROM monthly_budgets WHERE monthYear < :monthYear ORDER BY monthYear DESC LIMIT 1")
+    suspend fun getLatestBudgetBefore(monthYear: String): MonthlyBudgetEntity?
 }

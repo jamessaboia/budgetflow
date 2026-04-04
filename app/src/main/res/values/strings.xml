@@ -32,6 +32,8 @@
     <string name="exceeded_by">Excedido em %1$s</string>
     <string name="remains_value">Resta %1$s</string>
     <string name="history">Histórico</string>
+    <string name="month_previous">Mês anterior</string>
+    <string name="month_next">Próximo mês</string>
 
     <!-- Transactions -->
     <string name="new_transaction">Nova Transação</string>

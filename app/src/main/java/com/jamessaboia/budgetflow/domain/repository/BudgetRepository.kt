@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface BudgetRepository {
     fun getBudgetByMonth(monthYear: String): Flow<MonthlyBudget?>
+    suspend fun getLatestBudgetBefore(monthYear: String): MonthlyBudget?
     suspend fun saveBudget(budget: MonthlyBudget)
     
     fun getAllCategories(): Flow<List<Category>>

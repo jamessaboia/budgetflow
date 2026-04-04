@@ -19,13 +19,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jamessaboia.budgetflow.R
+import com.jamessaboia.budgetflow.core.MonthPicker
 import com.jamessaboia.budgetflow.core.StatusBarSpacer
 import com.jamessaboia.budgetflow.core.getCategoryDisplayName
 import com.jamessaboia.budgetflow.domain.model.TransactionType
 import com.jamessaboia.budgetflow.domain.model.TransactionWithCategory
 import com.valentinilk.shimmer.shimmer
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -34,6 +35,7 @@ fun TransactionsScreen(
     viewModel: TransactionsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val selectedMonth by viewModel.selectedMonth.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -53,6 +55,14 @@ fun TransactionsScreen(
                         navigationIconContentColor = MaterialTheme.colorScheme.onSurface
                     )
                 )
+                MonthPicker(
+                    selectedMonth = selectedMonth,
+                    onPreviousMonth = viewModel::onPreviousMonth,
+                    onNextMonth = viewModel::onNextMonth,
+                    containerColor = Color.Transparent,
+                    contentColor = MaterialTheme.colorScheme.onSurface
+                )
+                HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             }
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }

@@ -5,12 +5,12 @@ This registry tracks the progress of features, bug fixes, and architectural upda
 ## Active Tracks
 | Track ID | Description | Status | Link |
 | :--- | :--- | :--- | :--- |
-| `01-resume-development` | Assessment and next steps for resuming MVP development. | Planning | [Track Folder](./tracks/01-resume-development/) |
+| `02-month-navigation` | Month navigation and budget inheritance logic. | Spec Approved | [Track Folder](./tracks/02-month-navigation/) |
 
 ## Completed Tracks
 | Track ID | Description | Completion Date |
 | :--- | :--- | :--- |
-| *(None yet)* | | |
+| `01-resume-development` | Assessment and next steps for resuming MVP development. | 2026-04-04 |
 
 ## Legacy Planning
 *Note: Previous development stages (Stage 1 - 22) were managed via individual `plan-stageX.md` files located in the root `conductor/` directory prior to adopting the Track structure.*

@@ -24,6 +24,10 @@ class BudgetRepositoryImpl @Inject constructor(
         return budgetDao.getBudgetByMonth(monthYear).map { it?.toDomain() }
     }
 
+    override suspend fun getLatestBudgetBefore(monthYear: String): MonthlyBudget? {
+        return budgetDao.getLatestBudgetBefore(monthYear)?.toDomain()
+    }
+
     override suspend fun saveBudget(budget: MonthlyBudget) {
         budgetDao.insertBudget(budget.toEntity())
     }

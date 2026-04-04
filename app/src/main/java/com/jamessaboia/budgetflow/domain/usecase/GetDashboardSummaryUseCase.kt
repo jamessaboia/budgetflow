@@ -18,12 +18,10 @@ class GetDashboardSummaryUseCase @Inject constructor(
     private val budgetRepository: BudgetRepository,
     private val transactionRepository: TransactionRepository
 ) {
-    operator fun invoke(): Flow<DashboardSummary?> {
-        val currentMonth = SimpleDateFormat("yyyy-MM", Locale.getDefault()).format(Calendar.getInstance().time)
-        
+    operator fun invoke(monthYear: String): Flow<DashboardSummary?> {
         return combine(
-            budgetRepository.getBudgetByMonth(currentMonth),
-            transactionRepository.getTransactionsByMonth(currentMonth),
+            budgetRepository.getBudgetByMonth(monthYear),
+            transactionRepository.getTransactionsByMonth(monthYear),
             budgetRepository.getAllCategories()
         ) { budget, transactions, categories ->
             if (budget == null) return@combine null
