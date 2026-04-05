@@ -25,12 +25,16 @@ BudgetFlow is a native Android application designed for personal finance managem
 - **Explain "Why":** Document the rationale behind architectural choices, especially when trade-offs are involved.
 - **Didactic & Scalable:** Prefer solutions that are easy to explain/understand but don't compromise future growth.
 - **Error Handling:** Use a `Result` wrapper (or similar) to propagate errors from the Data layer to the UI, avoiding scattered try-catches.
-- **Unit Testing:** Implement tests for Business Logic (UseCases), ViewModels, and Mappers. Aim for high coverage in the Domain and Data layers.
+- **Unit Testing (Mandatory Coverage):** 
+    - **Data Layer:** Implement tests for `data/repository` (data logic) and `data/dao` (Room access).
+    - **Utilities:** Implement tests for `core` and `utils` classes.
+    - **Domain Layer:** Implement tests for UseCases and Mappers.
+    - **Golden Rule:** If you modify code in a layer that already has tests, you MUST ensure they continue to pass. If you add new logic to these layers, you MUST create the corresponding new tests.
 
 ## Build and Validation
-- **Local Verification:** Always run `./gradlew build` before finalizing any task.
-- **Static Analysis:** Address all warnings from lint and the Kotlin compiler to maintain code health.
-- **Pre-Commit Check:** Verify that structural changes don't break the Hilt dependency graph or Room compilation.
+- **Local Verification:** Always run `./gradlew build` before finalizing any task. The build MUST include the execution of all unit tests.
+- **Zero Regressions:** If a build or test fails, it must be fixed before the task is considered finished.
+- **Pre-Commit Check:** Verify that structural changes don't break the Hilt dependency graph, Room compilation, or any existing test cases.
 
 ## Technical Stack & Tools
 - **DI:** Hilt (Dependency Injection).

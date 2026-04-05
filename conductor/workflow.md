@@ -21,9 +21,13 @@ Every new feature, architectural change, or major bug fix must be managed as a "
    - **Execution:** Follow the plan sequentially. Use iterative verification (local testing, `./gradlew build`) after completing chunks.
    - **Rule:** Adhere strictly to the project's Architecture (UDF, MVVM, Clean Architecture) and Guidelines. Avoid scope creep.
 
-4. **Verification & Completion**
-   - **Goal:** Validate the final outcome against the initial `spec.md` acceptance criteria.
-   - **Execution:** Run automated tests (if applicable) and manually verify the feature. Update the Tracks Registry when the track is completed.
+4. **Verification (Testing & Build)**
+   - **Goal:** Validate the final outcome against the initial `spec.md` acceptance criteria and ensure zero regressions.
+   - **Execution:** 
+     - Run all unit tests for the affected layers (Data, Domain, Utils).
+     - Ensure the "Golden Rule" is followed: existing tests must pass and new logic must have its own tests.
+     - Execute `./gradlew build` to confirm overall project health.
+   - **Rule:** If any test or build task fails, it must be fixed. Completion is only achieved with a 100% successful build.
 
 ## Track Structure
 A new track should be created under `conductor/tracks/<track_id>/` and must contain:
