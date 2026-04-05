@@ -22,6 +22,7 @@ class UserPreferencesStore(private val context: Context) {
         val DEFAULT_NEEDS_PERCENT = intPreferencesKey("default_needs_percent")
         val DEFAULT_WANTS_PERCENT = intPreferencesKey("default_wants_percent")
         val DEFAULT_SAVINGS_PERCENT = intPreferencesKey("default_savings_percent")
+        val IS_BALANCE_VISIBLE = booleanPreferencesKey("is_balance_visible")
     }
 
     val userPreferencesFlow: Flow<UserPreferences> = context.dataStore.data
@@ -37,13 +38,20 @@ class UserPreferencesStore(private val context: Context) {
                 isOnboardingComplete = preferences[PreferencesKeys.IS_ONBOARDING_COMPLETE] ?: false,
                 defaultNeedsPercent = preferences[PreferencesKeys.DEFAULT_NEEDS_PERCENT] ?: 50,
                 defaultWantsPercent = preferences[PreferencesKeys.DEFAULT_WANTS_PERCENT] ?: 30,
-                defaultSavingsPercent = preferences[PreferencesKeys.DEFAULT_SAVINGS_PERCENT] ?: 20
+                defaultSavingsPercent = preferences[PreferencesKeys.DEFAULT_SAVINGS_PERCENT] ?: 20,
+                isBalanceVisible = preferences[PreferencesKeys.IS_BALANCE_VISIBLE] ?: true
             )
         }
 
     suspend fun updateOnboardingComplete(complete: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[PreferencesKeys.IS_ONBOARDING_COMPLETE] = complete
+        }
+    }
+
+    suspend fun updateBalanceVisible(visible: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[PreferencesKeys.IS_BALANCE_VISIBLE] = visible
         }
     }
 
@@ -60,5 +68,6 @@ data class UserPreferences(
     val isOnboardingComplete: Boolean,
     val defaultNeedsPercent: Int,
     val defaultWantsPercent: Int,
-    val defaultSavingsPercent: Int
+    val defaultSavingsPercent: Int,
+    val isBalanceVisible: Boolean
 )

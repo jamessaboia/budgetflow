@@ -53,4 +53,8 @@ class BudgetRepositoryImpl @Inject constructor(
     override suspend fun completeOnboarding() {
         preferencesStore.updateOnboardingComplete(true)
     }
+
+    override suspend fun toggleBalanceVisibility(visible: Boolean) {
+        preferencesStore.updateBalanceVisible(visible)
+    }
 }

@@ -37,6 +37,7 @@
 
     <!-- Transactions -->
     <string name="new_transaction">Nueva Transacción</string>
+    <string name="add_transaction_fab">Nueva Transacción</string>
     <string name="value_label">Valor</string>
     <string name="expense">Gasto</string>
     <string name="income">Ingreso</string>

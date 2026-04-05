@@ -81,7 +81,7 @@ fun BudgetSettingsScreen(
                     .verticalScroll(scrollState),
                 verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                // Category Management Section
+                
                 OutlinedCard(
                     modifier = Modifier
                         .fillMaxWidth()

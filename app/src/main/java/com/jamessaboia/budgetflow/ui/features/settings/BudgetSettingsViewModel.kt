@@ -102,7 +102,7 @@ class BudgetSettingsViewModel @Inject constructor(
                 )
                 budgetRepository.saveBudget(updatedBudget)
                 
-                // Update initial state to the new saved state
+                
                 val newState = _uiState.value.copy(isLoading = false, isUpdateSuccess = true, isDirty = false)
                 initialSavedState = newState.copy(isUpdateSuccess = false)
                 _uiState.value = newState

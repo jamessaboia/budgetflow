@@ -5,5 +5,6 @@ import com.jamessaboia.budgetflow.domain.model.DashboardSummary
 data class DashboardUiState(
     val isLoading: Boolean = true,
     val summary: DashboardSummary? = null,
-    val error: String? = null
+    val error: String? = null,
+    val isBalanceVisible: Boolean = true
 )

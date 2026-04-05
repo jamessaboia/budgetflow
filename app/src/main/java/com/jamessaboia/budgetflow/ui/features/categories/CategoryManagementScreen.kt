@@ -137,7 +137,7 @@ fun CategoryManagementScreen(
         }
     }
 
-    // Add/Edit Dialog
+    
     if (isAdding || showAddEditDialog != null) {
         AddEditCategoryDialog(
             category = showAddEditDialog,
@@ -157,7 +157,7 @@ fun CategoryManagementScreen(
         )
     }
 
-    // Delete Warning Dialog
+    
     uiState.showDeleteWarning?.let { category ->
         AlertDialog(
             onDismissRequest = viewModel::dismissDeleteWarning,

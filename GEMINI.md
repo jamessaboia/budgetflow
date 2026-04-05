@@ -15,7 +15,9 @@ BudgetFlow is a native Android application designed for personal finance managem
 3. **Clean Code & Android Best Practices:**
    - **S.O.L.I.D.:** Every class must have a single responsibility. Use Dependency Inversion (Hilt) to decouple layers.
    - **Naming:** Follow Kotlin/Android conventions. Use names that reveal intent (e.g., `calculateMonthlyRemaining` instead of `calc`).
+   - **No Comments:** Code must be self-explanatory. Avoid adding comments (`//` or `/* */`) to ensure clean, professional code. AI-style explanatory comments are strictly prohibited.
    - **Stateless Composables:** Hoist state to make UI components testable and reusable.
+
    - **No Logic in UI:** Composables must not contain business or validation logic.
 4. **Dependency Management:** Always use `gradle/libs.versions.toml`.
 

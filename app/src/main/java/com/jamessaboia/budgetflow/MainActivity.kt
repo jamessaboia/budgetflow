@@ -33,16 +33,16 @@ class MainActivity : ComponentActivity() {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         
-        // Define system bars style
-        // statusBarStyle: .dark(color) means "the background is dark, so use light icons"
-        // navigationBarStyle: .dark(color) means "the background is dark, so use light icons"
+        
+        
+        
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.dark(0xFF3C6939.toInt()),
             navigationBarStyle = SystemBarStyle.dark(0xFF3C6939.toInt())
         )
 
 
-        // Simple animated exit for splash screen
+        
         splashScreen.setOnExitAnimationListener { splashScreenProvider ->
             val iconView = splashScreenProvider.iconView
             iconView.animate()

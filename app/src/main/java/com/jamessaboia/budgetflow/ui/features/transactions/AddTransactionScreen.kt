@@ -72,11 +72,11 @@ fun AddTransactionScreen(
                 .fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Amount
+            
             OutlinedTextField(
                 value = uiState.amount,
                 onValueChange = { input ->
-                    // Allow only digits and a single dot or comma
+                    
                     val normalized = input.replace(",", ".")
                     val filtered = normalized.filterIndexed { index, char ->
                         char.isDigit() || (char == '.' && normalized.indexOf('.') == index)
@@ -91,7 +91,7 @@ fun AddTransactionScreen(
                 singleLine = true
             )
 
-            // Type Selection
+            
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
@@ -118,7 +118,7 @@ fun AddTransactionScreen(
                 )
             }
 
-            // Category Selection
+            
             var expanded by remember { mutableStateOf(false) }
             ExposedDropdownMenuBox(
                 expanded = expanded,
@@ -139,7 +139,7 @@ fun AddTransactionScreen(
                     onDismissRequest = { expanded = false }
                 ) {
                     uiState.categories.filter { 
-                        if (uiState.type == TransactionType.EXPENSE) true else it.groupType != null // For MVP we keep it simple
+                        if (uiState.type == TransactionType.EXPENSE) true else it.groupType != null 
                     }.forEach { category ->
                         DropdownMenuItem(
                             text = { Text(getCategoryDisplayName(category.name)) },
@@ -152,7 +152,7 @@ fun AddTransactionScreen(
                 }
             }
 
-            // Category Hint
+            
             uiState.selectedCategory?.let { category ->
                 val hint = getCategoryDescription(category.description)
                 if (!hint.isNullOrBlank()) {
@@ -183,7 +183,7 @@ fun AddTransactionScreen(
                 }
             }
 
-            // Date Selection
+            
             OutlinedTextField(
                 value = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(uiState.date),
                 onValueChange = {},
@@ -197,7 +197,7 @@ fun AddTransactionScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            // Description
+            
             OutlinedTextField(
                 value = uiState.description,
                 onValueChange = viewModel::onDescriptionChange,

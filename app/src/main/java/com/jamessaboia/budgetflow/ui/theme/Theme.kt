@@ -49,7 +49,7 @@ private val lightScheme = lightColorScheme(
 
 @Composable
 fun BudgetFlowTheme(
-    // darkTheme and dynamicColor parameters kept for compatibility but ignored
+    
     darkTheme: Boolean = false,
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit
@@ -65,7 +65,7 @@ fun BudgetFlowTheme(
         }
     }
 
-    // Always use the lightScheme as per user requirement
+    
     MaterialTheme(
         colorScheme = lightScheme,
         typography = AppTypography,

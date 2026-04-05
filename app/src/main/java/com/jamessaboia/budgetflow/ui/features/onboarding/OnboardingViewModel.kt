@@ -75,7 +75,7 @@ class OnboardingViewModel @Inject constructor(
                 val extraIncomeValue = _uiState.value.extraIncome.replace(",", ".").toDoubleOrNull() ?: 0.0
                 val currentMonth = SimpleDateFormat("yyyy-MM", Locale.getDefault()).format(Calendar.getInstance().time)
 
-                // 1. Save initial budget
+                
                 val initialBudget = MonthlyBudget(
                     monthYear = currentMonth,
                     baseIncome = incomeValue,
@@ -86,10 +86,10 @@ class OnboardingViewModel @Inject constructor(
                 )
                 budgetRepository.saveBudget(initialBudget)
 
-                // 2. Pre-populate default categories
+                
                 saveDefaultCategories()
 
-                // 3. Mark onboarding as complete in DataStore
+                
                 budgetRepository.completeOnboarding()
 
                 _uiState.update { it.copy(isLoading = false, isComplete = true) }
@@ -101,20 +101,20 @@ class OnboardingViewModel @Inject constructor(
 
     private suspend fun saveDefaultCategories() {
         val defaults = listOf(
-            // NEEDS
+            
             Category(name = "cat_housing", description = "hint_housing", groupType = BudgetGroup.NEEDS, isDefault = true),
             Category(name = "cat_food", description = "hint_food", groupType = BudgetGroup.NEEDS, isDefault = true),
             Category(name = "cat_transport", description = "hint_transport", groupType = BudgetGroup.NEEDS, isDefault = true),
             Category(name = "cat_health", description = "hint_health", groupType = BudgetGroup.NEEDS, isDefault = true),
             Category(name = "cat_education", description = "hint_education", groupType = BudgetGroup.NEEDS, isDefault = true),
             
-            // WANTS
+            
             Category(name = "cat_leisure", description = "hint_leisure", groupType = BudgetGroup.WANTS, isDefault = true),
             Category(name = "cat_lifestyle", description = "hint_lifestyle", groupType = BudgetGroup.WANTS, isDefault = true),
             Category(name = "cat_shopping", description = "hint_shopping", groupType = BudgetGroup.WANTS, isDefault = true),
             Category(name = "cat_subscriptions", description = "hint_subscriptions", groupType = BudgetGroup.WANTS, isDefault = true),
             
-            // SAVINGS
+            
             Category(name = "cat_emergency", description = "hint_emergency", groupType = BudgetGroup.SAVINGS, isDefault = true),
             Category(name = "cat_investments", description = "hint_investments", groupType = BudgetGroup.SAVINGS, isDefault = true),
             Category(name = "cat_goals", description = "hint_goals", groupType = BudgetGroup.SAVINGS, isDefault = true)

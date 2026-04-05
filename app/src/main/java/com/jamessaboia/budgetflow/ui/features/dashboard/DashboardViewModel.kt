@@ -2,6 +2,7 @@ package com.jamessaboia.budgetflow.ui.features.dashboard
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.jamessaboia.budgetflow.domain.repository.BudgetRepository
 import com.jamessaboia.budgetflow.domain.usecase.EnsureBudgetForMonthUseCase
 import com.jamessaboia.budgetflow.domain.usecase.GetDashboardSummaryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class DashboardViewModel @Inject constructor(
     private val getDashboardSummaryUseCase: GetDashboardSummaryUseCase,
-    private val ensureBudgetForMonthUseCase: EnsureBudgetForMonthUseCase
+    private val ensureBudgetForMonthUseCase: EnsureBudgetForMonthUseCase,
+    private val budgetRepository: BudgetRepository
 ) : ViewModel() {
 
     private val _selectedMonth = MutableStateFlow(
@@ -25,24 +27,34 @@ class DashboardViewModel @Inject constructor(
     )
     val selectedMonth: StateFlow<String> = _selectedMonth.asStateFlow()
 
-    val uiState: StateFlow<DashboardUiState> = _selectedMonth
+    private val _summaryFlow = _selectedMonth
         .onEach { monthYear ->
             ensureBudgetForMonthUseCase(monthYear)
         }
         .flatMapLatest { monthYear ->
             getDashboardSummaryUseCase(monthYear)
         }
-        .map { summary ->
-            DashboardUiState(isLoading = false, summary = summary)
-        }
-        .catch { e ->
-            emit(DashboardUiState(isLoading = false, error = e.message))
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5000),
-            initialValue = DashboardUiState(isLoading = true)
+
+    private val _userPreferencesFlow = budgetRepository.getUserPreferences()
+
+    val uiState: StateFlow<DashboardUiState> = combine(
+        _summaryFlow,
+        _userPreferencesFlow
+    ) { summary, preferences ->
+        DashboardUiState(
+            isLoading = false,
+            summary = summary,
+            isBalanceVisible = preferences.isBalanceVisible
         )
+    }
+    .catch { e ->
+        emit(DashboardUiState(isLoading = false, error = e.message))
+    }
+    .stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        initialValue = DashboardUiState(isLoading = true)
+    )
 
     fun onPreviousMonth() {
         navigateMonth(-1)
@@ -50,6 +62,12 @@ class DashboardViewModel @Inject constructor(
 
     fun onNextMonth() {
         navigateMonth(1)
+    }
+
+    fun toggleBalanceVisibility() {
+        viewModelScope.launch {
+            budgetRepository.toggleBalanceVisibility(!uiState.value.isBalanceVisible)
+        }
     }
 
     private fun navigateMonth(delta: Int) {

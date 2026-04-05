@@ -8,11 +8,11 @@ import javax.inject.Inject
 class EnsureBudgetForMonthUseCase @Inject constructor(
     private val budgetRepository: BudgetRepository
 ) {
-    /**
-     * Ensures a budget exists for the given [monthYear].
-     * If it doesn't exist, it clones the latest available budget before that month.
-     * If no previous budget exists, it creates one with default percentages (50/30/20).
-     */
+    
+
+
+
+
     suspend operator fun invoke(monthYear: String) {
         val existingBudget = budgetRepository.getBudgetByMonth(monthYear).first()
         
@@ -20,7 +20,7 @@ class EnsureBudgetForMonthUseCase @Inject constructor(
             val latestBudget = budgetRepository.getLatestBudgetBefore(monthYear)
             
             val newBudget = if (latestBudget != null) {
-                // Clone the latest budget
+                
                 MonthlyBudget(
                     monthYear = monthYear,
                     baseIncome = latestBudget.baseIncome,
@@ -30,7 +30,7 @@ class EnsureBudgetForMonthUseCase @Inject constructor(
                     savingsPercentage = latestBudget.savingsPercentage
                 )
             } else {
-                // Create a default budget
+                
                 MonthlyBudget(
                     monthYear = monthYear,
                     baseIncome = 0.0,

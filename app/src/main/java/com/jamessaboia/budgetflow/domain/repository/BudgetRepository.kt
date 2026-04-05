@@ -16,4 +16,5 @@ interface BudgetRepository {
     
     fun getUserPreferences(): Flow<UserPreferences>
     suspend fun completeOnboarding()
+    suspend fun toggleBalanceVisibility(visible: Boolean)
 }

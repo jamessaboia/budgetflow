@@ -6,7 +6,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.*
@@ -15,6 +19,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -22,6 +27,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jamessaboia.budgetflow.R
 import com.jamessaboia.budgetflow.core.MonthPicker
 import com.jamessaboia.budgetflow.core.NavigationBarSpacer
+import com.jamessaboia.budgetflow.core.getCategoryDisplayName
 import com.jamessaboia.budgetflow.domain.model.DashboardSummary
 import com.jamessaboia.budgetflow.domain.model.GroupSummary
 import com.valentinilk.shimmer.shimmer
@@ -36,52 +42,78 @@ fun DashboardScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val selectedMonth by viewModel.selectedMonth.collectAsState()
+    val listState = rememberLazyListState()
+    
+    
+    var previousIndex by remember { mutableIntStateOf(listState.firstVisibleItemIndex) }
+    var previousScrollOffset by remember { mutableIntStateOf(listState.firstVisibleItemScrollOffset) }
+    
+    val isScrollingUp = remember {
+        derivedStateOf {
+            if (previousIndex != listState.firstVisibleItemIndex) {
+                previousIndex > listState.firstVisibleItemIndex
+            } else {
+                previousScrollOffset >= listState.firstVisibleItemScrollOffset
+            }.also {
+                previousIndex = listState.firstVisibleItemIndex
+                previousScrollOffset = listState.firstVisibleItemScrollOffset
+            }
+        }
+    }.value
+
+    val isAtTop = remember {
+        derivedStateOf {
+            listState.firstVisibleItemIndex == 0 && listState.firstVisibleItemScrollOffset == 0
+        }
+    }.value
+
+    val isFabVisible = isAtTop || isScrollingUp
 
     Scaffold(
         topBar = {
-            Column {
-                TopAppBar(
-                    title = { 
-                        Text(
-                            stringResource(R.string.app_name),
-                            fontWeight = FontWeight.Bold,
-                            color = MaterialTheme.colorScheme.onPrimary
-                        ) 
-                    },
-                    actions = {
-                        IconButton(onClick = onNavigateToTransactions) {
-                            Icon(
-                                Icons.AutoMirrored.Filled.List, 
-                                contentDescription = stringResource(R.string.history),
-                                tint = MaterialTheme.colorScheme.onPrimary
-                            )
-                        }
-                        IconButton(onClick = onNavigateToSettings) {
-                            Icon(
-                                Icons.Default.Settings, 
-                                contentDescription = stringResource(R.string.settings),
-                                tint = MaterialTheme.colorScheme.onPrimary
-                            )
-                        }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                    )
+            TopAppBar(
+                title = { 
+                    Text(
+                        stringResource(R.string.app_name),
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    ) 
+                },
+                actions = {
+                    IconButton(onClick = onNavigateToTransactions) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.List, 
+                            contentDescription = stringResource(R.string.history),
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
+                    IconButton(onClick = onNavigateToSettings) {
+                        Icon(
+                            Icons.Default.Settings, 
+                            contentDescription = stringResource(R.string.settings),
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
                 )
-                MonthPicker(
-                    selectedMonth = selectedMonth,
-                    onPreviousMonth = viewModel::onPreviousMonth,
-                    onNextMonth = viewModel::onNextMonth
-                )
-            }
+            )
         },
         floatingActionButton = {
-            FloatingActionButton(
-                onClick = onNavigateToAddTransaction,
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
+            AnimatedVisibility(
+                visible = isFabVisible,
+                enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
+                exit = slideOutVertically(targetOffsetY = { it }) + fadeOut()
             ) {
-                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.new_transaction))
+                ExtendedFloatingActionButton(
+                    onClick = onNavigateToAddTransaction,
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    expanded = isAtTop, 
+                    icon = { Icon(Icons.Default.Add, contentDescription = null) },
+                    text = { Text(stringResource(R.string.add_transaction_fab)) }
+                )
             }
         },
         bottomBar = {
@@ -90,7 +122,11 @@ fun DashboardScreen(
     ) { innerPadding ->
         Box(modifier = Modifier.padding(innerPadding).fillMaxSize()) {
             if (uiState.isLoading) {
-                DashboardSkeleton()
+                DashboardSkeleton(
+                    selectedMonth = selectedMonth,
+                    onPreviousMonth = viewModel::onPreviousMonth,
+                    onNextMonth = viewModel::onNextMonth
+                )
             } else if (uiState.error != null) {
                 Text(
                     text = stringResource(R.string.error_generic, uiState.error!!),
@@ -98,53 +134,74 @@ fun DashboardScreen(
                     modifier = Modifier.align(Alignment.Center)
                 )
             } else if (uiState.summary != null) {
-                DashboardContent(uiState.summary!!)
+                DashboardContent(
+                    summary = uiState.summary!!,
+                    selectedMonth = selectedMonth,
+                    isBalanceVisible = uiState.isBalanceVisible,
+                    listState = listState,
+                    onPreviousMonth = viewModel::onPreviousMonth,
+                    onNextMonth = viewModel::onNextMonth,
+                    onToggleBalanceVisibility = viewModel::toggleBalanceVisibility
+                )
             }
         }
     }
 }
 
 @Composable
-fun DashboardSkeleton() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .shimmer()
-    ) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(180.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant),
-            elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-        ) {}
-        
-        Spacer(modifier = Modifier.height(16.dp))
-        
-        Box(
-            modifier = Modifier
-                .width(120.dp)
-                .height(24.dp),
+fun DashboardSkeleton(
+    selectedMonth: String,
+    onPreviousMonth: () -> Unit,
+    onNextMonth: () -> Unit
+) {
+    Column(modifier = Modifier.fillMaxSize()) {
+        Surface(
+            color = MaterialTheme.colorScheme.primary,
+            shape = RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp),
+            shadowElevation = 4.dp
         ) {
-            Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = MaterialTheme.colorScheme.surfaceVariant,
-                shape = MaterialTheme.shapes.small
-            ) {}
+            Column {
+                MonthPicker(
+                    selectedMonth = selectedMonth,
+                    onPreviousMonth = onPreviousMonth,
+                    onNextMonth = onNextMonth,
+                    containerColor = Color.Transparent,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
+                )
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(180.dp)
+                        .shimmer()
+                )
+            }
         }
-        
-        Spacer(modifier = Modifier.height(16.dp))
 
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(bottom = 16.dp)
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)
+                .shimmer()
         ) {
-            items(3) {
+            Box(
+                modifier = Modifier
+                    .width(120.dp)
+                    .height(24.dp),
+            ) {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.surfaceVariant,
+                    shape = MaterialTheme.shapes.small
+                ) {}
+            }
+            
+            Spacer(modifier = Modifier.height(16.dp))
+
+            repeat(3) {
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
+                        .padding(vertical = 8.dp)
                         .height(100.dp),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer),
                     elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
@@ -155,95 +212,201 @@ fun DashboardSkeleton() {
 }
 
 @Composable
-fun DashboardContent(summary: DashboardSummary) {
+fun DashboardContent(
+    summary: DashboardSummary,
+    selectedMonth: String,
+    isBalanceVisible: Boolean,
+    listState: LazyListState,
+    onPreviousMonth: () -> Unit,
+    onNextMonth: () -> Unit,
+    onToggleBalanceVisibility: () -> Unit
+) {
+    LazyColumn(
+        state = listState,
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+        contentPadding = PaddingValues(bottom = 16.dp)
+    ) {
+        
+        item {
+            Surface(
+                color = MaterialTheme.colorScheme.primary,
+                shape = RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp),
+                shadowElevation = 4.dp
+            ) {
+                Column {
+                    MonthPicker(
+                        selectedMonth = selectedMonth,
+                        onPreviousMonth = onPreviousMonth,
+                        onNextMonth = onNextMonth,
+                        containerColor = Color.Transparent,
+                        contentColor = MaterialTheme.colorScheme.onPrimary
+                    )
+                    BalanceHeader(
+                        summary = summary,
+                        isVisible = isBalanceVisible,
+                        onToggleVisibility = onToggleBalanceVisibility
+                    )
+                }
+            }
+        }
+
+        
+        item {
+            Text(
+                text = stringResource(R.string.my_groups),
+                style = MaterialTheme.typography.titleLarge,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+        }
+
+        
+        item {
+            Column(modifier = Modifier.padding(horizontal = 16.dp)) {
+                GroupCard(
+                    title = stringResource(R.string.group_needs), 
+                    summary = summary.needsSummary, 
+                    hint = stringResource(R.string.hint_group_needs),
+                    isBalanceVisible = isBalanceVisible
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                GroupCard(
+                    title = stringResource(R.string.group_wants), 
+                    summary = summary.wantsSummary, 
+                    hint = stringResource(R.string.hint_group_lifestyle),
+                    isBalanceVisible = isBalanceVisible
+                )
+                Spacer(modifier = Modifier.height(12.dp))
+                GroupCard(
+                    title = stringResource(R.string.group_savings), 
+                    summary = summary.savingsSummary, 
+                    hint = stringResource(R.string.hint_group_savings),
+                    isBalanceVisible = isBalanceVisible
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun BalanceHeader(
+    summary: DashboardSummary,
+    isVisible: Boolean,
+    onToggleVisibility: () -> Unit
+) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
+            .fillMaxWidth()
+            .padding(bottom = 24.dp, start = 24.dp, end = 24.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        BalanceHeader(summary)
-        
-        Spacer(modifier = Modifier.height(16.dp))
-        
+        IconButton(
+            onClick = onToggleVisibility, 
+            modifier = Modifier.size(48.dp)
+        ) {
+            Icon(
+                imageVector = if (isVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
+                contentDescription = "Toggle Visibility",
+                tint = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.9f),
+                modifier = Modifier.size(28.dp)
+            )
+        }
+
         Text(
-            text = stringResource(R.string.my_groups),
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.secondary
+            text = stringResource(R.string.available_balance),
+            style = MaterialTheme.typography.titleSmall,
+            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
         )
         
-        Spacer(modifier = Modifier.height(16.dp))
-
-        LazyColumn(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(bottom = 16.dp)
-        ) {
-            item {
-                GroupCard(stringResource(R.string.group_needs), summary.needsSummary, stringResource(R.string.hint_group_needs))
-            }
-            item {
-                GroupCard(stringResource(R.string.group_wants), summary.wantsSummary, stringResource(R.string.hint_group_lifestyle))
-            }
-            item {
-                GroupCard(stringResource(R.string.group_savings), summary.savingsSummary, stringResource(R.string.hint_group_savings))
-            }
-        }
-    }
-}
-
-@Composable
-fun BalanceHeader(summary: DashboardSummary) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
-        ),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-        Column(
-            modifier = Modifier.padding(24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        AnimatedContent(
+            targetState = if (isVisible) summary.remainingBalance else null,
+            transitionSpec = {
+                fadeIn(animationSpec = tween(1000, easing = FastOutSlowInEasing))
+                    .togetherWith(fadeOut(animationSpec = tween(800)))
+            }, label = "BalanceAnimation"
+        ) { balance ->
             Text(
-                text = stringResource(R.string.available_balance),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
+                text = if (balance != null) stringResource(R.string.currency_format, balance) else "R$ •••••",
+                style = MaterialTheme.typography.headlineLarge,
+                fontWeight = FontWeight.Black,
+                color = MaterialTheme.colorScheme.onPrimary
             )
-            AnimatedContent(
-                targetState = summary.remainingBalance,
-                transitionSpec = {
-                    if (targetState > initialState) {
-                        (slideInVertically { height -> height } + fadeIn()).togetherWith(
-                            slideOutVertically { height -> -height } + fadeOut())
-                    } else {
-                        (slideInVertically { height -> -height } + fadeIn()).togetherWith(
-                            slideOutVertically { height -> height } + fadeOut())
-                    }.using(
-                        SizeTransform(clip = false)
-                    )
-                }, label = "BalanceAnimation"
-            ) { balance ->
-                Text(
-                    text = stringResource(R.string.currency_format, balance),
-                    style = MaterialTheme.typography.headlineLarge,
-                    fontWeight = FontWeight.Black,
-                    color = MaterialTheme.colorScheme.onPrimary
+        }
+        
+        Spacer(modifier = Modifier.height(24.dp))
+        
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            
+            SummaryCard(
+                label = stringResource(R.string.income_label),
+                value = if (isVisible) stringResource(R.string.currency_format, summary.totalIncome) else "••••",
+                icon = Icons.Default.ArrowUpward,
+                iconColor = MaterialTheme.colorScheme.primary,
+                modifier = Modifier.weight(1f)
+            )
+            
+            
+            SummaryCard(
+                label = stringResource(R.string.spent_label),
+                value = if (isVisible) stringResource(R.string.currency_format, summary.totalSpent) else "••••",
+                icon = Icons.Default.ArrowDownward,
+                iconColor = MaterialTheme.colorScheme.error,
+                modifier = Modifier.weight(1f)
+            )
+        }
+    }
+}
+
+@Composable
+fun SummaryCard(
+    label: String,
+    value: String,
+    icon: ImageVector,
+    iconColor: Color,
+    modifier: Modifier = Modifier
+) {
+    Card(
+        modifier = modifier,
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.background
+        ),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(12.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .size(28.dp)
+                    .background(iconColor.copy(alpha = 0.1f), shape = CircleShape),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = null,
+                    tint = iconColor,
+                    modifier = Modifier.size(16.dp)
                 )
             }
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                SummaryInfoItem(
-                    stringResource(R.string.income_label), 
-                    stringResource(R.string.currency_format, summary.totalIncome)
+            Column {
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                SummaryInfoItem(
-                    stringResource(R.string.spent_label), 
-                    stringResource(R.string.currency_format, summary.totalSpent)
+                Text(
+                    text = value,
+                    style = MaterialTheme.typography.bodyMedium,
+                    fontWeight = FontWeight.Bold,
+                    color = iconColor,
+                    maxLines = 1
                 )
             }
         }
@@ -251,15 +414,12 @@ fun BalanceHeader(summary: DashboardSummary) {
 }
 
 @Composable
-fun SummaryInfoItem(label: String, value: String) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        Text(text = label, style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f))
-        Text(text = value, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onPrimary)
-    }
-}
-
-@Composable
-fun GroupCard(title: String, summary: GroupSummary, hint: String) {
+fun GroupCard(
+    title: String, 
+    summary: GroupSummary, 
+    hint: String,
+    isBalanceVisible: Boolean
+) {
     var expanded by remember { mutableStateOf(false) }
     var showHint by remember { mutableStateOf(false) }
     val isExceeded = summary.percentageSpent > 1f
@@ -268,7 +428,6 @@ fun GroupCard(title: String, summary: GroupSummary, hint: String) {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
             .clickable { if (summary.categorySpending.isNotEmpty()) expanded = !expanded },
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
@@ -336,20 +495,27 @@ fun GroupCard(title: String, summary: GroupSummary, hint: String) {
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
+                val spentValue = if (isBalanceVisible) stringResource(R.string.currency_format, summary.spent) else "••••"
+                val limitValue = if (isBalanceVisible) stringResource(R.string.currency_format, summary.limit) else "••••"
+                
                 Text(
-                    text = stringResource(R.string.spent_value, stringResource(R.string.currency_format, summary.spent)),
+                    text = stringResource(R.string.spent_value, spentValue),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.tertiary
+                    color = MaterialTheme.colorScheme.error, 
+                    fontWeight = FontWeight.Medium
                 )
                 Text(
-                    text = stringResource(R.string.limit_value, stringResource(R.string.currency_format, summary.limit)),
+                    text = stringResource(R.string.limit_value, limitValue),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.tertiary
                 )
             }
+            
+            val remainingValue = if (isBalanceVisible) stringResource(R.string.currency_format, if (isExceeded) -summary.remaining else summary.remaining) else "••••"
+            
             if (isExceeded) {
                 Text(
-                    text = stringResource(R.string.exceeded_by, stringResource(R.string.currency_format, -summary.remaining)),
+                    text = stringResource(R.string.exceeded_by, remainingValue),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.error,
                     fontWeight = FontWeight.Bold,
@@ -357,7 +523,7 @@ fun GroupCard(title: String, summary: GroupSummary, hint: String) {
                 )
             } else {
                 Text(
-                    text = stringResource(R.string.remains_value, stringResource(R.string.currency_format, summary.remaining)),
+                    text = stringResource(R.string.remains_value, remainingValue),
                     style = MaterialTheme.typography.bodySmall,
                     color = mainColor,
                     fontWeight = FontWeight.Bold,
@@ -384,7 +550,7 @@ fun GroupCard(title: String, summary: GroupSummary, hint: String) {
                                 color = MaterialTheme.colorScheme.onSurfaceVariant
                             )
                             Text(
-                                text = stringResource(R.string.currency_format, categorySpent.amount),
+                                text = if (isBalanceVisible) stringResource(R.string.currency_format, categorySpent.amount) else "••••",
                                 style = MaterialTheme.typography.bodyMedium,
                                 fontWeight = FontWeight.SemiBold,
                                 color = MaterialTheme.colorScheme.onSurface

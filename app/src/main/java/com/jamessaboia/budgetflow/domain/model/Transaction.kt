@@ -11,5 +11,5 @@ data class Transaction(
     val categoryId: Long,
     val description: String = "",
     val date: Date = Date(),
-    val monthYear: String // Format: "yyyy-MM" to easy link with MonthlyBudget
+    val monthYear: String 
 )

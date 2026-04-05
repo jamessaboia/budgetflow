@@ -8,7 +8,7 @@ data class CategorySpent(
 data class GroupSummary(
     val limit: Double,
     val spent: Double,
-    val percentageSpent: Float, // 0..1
+    val percentageSpent: Float, 
     val remaining: Double,
     val categorySpending: List<CategorySpent> = emptyList()
 )

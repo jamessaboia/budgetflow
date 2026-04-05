@@ -52,7 +52,7 @@ class GetDashboardSummaryUseCase @Inject constructor(
                         categoryName = category.name,
                         amount = expensesByCategory[category.id] ?: 0.0
                     )
-                }.filter { it.amount > 0 } // Only show categories with spending
+                }.filter { it.amount > 0 } 
                 
                 return GroupSummary(limit, spent, percentageSpent, remaining, categorySpendingList)
             }
