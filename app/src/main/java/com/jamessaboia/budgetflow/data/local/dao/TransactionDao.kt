@@ -24,4 +24,7 @@ interface TransactionDao {
 
     @Query("SELECT SUM(amount) FROM transactions WHERE monthYear = :monthYear AND type = 'INCOME'")
     fun getTotalIncomeByMonth(monthYear: String): Flow<Double?>
+
+    @Query("SELECT COUNT(*) FROM transactions WHERE categoryId = :categoryId")
+    suspend fun getTransactionCountByCategory(categoryId: Long): Int
 }

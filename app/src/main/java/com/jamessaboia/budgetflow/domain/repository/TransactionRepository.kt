@@ -10,4 +10,5 @@ interface TransactionRepository {
     suspend fun deleteTransaction(transaction: Transaction)
     fun getTotalExpensesByMonth(monthYear: String): Flow<Double>
     fun getTotalIncomeByMonth(monthYear: String): Flow<Double>
+    suspend fun getTransactionCountByCategory(categoryId: Long): Int
 }

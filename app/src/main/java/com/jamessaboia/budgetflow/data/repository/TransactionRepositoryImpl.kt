@@ -48,4 +48,8 @@ class TransactionRepositoryImpl @Inject constructor(
     override fun getTotalIncomeByMonth(monthYear: String): Flow<Double> {
         return transactionDao.getTotalIncomeByMonth(monthYear).map { it ?: 0.0 }
     }
+
+    override suspend fun getTransactionCountByCategory(categoryId: Long): Int {
+        return transactionDao.getTransactionCountByCategory(categoryId)
+    }
 }

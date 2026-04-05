@@ -6,6 +6,7 @@ import androidx.compose.runtime.Immutable
 data class Category(
     val id: Long = 0,
     val name: String,
+    val description: String? = null,
     val groupType: BudgetGroup,
     val budgetLimit: Double? = null,
     val isDefault: Boolean = false

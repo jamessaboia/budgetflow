@@ -112,6 +112,18 @@
     <string name="save_changes">Guardar Cambios</string>
     <string name="update_success">¡Presupuesto actualizado con éxito!</string>
 
+    <!-- Category Management -->
+    <string name="manage_categories">Gestionar Categorías</string>
+    <string name="add_category">Añadir Categoría</string>
+    <string name="edit_category">Editar Categoría</string>
+    <string name="delete_category_warning">Esta categoría tiene transacciones vinculadas. Si la eliminas, estas transacciones quedarán sin categoría y podrían perderse en el historial. ¿Estás seguro?</string>
+    <string name="category_name_label">Nombre de la Categoría</string>
+    <string name="category_description_label">Descripción (Opcional)</string>
+    <string name="select_group">Seleccionar Grupo</string>
+    <string name="delete_confirm">Eliminar</string>
+    <string name="category_deleted">Categoría eliminada</string>
+    <string name="category_saved">Categoría guardada con éxito</string>
+
     <string name="percentage_value">%1$d%%</string>
     <string name="group_needs_summary">Esenciales (%1$d%%)</string>
     <string name="group_wants_summary">Estilo de Vida (%1$d%%)</string>

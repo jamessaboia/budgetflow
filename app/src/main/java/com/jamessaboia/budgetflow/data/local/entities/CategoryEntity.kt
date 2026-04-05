@@ -8,6 +8,7 @@ import com.jamessaboia.budgetflow.domain.model.BudgetGroup
 data class CategoryEntity(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String,
+    val description: String? = null,
     val groupType: BudgetGroup,
     val budgetLimit: Double?,
     val isDefault: Boolean

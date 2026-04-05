@@ -12,6 +12,7 @@ interface BudgetRepository {
     
     fun getAllCategories(): Flow<List<Category>>
     suspend fun saveCategory(category: Category)
+    suspend fun deleteCategory(category: Category)
     
     fun getUserPreferences(): Flow<UserPreferences>
     suspend fun completeOnboarding()

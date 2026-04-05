@@ -19,6 +19,7 @@ import com.jamessaboia.budgetflow.R
 import com.jamessaboia.budgetflow.core.CurrencyVisualTransformation
 import com.jamessaboia.budgetflow.core.NavigationBarSpacer
 import com.jamessaboia.budgetflow.core.StatusBarSpacer
+import com.jamessaboia.budgetflow.core.getCategoryDescription
 import com.jamessaboia.budgetflow.core.getCategoryDisplayName
 import com.jamessaboia.budgetflow.domain.model.TransactionType
 import java.text.SimpleDateFormat
@@ -153,8 +154,8 @@ fun AddTransactionScreen(
 
             // Category Hint
             uiState.selectedCategory?.let { category ->
-                val hintRes = getCategoryHint(category.name)
-                if (hintRes != null) {
+                val hint = getCategoryDescription(category.description)
+                if (!hint.isNullOrBlank()) {
                     Card(
                         colors = CardDefaults.cardColors(
                             containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.4f)
@@ -173,7 +174,7 @@ fun AddTransactionScreen(
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(
-                                text = stringResource(hintRes),
+                                text = hint,
                                 style = MaterialTheme.typography.labelSmall,
                                 color = MaterialTheme.colorScheme.onTertiaryContainer
                             )
@@ -201,7 +202,8 @@ fun AddTransactionScreen(
                 value = uiState.description,
                 onValueChange = viewModel::onDescriptionChange,
                 label = { Text(stringResource(R.string.description_label)) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -217,7 +219,7 @@ fun AddTransactionScreen(
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                 } else {
-                    Text(stringResource(R.string.save_transaction))
+                    Text(stringResource(R.string.confirm))
                 }
             }
         }
@@ -227,6 +229,7 @@ fun AddTransactionScreen(
         val datePickerState = rememberDatePickerState(
             initialSelectedDateMillis = uiState.date.time
         )
+        
         DatePickerDialog(
             onDismissRequest = { showDatePicker = false },
             confirmButton = {
@@ -247,23 +250,5 @@ fun AddTransactionScreen(
         ) {
             DatePicker(state = datePickerState)
         }
-    }
-}
-
-fun getCategoryHint(categoryName: String): Int? {
-    return when (categoryName) {
-        "Moradia", "cat_housing" -> R.string.hint_housing
-        "Alimentação", "cat_food" -> R.string.hint_food
-        "Transporte", "cat_transport" -> R.string.hint_transport
-        "Saúde", "cat_health" -> R.string.hint_health
-        "Educação", "cat_education" -> R.string.hint_education
-        "Lazer", "cat_leisure" -> R.string.hint_leisure
-        "Estilo de Vida", "cat_lifestyle" -> R.string.hint_lifestyle
-        "Compras", "cat_shopping" -> R.string.hint_shopping
-        "Assinaturas", "cat_subscriptions" -> R.string.hint_subscriptions
-        "Reserva de Emergência", "cat_emergency" -> R.string.hint_emergency
-        "Investimentos", "cat_investments" -> R.string.hint_investments
-        "Objetivos", "cat_goals" -> R.string.hint_goals
-        else -> null
     }
 }

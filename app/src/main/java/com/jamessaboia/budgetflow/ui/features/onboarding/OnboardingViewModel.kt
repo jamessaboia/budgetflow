@@ -102,22 +102,22 @@ class OnboardingViewModel @Inject constructor(
     private suspend fun saveDefaultCategories() {
         val defaults = listOf(
             // NEEDS
-            Category(name = "cat_housing", groupType = BudgetGroup.NEEDS, isDefault = true),
-            Category(name = "cat_food", groupType = BudgetGroup.NEEDS, isDefault = true),
-            Category(name = "cat_transport", groupType = BudgetGroup.NEEDS, isDefault = true),
-            Category(name = "cat_health", groupType = BudgetGroup.NEEDS, isDefault = true),
-            Category(name = "cat_education", groupType = BudgetGroup.NEEDS, isDefault = true),
+            Category(name = "cat_housing", description = "hint_housing", groupType = BudgetGroup.NEEDS, isDefault = true),
+            Category(name = "cat_food", description = "hint_food", groupType = BudgetGroup.NEEDS, isDefault = true),
+            Category(name = "cat_transport", description = "hint_transport", groupType = BudgetGroup.NEEDS, isDefault = true),
+            Category(name = "cat_health", description = "hint_health", groupType = BudgetGroup.NEEDS, isDefault = true),
+            Category(name = "cat_education", description = "hint_education", groupType = BudgetGroup.NEEDS, isDefault = true),
             
             // WANTS
-            Category(name = "cat_leisure", groupType = BudgetGroup.WANTS, isDefault = true),
-            Category(name = "cat_lifestyle", groupType = BudgetGroup.WANTS, isDefault = true),
-            Category(name = "cat_shopping", groupType = BudgetGroup.WANTS, isDefault = true),
-            Category(name = "cat_subscriptions", groupType = BudgetGroup.WANTS, isDefault = true),
+            Category(name = "cat_leisure", description = "hint_leisure", groupType = BudgetGroup.WANTS, isDefault = true),
+            Category(name = "cat_lifestyle", description = "hint_lifestyle", groupType = BudgetGroup.WANTS, isDefault = true),
+            Category(name = "cat_shopping", description = "hint_shopping", groupType = BudgetGroup.WANTS, isDefault = true),
+            Category(name = "cat_subscriptions", description = "hint_subscriptions", groupType = BudgetGroup.WANTS, isDefault = true),
             
             // SAVINGS
-            Category(name = "cat_emergency", groupType = BudgetGroup.SAVINGS, isDefault = true),
-            Category(name = "cat_investments", groupType = BudgetGroup.SAVINGS, isDefault = true),
-            Category(name = "cat_goals", groupType = BudgetGroup.SAVINGS, isDefault = true)
+            Category(name = "cat_emergency", description = "hint_emergency", groupType = BudgetGroup.SAVINGS, isDefault = true),
+            Category(name = "cat_investments", description = "hint_investments", groupType = BudgetGroup.SAVINGS, isDefault = true),
+            Category(name = "cat_goals", description = "hint_goals", groupType = BudgetGroup.SAVINGS, isDefault = true)
         )
         defaults.forEach { budgetRepository.saveCategory(it) }
     }

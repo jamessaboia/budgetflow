@@ -42,6 +42,10 @@ class BudgetRepositoryImpl @Inject constructor(
         categoryDao.insertCategory(category.toEntity())
     }
 
+    override suspend fun deleteCategory(category: Category) {
+        categoryDao.deleteCategory(category.toEntity())
+    }
+
     override fun getUserPreferences(): Flow<UserPreferences> {
         return preferencesStore.userPreferencesFlow
     }

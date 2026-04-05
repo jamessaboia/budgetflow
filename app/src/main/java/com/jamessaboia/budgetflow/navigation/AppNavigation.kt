@@ -5,6 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.jamessaboia.budgetflow.ui.features.categories.CategoryManagementScreen
 import com.jamessaboia.budgetflow.ui.features.dashboard.DashboardScreen
 import com.jamessaboia.budgetflow.ui.features.onboarding.OnboardingScreen
 import com.jamessaboia.budgetflow.ui.features.settings.BudgetSettingsScreen
@@ -66,6 +67,12 @@ fun AppNavigation(
         }
         composable(Screen.Settings.route) {
             BudgetSettingsScreen(
+                onBack = { navController.popBackStack() },
+                onNavigateToCategories = { navController.navigate(Screen.CategoryManagement.route) }
+            )
+        }
+        composable(Screen.CategoryManagement.route) {
+            CategoryManagementScreen(
                 onBack = { navController.popBackStack() }
             )
         }
