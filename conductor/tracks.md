@@ -9,7 +9,6 @@ This registry tracks the progress of features, bug fixes, and architectural upda
 | Track ID | Description | Priority |
 | :--- | :--- | :--- |
 | `05-recurring-installments`| Automated fixed bills and credit card installments support. | Medium |
-| `06-unit-testing-coverage` | Implementation of unit tests for Data, Domain and Utils layers. | High |
 | `07-orphaned-transactions` | Manage and recategorize transactions from deleted categories. | Low |
 | `09-analytical-insights` | Detailed category spending breakdown with educational hints. | High |
 | `12-smart-filtering-navigation`| Income categories, type-filtered dropdowns, and deep-linking from Dashboard. | High |
@@ -18,6 +17,7 @@ This registry tracks the progress of features, bug fixes, and architectural upda
 ## Completed Tracks
 | Track ID | Description | Completion Date |
 | :--- | :--- | :--- |
+| `06-unit-testing-coverage` | Implementation of unit tests for Data, Domain and Utils layers. | 2026-04-04 |
 | `01-resume-development` | Assessment and next steps for resuming MVP development. | 2026-04-04 |
 | `02-month-navigation` | Month navigation and budget inheritance logic. | 2026-04-04 |
 | `03-ux-polish-bug-fixes` | Currency masks and deletion feedback. | 2026-04-04 |
