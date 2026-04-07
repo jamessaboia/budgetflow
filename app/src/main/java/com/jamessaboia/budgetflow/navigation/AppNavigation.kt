@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.jamessaboia.budgetflow.ui.features.categories.CategoryManagementScreen
+import com.jamessaboia.budgetflow.ui.features.categories.GroupCategoryListScreen
 import com.jamessaboia.budgetflow.ui.features.dashboard.DashboardScreen
 import com.jamessaboia.budgetflow.ui.features.onboarding.OnboardingScreen
 import com.jamessaboia.budgetflow.ui.features.settings.BudgetSettingsScreen
@@ -73,6 +74,16 @@ fun AppNavigation(
         }
         composable(Screen.CategoryManagement.route) {
             CategoryManagementScreen(
+                onBack = { navController.popBackStack() },
+                onNavigateToGroup = { groupName ->
+                    navController.navigate(Screen.GroupCategoryList.createRoute(groupName))
+                }
+            )
+        }
+        composable(Screen.GroupCategoryList.route) { backStackEntry ->
+            val groupName = backStackEntry.arguments?.getString("groupName") ?: return@composable
+            GroupCategoryListScreen(
+                groupName = groupName,
                 onBack = { navController.popBackStack() }
             )
         }

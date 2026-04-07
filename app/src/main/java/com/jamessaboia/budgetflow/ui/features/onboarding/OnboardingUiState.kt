@@ -1,7 +1,7 @@
 package com.jamessaboia.budgetflow.ui.features.onboarding
 
 data class OnboardingUiState(
-    val step: OnboardingStep = OnboardingStep.WELCOME,
+    val step: OnboardingStep = OnboardingStep.INTRO_SLIDER,
     val baseIncome: String = "",
     val extraIncome: String = "",
     val needsPercent: Int = 50,
@@ -13,7 +13,7 @@ data class OnboardingUiState(
 )
 
 enum class OnboardingStep {
-    WELCOME,
+    INTRO_SLIDER,
     INCOME,
     PERCENTAGES,
     SUMMARY

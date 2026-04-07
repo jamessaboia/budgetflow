@@ -1,23 +1,26 @@
 package com.jamessaboia.budgetflow.ui.features.transactions
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowDownward
+import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jamessaboia.budgetflow.R
 import com.jamessaboia.budgetflow.core.MonthPicker
@@ -62,7 +65,7 @@ fun TransactionsScreen(
             Column {
                 StatusBarSpacer()
                 TopAppBar(
-                    title = { Text(stringResource(R.string.history_title)) },
+                    title = { Text(stringResource(R.string.history_title), fontWeight = FontWeight.Black) },
                     navigationIcon = {
                         IconButton(onClick = onBack) {
                             Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.back))
@@ -93,16 +96,23 @@ fun TransactionsScreen(
             if (uiState.isLoading) {
                 TransactionsSkeleton()
             } else if (uiState.transactions.isEmpty()) {
-                Text(
-                    text = stringResource(R.string.no_transactions),
+                Column(
                     modifier = Modifier.align(Alignment.Center),
-                    style = MaterialTheme.typography.bodyLarge
-                )
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = stringResource(R.string.no_transactions),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(32.dp)
+                    )
+                }
             } else {
                 LazyColumn(
                     modifier = Modifier.fillMaxSize(),
                     contentPadding = PaddingValues(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(uiState.transactions) { transactionWithCategory ->
                         TransactionItem(
@@ -117,79 +127,94 @@ fun TransactionsScreen(
 }
 
 @Composable
-fun TransactionsSkeleton() {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-            .shimmer(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        items(6) {
-            Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(80.dp),
-                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
-            ) {}
-        }
-    }
-}
-
-@Composable
 fun TransactionItem(
     transactionWithCategory: TransactionWithCategory,
     onDelete: () -> Unit
 ) {
     val transaction = transactionWithCategory.transaction
+    val isExpense = transaction.type == TransactionType.EXPENSE
+
     Card(
         modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
+        shape = RoundedCornerShape(20.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLow
+        )
     ) {
         Row(
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
+            verticalAlignment = Alignment.CenterVertically
         ) {
+            Box(
+                modifier = Modifier
+                    .size(40.dp)
+                    .background(
+                        color = if (isExpense) MaterialTheme.colorScheme.error.copy(alpha = 0.1f) 
+                                else MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+                        shape = CircleShape
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    imageVector = if (isExpense) Icons.Default.ArrowDownward else Icons.Default.ArrowUpward,
+                    contentDescription = null,
+                    tint = if (isExpense) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+
+            Spacer(modifier = Modifier.width(16.dp))
+
             Column(modifier = Modifier.weight(1f)) {
                 Text(
-                    text = if (transaction.description.isNotBlank()) transaction.description else stringResource(R.string.no_description),
+                    text = getCategoryDisplayName(transactionWithCategory.categoryName),
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.Bold
                 )
-                Text(
-                    text = getCategoryDisplayName(transactionWithCategory.categoryName),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.primary,
-                    fontWeight = FontWeight.Medium
-                )
-                Text(
-                    text = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(transaction.date),
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
-            
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = if (transaction.type == TransactionType.INCOME) {
-                        stringResource(R.string.transaction_income_format, transaction.amount)
-                    } else {
-                        stringResource(R.string.transaction_expense_format, transaction.amount)
-                    },
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Bold,
-                    color = if (transaction.type == TransactionType.INCOME) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
-                )
-                IconButton(onClick = onDelete) {
-                    Icon(
-                        Icons.Default.Delete,
-                        contentDescription = stringResource(R.string.delete),
-                        tint = MaterialTheme.colorScheme.error.copy(alpha = 0.6f)
+                if (transaction.description.isNotBlank()) {
+                    Text(
+                        text = transaction.description,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
+
+            Column(horizontalAlignment = Alignment.End) {
+                Text(
+                    text = if (isExpense) stringResource(R.string.transaction_expense_format, transaction.amount)
+                           else stringResource(R.string.transaction_income_format, transaction.amount),
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Black,
+                    color = if (isExpense) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
+                )
+                IconButton(onClick = onDelete, modifier = Modifier.size(24.dp)) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = stringResource(R.string.delete),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.4f),
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun TransactionsSkeleton() {
+    LazyColumn(
+        modifier = Modifier.fillMaxSize().padding(16.dp).shimmer(),
+        verticalArrangement = Arrangement.spacedBy(12.dp)
+    ) {
+        items(5) {
+            Card(
+                modifier = Modifier.fillMaxWidth().height(80.dp),
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+            ) {}
         }
     }
 }

@@ -3,7 +3,9 @@
 This registry tracks the progress of features, bug fixes, and architectural updates using the Spec Driven Development (SDD) methodology.
 
 ## Active Tracks
-*(No active tracks)*
+| Track ID | Description | Status | Link |
+| :--- | :--- | :--- | :--- |
+| `14-onboarding-improvement`| Complete redesign of onboarding with a multi-page horizontal slider. | Spec Approved | [Track Folder](./tracks/14-onboarding-improvement/) |
 
 ## Planned Tracks
 | Track ID | Description | Priority |

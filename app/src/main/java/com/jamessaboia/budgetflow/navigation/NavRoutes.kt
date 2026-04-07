@@ -7,4 +7,7 @@ sealed class Screen(val route: String) {
     object Transactions : Screen("transactions")
     object Settings : Screen("settings")
     object CategoryManagement : Screen("category_management")
+    object GroupCategoryList : Screen("group_category_list/{groupName}") {
+        fun createRoute(groupName: String) = "group_category_list/$groupName"
+    }
 }

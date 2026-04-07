@@ -1,25 +1,36 @@
 <resources>
     <string name="app_name">BudgetFlow</string>
 
-    <!-- Onboarding -->
-    <string name="welcome_title">Bem-vindo ao BudgetFlow</string>
-    <string name="welcome_description">Organize sua renda com métodos comprovados pelos maiores educadores financeiros.</string>
-    <string name="start_now">Começar Agora</string>
+    <!-- Onboarding Slider -->
+    <string name="intro_title">Sua paz financeira começa aqui</string>
+    <string name="intro_desc">Controle seus gastos de forma simples, didática e eficiente com o método que se adapta à sua vida.</string>
+    
+    <string name="planning_title">Planeje seu sucesso</string>
+    <string name="planning_desc">Defina metas mensais para seus gastos (como moradia, lazer ou mercado). Seu planejamento é o guia para você nunca gastar mais do que deve.</string>
+    
+    <string name="cashflow_title">Dinheiro real no seu bolso</string>
+    <string name="cashflow_desc">Seu saldo só atualiza quando o dinheiro entra de fato. Registre seus ganhos reais para ver seu saldo do mês crescer.</string>
+    
+    <string name="hints_title">Aprenda enquanto organiza</string>
+    <string name="hints_desc">Fique de olho nos ícones (ℹ️). Eles explicam cada parte do app e trazem dicas valiosas de educação financeira para o seu dia a dia.</string>
+    
+    <string name="get_started">Vamos lá!</string>
     
     <string name="income_title">Planejamento Mensal</string>
     <string name="income_description">Informe o valor total que você planeja receber este mês. Usaremos este valor como referência para definir suas metas de gastos.</string>
     <string name="income_main_label">Valor planejado para o mês</string>
-    <string name="hint_income_planning">DICA: Este valor serve apenas para definir seus limites de gastos e planejar suas metas. Seu saldo real do mês só atualiza quando você registra seus ganhos como \'Receita\' em \'Nova Transação\'.</string>
+    <string name="hint_income_planning">DICA: Você pode redefinir este valor sempre que quiser nas configurações. Seu saldo real do mês só atualiza quando você registra seus ganhos como \'Receita\' em \'Nova Transação\'.</string>
     <string name="next">Próximo</string>
     <string name="back">Voltar</string>
     
-    <string name="percentages_title">Como quer dividir seu plano?</string>
+    <string name="percentages_title">Divisão do Plano</string>
+    <string name="percentages_description">Escolha como distribuir seu planejamento entre os pilares financeiros. Você pode usar um método pronto ou criar o seu.</string>
     <string name="total_label">Total: %1$d%%</string>
     <string name="total_error" formatted="false">A soma deve ser exatamente 100%.</string>
     
-    <string name="summary_title">Tudo pronto!</string>
+    <string name="summary_title">Resumo do Plano</string>
     <string name="summary_income_total">Planejamento Total</string>
-    <string name="finish">Finalizar</string>
+    <string name="finish">Finalizar e Começar</string>
     <string name="saving_success">Transação salva com sucesso!</string>
 
     <!-- Dashboard -->
@@ -103,9 +114,9 @@
 
     <!-- Educational Hints -->
     <string name="hint_groups_overview">As metas financeiras abaixo são baseadas no valor definido em seu Planejamento Mensal. Você pode ajustar esse valor nas Configurações a qualquer momento.</string>
-    <string name="hint_group_needs" formatted="false">Gastos vitais para sua sobrevivência e manutenção (Moradia, Alimentação, Saúde).\n\nDICA: Se este grupo passar de 50%, você pode estar vivendo um padrão acima da sua renda atual.</string>
-    <string name="hint_group_lifestyle">Gastos que trazem conforto e prazer, mas não são vitais (Lazer, Assinaturas, Hobbies).\n\nDICA: Este é o primeiro lugar para reduzir custos se precisar economizar.</string>
-    <string name="hint_group_savings">Dinheiro destinado ao seu futuro e segurança (Reserva, Investimentos).\n\nDICA: Trate este valor como um boleto obrigatório. Pague-se primeiro assim que receber sua renda.</string>
+    <string name="hint_group_needs" formatted="false">Gastos vitais para sua sobrevivência e manutenção (Moradia, Alimentação, Saúde). O limite exibido é baseado no seu Planejamento Mensal.\n\nDICA: Se este grupo passar de 50%, você pode estar vivendo um padrão acima da sua renda atual.</string>
+    <string name="hint_group_lifestyle">Gastos que trazem conforto e prazer, mas não são vitais (Lazer, Assinaturas, Hobbies). O limite exibido é baseado no seu Planejamento Mensal.\n\nDICA: Este é o primeiro lugar para reduzir custos se precisar economizar.</string>
+    <string name="hint_group_savings">Dinheiro destinado ao seu futuro e segurança (Reserva, Investimentos). O limite exibido é baseado no seu Planejamento Mensal.\n\nDICA: Trate este valor como um boleto obrigatório. Pague-se primeiro assim que receber sua renda.</string>
     <string name="hint_general">Evite a armadilha de subir seu custo de vida sempre que sua renda aumentar.</string>
     <string name="hint_cash_flow_title">Fluxo de Caixa vs. Orçamento</string>
     <string name="hint_cash_flow_desc">O saldo disponível reflete seu dinheiro real hoje (Entradas - Saídas). Para atualizá-lo, registre seus recebimentos (salário, renda extra, etc.) como \'Receita\' em \'Nova Transação\'.</string>
@@ -128,6 +139,8 @@
     <string name="delete_confirm">Excluir</string>
     <string name="category_deleted">Categoria excluída</string>
     <string name="category_saved">Categoria salva com sucesso</string>
+    <string name="see_all_categories">Ver todas</string>
+    <string name="all_categories_in">Categorias: %1$s</string>
 
     <string name="percentage_value">%1$d%%</string>
     <string name="group_needs_summary">Essenciais (%1$d%%)</string>

@@ -1,79 +1,36 @@
 package com.jamessaboia.budgetflow.ui.features.dashboard
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.togetherWith
+import androidx.compose.animation.*
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.ArrowDownward
-import androidx.compose.material.icons.filled.ArrowUpward
-import androidx.compose.material.icons.filled.ExpandLess
-import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Visibility
-import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material.icons.filled.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.jamessaboia.budgetflow.R
 import com.jamessaboia.budgetflow.core.MonthPicker
 import com.jamessaboia.budgetflow.core.NavigationBarSpacer
+import com.jamessaboia.budgetflow.core.getCategoryDisplayName
 import com.jamessaboia.budgetflow.domain.model.DashboardSummary
 import com.jamessaboia.budgetflow.domain.model.GroupSummary
 import com.valentinilk.shimmer.shimmer
@@ -89,7 +46,6 @@ fun DashboardScreen(
     val uiState by viewModel.uiState.collectAsState()
     val selectedMonth by viewModel.selectedMonth.collectAsState()
     val listState = rememberLazyListState()
-    
     
     var previousIndex by remember { mutableIntStateOf(listState.firstVisibleItemIndex) }
     var previousScrollOffset by remember { mutableIntStateOf(listState.firstVisibleItemScrollOffset) }
@@ -121,8 +77,9 @@ fun DashboardScreen(
                 title = { 
                     Text(
                         stringResource(R.string.app_name),
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onPrimary
+                        fontWeight = FontWeight.Black,
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        letterSpacing = (-0.5).sp
                     ) 
                 },
                 actions = {
@@ -156,9 +113,10 @@ fun DashboardScreen(
                     onClick = onNavigateToAddTransaction,
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary,
-                    expanded = isAtTop, 
+                    expanded = isAtTop,
                     icon = { Icon(Icons.Default.Add, contentDescription = null) },
-                    text = { Text(stringResource(R.string.add_transaction_fab)) }
+                    text = { Text(stringResource(R.string.add_transaction_fab), fontWeight = FontWeight.Bold) },
+                    shape = RoundedCornerShape(16.dp)
                 )
             }
         },
@@ -273,7 +231,6 @@ fun DashboardContent(
         verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(bottom = 16.dp)
     ) {
-        
         item {
             Surface(
                 color = MaterialTheme.colorScheme.primary,
@@ -297,23 +254,22 @@ fun DashboardContent(
             }
         }
 
-        // Section Title
         item {
             var showOverviewHint by remember { mutableStateOf(false) }
             Column(modifier = Modifier.padding(horizontal = 16.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         text = stringResource(R.string.my_groups),
-                        style = MaterialTheme.typography.titleLarge,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.secondary
+                        style = MaterialTheme.typography.headlineSmall,
+                        fontWeight = FontWeight.Black,
+                        color = MaterialTheme.colorScheme.primary
                     )
                     IconButton(onClick = { showOverviewHint = !showOverviewHint }, modifier = Modifier.size(32.dp)) {
                         Icon(
                             imageVector = Icons.Default.Info,
                             contentDescription = "Overview Info",
                             modifier = Modifier.size(18.dp),
-                            tint = MaterialTheme.colorScheme.secondary.copy(alpha = 0.6f)
+                            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
                         )
                     }
                 }
@@ -321,23 +277,23 @@ fun DashboardContent(
                 AnimatedVisibility(visible = showOverviewHint) {
                     Card(
                         colors = CardDefaults.cardColors(
-                            containerColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.3f)
+                            containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                         ),
+                        shape = RoundedCornerShape(16.dp),
                         modifier = Modifier.fillMaxWidth().padding(top = 8.dp)
                     ) {
                         Text(
                             text = stringResource(R.string.hint_groups_overview),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer,
-                            modifier = Modifier.padding(12.dp)
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.padding(16.dp),
+                            lineHeight = 22.sp
                         )
                     }
                 }
             }
         }
 
-
-        
         item {
             Column(modifier = Modifier.padding(horizontal = 16.dp)) {
                 GroupCard(
@@ -374,58 +330,27 @@ fun BalanceHeader(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 24.dp, start = 24.dp, end = 24.dp),
+            .padding(bottom = 32.dp, start = 24.dp, end = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         IconButton(
             onClick = onToggleVisibility, 
-            modifier = Modifier.size(48.dp)
+            modifier = Modifier.size(56.dp)
         ) {
             Icon(
                 imageVector = if (isVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
                 contentDescription = "Toggle Visibility",
                 tint = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.9f),
-                modifier = Modifier.size(28.dp)
+                modifier = Modifier.size(32.dp)
             )
         }
 
-        var showCashFlowHint by remember { mutableStateOf(false) }
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = stringResource(R.string.available_balance),
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
-            )
-            IconButton(onClick = { showCashFlowHint = !showCashFlowHint }, modifier = Modifier.size(24.dp)) {
-                Icon(
-                    imageVector = Icons.Default.Info,
-                    contentDescription = "Cash Flow Info",
-                    tint = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.6f),
-                    modifier = Modifier.size(14.dp)
-                )
-            }
-        }
-        
-        AnimatedVisibility(visible = showCashFlowHint) {
-            Card(
-                colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.1f)
-                ),
-                modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp)
-            ) {
-                Text(
-                    text = stringResource(R.string.hint_cash_flow_desc),
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                    modifier = Modifier.padding(8.dp),
-                    textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                )
-            }
-        }
+        Text(
+            text = stringResource(R.string.available_balance),
+            style = MaterialTheme.typography.labelLarge,
+            color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.7f),
+            fontWeight = FontWeight.Medium
+        )
         
         AnimatedContent(
             targetState = if (isVisible) summary.remainingBalance else null,
@@ -436,19 +361,19 @@ fun BalanceHeader(
         ) { balance ->
             Text(
                 text = if (balance != null) stringResource(R.string.currency_format, balance) else "R$ •••••",
-                style = MaterialTheme.typography.headlineLarge,
+                style = MaterialTheme.typography.displayMedium,
                 fontWeight = FontWeight.Black,
-                color = MaterialTheme.colorScheme.onPrimary
+                color = MaterialTheme.colorScheme.onPrimary,
+                letterSpacing = (-1).sp
             )
         }
         
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(32.dp))
         
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            
             SummaryCard(
                 label = stringResource(R.string.income_label),
                 value = if (isVisible) stringResource(R.string.currency_format, summary.actualIncome) else "••••",
@@ -456,7 +381,6 @@ fun BalanceHeader(
                 iconColor = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.weight(1f)
             )
-            
             
             SummaryCard(
                 label = stringResource(R.string.spent_label),
@@ -482,16 +406,17 @@ fun SummaryCard(
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.background
         ),
+        shape = RoundedCornerShape(20.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
         Row(
-            modifier = Modifier.padding(12.dp),
+            modifier = Modifier.padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Box(
                 modifier = Modifier
-                    .size(28.dp)
+                    .size(32.dp)
                     .background(iconColor.copy(alpha = 0.1f), shape = CircleShape),
                 contentAlignment = Alignment.Center
             ) {
@@ -499,21 +424,23 @@ fun SummaryCard(
                     imageVector = icon,
                     contentDescription = null,
                     tint = iconColor,
-                    modifier = Modifier.size(16.dp)
+                    modifier = Modifier.size(18.dp)
                 )
             }
             Column {
                 Text(
                     text = label,
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    fontWeight = FontWeight.Bold
                 )
                 Text(
                     text = value,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.Black,
                     color = iconColor,
-                    maxLines = 1
+                    maxLines = 1,
+                    overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
                 )
             }
         }
@@ -536,12 +463,13 @@ fun GroupCard(
         modifier = Modifier
             .fillMaxWidth()
             .clickable { if (summary.categorySpending.isNotEmpty()) expanded = !expanded },
-        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainer)
+        shape = RoundedCornerShape(24.dp),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 2.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerLow)
     ) {
         Column(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(20.dp)
                 .animateContentSize()
         ) {
             Row(
@@ -550,13 +478,18 @@ fun GroupCard(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = title, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+                    Text(
+                        text = title, 
+                        style = MaterialTheme.typography.titleMedium, 
+                        fontWeight = FontWeight.Black,
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
                     IconButton(onClick = { showHint = !showHint }, modifier = Modifier.size(32.dp)) {
                         Icon(
                             imageVector = Icons.Default.Info,
                             contentDescription = "Info",
-                            modifier = Modifier.size(16.dp),
-                            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.6f)
+                            modifier = Modifier.size(18.dp),
+                            tint = MaterialTheme.colorScheme.primary.copy(alpha = 0.7f)
                         )
                     }
                     if (summary.categorySpending.isNotEmpty()) {
@@ -570,19 +503,26 @@ fun GroupCard(
                 }
                 Text(
                     text = stringResource(R.string.percentage_value, (summary.percentageSpent * 100).toInt()),
-                    style = MaterialTheme.typography.bodyLarge,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Black,
                     color = mainColor
                 )
             }
             
             AnimatedVisibility(visible = showHint) {
-                Text(
-                    text = hint,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier.padding(bottom = 8.dp)
-                )
+                Card(
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceContainerHigh),
+                    shape = RoundedCornerShape(12.dp),
+                    modifier = Modifier.padding(bottom = 12.dp)
+                ) {
+                    Text(
+                        text = hint,
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(12.dp),
+                        lineHeight = 18.sp
+                    )
+                }
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -592,12 +532,13 @@ fun GroupCard(
                 progress = { progress },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(8.dp),
+                    .height(10.dp)
+                    .clip(CircleShape),
                 color = mainColor,
                 trackColor = mainColor.copy(alpha = 0.1f),
             )
             
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(16.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
@@ -605,51 +546,63 @@ fun GroupCard(
                 val spentValue = if (isBalanceVisible) stringResource(R.string.currency_format, summary.spent) else "••••"
                 val limitValue = if (isBalanceVisible) stringResource(R.string.currency_format, summary.limit) else "••••"
                 
-                Text(
-                    text = stringResource(R.string.spent_value, spentValue),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error, 
-                    fontWeight = FontWeight.Medium
-                )
-                Text(
-                    text = stringResource(R.string.limit_value, limitValue),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.tertiary
-                )
+                Column {
+                    Text(
+                        text = stringResource(R.string.spent_label),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = spentValue,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.error,
+                        fontWeight = FontWeight.Black
+                    )
+                }
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(
+                        text = stringResource(R.string.limit_value, ""),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    Text(
+                        text = limitValue,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.tertiary,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
             }
             
             val remainingValue = if (isBalanceVisible) stringResource(R.string.currency_format, if (isExceeded) -summary.remaining else summary.remaining) else "••••"
             
-            if (isExceeded) {
+            Surface(
+                color = if (isExceeded) MaterialTheme.colorScheme.error.copy(alpha = 0.1f) else mainColor.copy(alpha = 0.1f),
+                shape = CircleShape,
+                modifier = Modifier.padding(top = 12.dp)
+            ) {
                 Text(
-                    text = stringResource(R.string.exceeded_by, remainingValue),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.error,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 4.dp)
-                )
-            } else {
-                Text(
-                    text = stringResource(R.string.remains_value, remainingValue),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = mainColor,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(top = 4.dp)
+                    text = if (isExceeded) stringResource(R.string.exceeded_by, remainingValue) else stringResource(R.string.remains_value, remainingValue),
+                    style = MaterialTheme.typography.labelMedium,
+                    color = if (isExceeded) MaterialTheme.colorScheme.error else mainColor,
+                    fontWeight = FontWeight.ExtraBold,
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
                 )
             }
 
             AnimatedVisibility(visible = expanded) {
                 Column(
                     modifier = Modifier
-                        .padding(top = 16.dp)
+                        .padding(top = 20.dp)
                         .fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                    verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
-                    HorizontalDivider(modifier = Modifier.padding(bottom = 8.dp))
+                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                     summary.categorySpending.forEach { categorySpent ->
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.SpaceBetween
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            verticalAlignment = Alignment.CenterVertically
                         ) {
                             Text(
                                 text = com.jamessaboia.budgetflow.core.getCategoryDisplayName(categorySpent.categoryName),
@@ -658,8 +611,8 @@ fun GroupCard(
                             )
                             Text(
                                 text = if (isBalanceVisible) stringResource(R.string.currency_format, categorySpent.amount) else "••••",
-                                style = MaterialTheme.typography.bodyMedium,
-                                fontWeight = FontWeight.SemiBold,
+                                style = MaterialTheme.typography.bodyLarge,
+                                fontWeight = FontWeight.Black,
                                 color = MaterialTheme.colorScheme.onSurface
                             )
                         }

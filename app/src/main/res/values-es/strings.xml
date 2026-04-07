@@ -1,10 +1,20 @@
 <resources>
     <string name="app_name">BudgetFlow</string>
 
-    <!-- Onboarding -->
-    <string name="welcome_title">Bienvenido a BudgetFlow</string>
-    <string name="welcome_description">Organiza tus ingresos con métodos probados por los melhores educadores financieros.</string>
-    <string name="start_now">Empezar Ahora</string>
+    <!-- New Onboarding Slider -->
+    <string name="intro_title">Tu paz financiera comienza aquí</string>
+    <string name="intro_desc">Controla tus gastos de forma sencilla, didáctica y eficiente con un método que se adapta a tu vida.</string>
+    
+    <string name="planning_title">Planifica tu éxito</string>
+    <string name="planning_desc">Define una meta mensual para tus categorías. Usa tu planificación como guía para no gastar más de lo debido.</string>
+    
+    <string name="cashflow_title">Dinero real en tu bolsillo</string>
+    <string name="cashflow_desc">Tu saldo solo se actualiza cuando el dinero ingresa de verdad. Registra tus ganancias reales para ver crecer tu saldo del mes.</string>
+    
+    <string name="hints_title">Aprende mientras organizas</string>
+    <string name="hints_desc">Presta atención a los iconos de información (ℹ️). Traen consejos valiosos de educación financiera y buenas prácticas.</string>
+    
+    <string name="get_started">¡Vamos allá!</string>
     
     <string name="income_title">Planificación Mensual</string>
     <string name="income_description">Ingresa el monto total que planeas recibir este mes. Usaremos este valor como referencia para definir tus metas de gasto.</string>
@@ -14,12 +24,13 @@
     <string name="back">Atrás</string>
     
     <string name="percentages_title">¿Cómo quieres dividir tu plan?</string>
+    <string name="percentages_description">Elige cómo distribuir tu planificación entre los pilares financieros. Puedes usar un método preparado o crear el tuyo propio.</string>
     <string name="total_label">Total: %1$d%%</string>
     <string name="total_error" formatted="false">La suma debe ser exactamente 100%.</string>
     
     <string name="summary_title">¡Todo listo!</string>
     <string name="summary_income_total">Planificación Total</string>
-    <string name="finish">Finalizar</string>
+    <string name="finish">Finalizar y Empezar</string>
     <string name="saving_success">¡Transacción guardada con éxito!</string>
 
     <!-- Dashboard -->
@@ -37,7 +48,7 @@
 
     <!-- Transactions -->
     <string name="new_transaction">Nueva Transacción</string>
-    <string name="add_transaction_fab">Nueva Transação</string>
+    <string name="add_transaction_fab">Nueva Transacción</string>
     <string name="value_label">Valor</string>
     <string name="expense">Gasto</string>
     <string name="income">Ingreso</string>
@@ -103,9 +114,9 @@
 
     <!-- Educational Hints -->
     <string name="hint_groups_overview">Las metas financieras a continuación se basan en el valor definido en su Planificación Mensual. Puede ajustar este valor en la Configuración en cualquier momento.</string>
-    <string name="hint_group_needs" formatted="false">Gastos vitales para la supervivencia (Vivienda, Alimentación, Salud).\n\nTIP: Si este grupo supera el 50%, es posible que estés viviendo por encima de tus medios actuales.</string>
-    <string name="hint_group_lifestyle">Gastos de comodidad y placer, mas no vitales (Ocio, Suscripciones, Pasatiempos).\n\nTIP: Este es el primer lugar para reducir gastos si necesitas ahorrar.</string>
-    <string name="hint_group_savings">Dinero destinado a tu futuro y seguridad (Fondo de Emergencia, Inversiones).\n\nTIP: Trata esta cantidad como una factura obligatoria. Págate a ti mismo primero tan pronto como recibas tus ingresos.</string>
+    <string name="hint_group_needs" formatted="false">Gastos vitales para la supervivencia (Vivienda, Alimentación, Salud). El límite mostrado se basa en tu Planificación Mensual.\n\nTIP: Si este grupo supera el 50%, es posible que estés viviendo por encima de tus medios actuales.</string>
+    <string name="hint_group_lifestyle">Gastos de comodidad y placer, mas no vitales (Ocio, Suscripciones, Pasatiempos). El límite mostrado se basa en tu Planificación Mensual.\n\nTIP: Este es el primer lugar para reducir gastos si necesitas ahorrar.</string>
+    <string name="hint_group_savings">Dinero destinado a tu futuro y seguridad (Fondo de Emergencia, Inversiones). El límite mostrado se basa en tu Planificación Mensual.\n\nTIP: Trata esta cantidad como una factura obligatoria. Págate a ti mismo primero tan pronto como recibas tus ingresos.</string>
     <string name="hint_general">Evita la trampa de subir tu costo de vida cada vez que aumenten teus ingresos.</string>
     <string name="hint_cash_flow_title">Flujo de Caja vs. Presupuesto</string>
     <string name="hint_cash_flow_desc">El saldo disponible refleja su dinero real hoy (Ingresos - Gastos). Para actualizarlo, registre sus ganancias (salario, ingresos extra, etc.) como \'Ingresos\' en \'Nueva Transação\'.</string>
@@ -128,6 +139,8 @@
     <string name="delete_confirm">Eliminar</string>
     <string name="category_deleted">Categoría eliminada</string>
     <string name="category_saved">Categoría guardada con éxito</string>
+    <string name="see_all_categories">Ver todas</string>
+    <string name="all_categories_in">Categorías: %1$s</string>
 
     <string name="percentage_value">%1$d%%</string>
     <string name="group_needs_summary">Esenciales (%1$d%%)</string>
