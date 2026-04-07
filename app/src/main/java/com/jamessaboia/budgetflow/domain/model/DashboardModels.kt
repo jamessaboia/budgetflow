@@ -14,7 +14,8 @@ data class GroupSummary(
 )
 
 data class DashboardSummary(
-    val totalIncome: Double,
+    val actualIncome: Double,
+    val plannedIncome: Double,
     val totalSpent: Double,
     val remainingBalance: Double,
     val needsSummary: GroupSummary,

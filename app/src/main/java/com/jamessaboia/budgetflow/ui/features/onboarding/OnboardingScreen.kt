@@ -185,6 +185,31 @@ fun IncomeStep(
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center
         )
+        Spacer(modifier = Modifier.height(12.dp))
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.4f)
+            ),
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Row(
+                modifier = Modifier.padding(12.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    Icons.Default.Info,
+                    contentDescription = null,
+                    modifier = Modifier.size(16.dp),
+                    tint = MaterialTheme.colorScheme.tertiary
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                Text(
+                    text = stringResource(R.string.hint_income_planning),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                )
+            }
+        }
         Spacer(modifier = Modifier.height(24.dp))
         OutlinedTextField(
             value = income,
@@ -196,23 +221,6 @@ fun IncomeStep(
                 onIncomeChange(filtered)
             },
             label = { Text(stringResource(R.string.income_main_label)) },
-            prefix = { Text(stringResource(R.string.currency_prefix)) },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            visualTransformation = CurrencyVisualTransformation(),
-            modifier = Modifier.fillMaxWidth(),
-            singleLine = true
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        OutlinedTextField(
-            value = extraIncome,
-            onValueChange = { input ->
-                val normalized = input.replace(",", ".")
-                val filtered = normalized.filterIndexed { index, char ->
-                    char.isDigit() || (char == '.' && normalized.indexOf('.') == index)
-                }
-                onExtraIncomeChange(filtered)
-            },
-            label = { Text(stringResource(R.string.income_extra_label)) },
             prefix = { Text(stringResource(R.string.currency_prefix)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
             visualTransformation = CurrencyVisualTransformation(),

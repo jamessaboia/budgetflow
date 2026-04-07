@@ -9,9 +9,6 @@ import com.jamessaboia.budgetflow.domain.repository.BudgetRepository
 import com.jamessaboia.budgetflow.domain.repository.TransactionRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import java.text.SimpleDateFormat
-import java.util.Calendar
-import java.util.Locale
 import javax.inject.Inject
 
 class GetDashboardSummaryUseCase @Inject constructor(
@@ -38,10 +35,13 @@ class GetDashboardSummaryUseCase @Inject constructor(
                 .groupBy { it.transaction.categoryId }
                 .mapValues { entry -> entry.value.sumOf { it.transaction.amount } }
 
-            val totalIncome = budget.totalIncome
+            val plannedIncome = budget.totalIncome
+            val actualIncome = transactions
+                .filter { it.transaction.type == TransactionType.INCOME }
+                .sumOf { it.transaction.amount }
             
             fun createGroupSummary(group: BudgetGroup, percentage: Int): GroupSummary {
-                val limit = totalIncome * percentage / 100.0
+                val limit = plannedIncome * percentage / 100.0
                 val spent = expensesByGroup[group] ?: 0.0
                 val percentageSpent = if (limit > 0) (spent / limit).toFloat() else 0f
                 val remaining = limit - spent
@@ -62,10 +62,11 @@ class GetDashboardSummaryUseCase @Inject constructor(
             val savingsSummary = createGroupSummary(BudgetGroup.SAVINGS, budget.savingsPercentage)
 
             val totalSpent = transactions.filter { it.transaction.type == TransactionType.EXPENSE }.sumOf { it.transaction.amount }
-            val remainingBalance = totalIncome - totalSpent
+            val remainingBalance = actualIncome - totalSpent
 
             DashboardSummary(
-                totalIncome = totalIncome,
+                actualIncome = actualIncome,
+                plannedIncome = plannedIncome,
                 totalSpent = totalSpent,
                 remainingBalance = remainingBalance,
                 needsSummary = needsSummary,

@@ -8,6 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Category
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -110,6 +111,31 @@ fun BudgetSettingsScreen(
                     fontWeight = FontWeight.Bold
                 )
 
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.tertiaryContainer.copy(alpha = 0.4f)
+                    ),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Row(
+                        modifier = Modifier.padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            Icons.Default.Info,
+                            contentDescription = null,
+                            modifier = Modifier.size(16.dp),
+                            tint = MaterialTheme.colorScheme.tertiary
+                        )
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = stringResource(R.string.hint_income_planning_settings),
+                            style = MaterialTheme.typography.labelSmall,
+                            color = MaterialTheme.colorScheme.onTertiaryContainer
+                        )
+                    }
+                }
+
                 OutlinedTextField(
                     value = uiState.baseIncome,
                     onValueChange = { input ->
@@ -120,23 +146,6 @@ fun BudgetSettingsScreen(
                         viewModel.onBaseIncomeChange(filtered)
                     },
                     label = { Text(stringResource(R.string.income_main_label)) },
-                    prefix = { Text(stringResource(R.string.currency_prefix)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    visualTransformation = CurrencyVisualTransformation(),
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
-                )
-
-                OutlinedTextField(
-                    value = uiState.extraIncome,
-                    onValueChange = { input ->
-                        val normalized = input.replace(",", ".")
-                        val filtered = normalized.filterIndexed { index, char ->
-                            char.isDigit() || (char == '.' && normalized.indexOf('.') == index)
-                        }
-                        viewModel.onExtraIncomeChange(filtered)
-                    },
-                    label = { Text(stringResource(R.string.income_extra_label)) },
                     prefix = { Text(stringResource(R.string.currency_prefix)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     visualTransformation = CurrencyVisualTransformation(),

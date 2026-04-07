@@ -6,19 +6,19 @@
     <string name="welcome_description">Organiza tus ingresos con métodos probados por los melhores educadores financieros.</string>
     <string name="start_now">Empezar Ahora</string>
     
-    <string name="income_title">¿Cuáles son tus ingresos?</string>
-    <string name="income_description">Ingresa tu salario principal y, si lo hay, un ingreso extra mensual opcional.</string>
-    <string name="income_main_label">Ingreso Principal</string>
-    <string name="income_extra_label">Ingreso Extra (Opcional)</string>
+    <string name="income_title">Planificación Mensual</string>
+    <string name="income_description">Ingresa el monto total que planeas recibir este mes. Usaremos este valor como referencia para definir tus metas de gasto.</string>
+    <string name="income_main_label">Monto planificado para el mes</string>
+    <string name="hint_income_planning">CONSEJO: Este valor solo sirve para definir sus límites de gasto y planificar sus metas. Su saldo real del mes solo se acualiza cuando registra suas ganancias como \'Ingresos\' en \'Nueva Transacción\'.</string>
     <string name="next">Siguiente</string>
     <string name="back">Atrás</string>
     
-    <string name="percentages_title">¿Cómo quieres dividir tus ingresos?</string>
+    <string name="percentages_title">¿Cómo quieres dividir tu plan?</string>
     <string name="total_label">Total: %1$d%%</string>
     <string name="total_error" formatted="false">La suma debe ser exactamente 100%.</string>
     
     <string name="summary_title">¡Todo listo!</string>
-    <string name="summary_income_total">Ingresos Totales</string>
+    <string name="summary_income_total">Planificación Total</string>
     <string name="finish">Finalizar</string>
     <string name="saving_success">¡Transacción guardada con éxito!</string>
 
@@ -28,7 +28,7 @@
     <string name="spent_label">Gastos</string>
     <string name="my_groups">Mis Grupos</string>
     <string name="spent_value">Gastado: %1$s</string>
-    <string name="limit_value">Límite: %1$s</string>
+    <string name="limit_value">Meta: %1$s</string>
     <string name="exceeded_by">Excedido en %1$s</string>
     <string name="remains_value">Resta %1$s</string>
     <string name="history">Historial</string>
@@ -37,7 +37,7 @@
 
     <!-- Transactions -->
     <string name="new_transaction">Nueva Transacción</string>
-    <string name="add_transaction_fab">Nueva Transacción</string>
+    <string name="add_transaction_fab">Nueva Transação</string>
     <string name="value_label">Valor</string>
     <string name="expense">Gasto</string>
     <string name="income">Ingreso</string>
@@ -73,14 +73,14 @@
     <!-- Category Hints -->
     <string name="hint_housing">Gastos vitales de alquiler, comunidad, luz, agua e internet.</string>
     <string name="hint_food">Supermercado y artículos esenciales de alimentación.</string>
-    <string name="hint_transport">Combustible, transporte público o mantenimiento del vehículo.</string>
+    <string name="hint_transport">Combustible, transporte público o manutenção del veículo.</string>
     <string name="hint_health">Farmacia, seguros de salud o consultas médicas.</string>
-    <string name="hint_education">Cursos, libros o cuotas escolares.</string>
+    <string name="hint_education">Cursos, livros o cuotas escolares.</string>
     <string name="hint_leisure">Cine, salidas, viajes y pasatiempos.</string>
     <string name="hint_lifestyle">Gastos que mejoran tu calidad de vida (ej: gimnasio, peluquería).</string>
     <string name="hint_shopping">Ropa, electrónica y otros artículos no esenciales.</string>
     <string name="hint_subscriptions">Netflix, Spotify, apps y servicios recurrentes.</string>
-    <string name="hint_emergency">Dinero guardado para imprevistos y seguridad inmediata.</string>
+    <string name="hint_emergency">Dinheiro guardado para imprevistos e segurança imediata.</string>
     <string name="hint_investments">Dinero destinado a generar ingresos pasivos a largo plazo.</string>
     <string name="hint_goals">Ahorro destinado a sueños específicos (ej: viajes, coche).</string>
 
@@ -102,10 +102,14 @@
     <string name="preset_custom">Personalizado</string>
 
     <!-- Educational Hints -->
-    <string name="hint_group_needs" formatted="false">Gastos vitales para la supervivencia (Vivienda, Alimentación, Salud). TIP: Si este grupo supera el 50%, es posible que estés viviendo por encima de tus medios actuales.</string>
-    <string name="hint_group_lifestyle">Gastos de comodidad y placer, pero no vitales (Ocio, Suscripciones, Pasatiempos). TIP: Este es el primer lugar para reducir gastos si necesitas ahorrar.</string>
-    <string name="hint_group_savings">Dinero destinado a tu futuro y seguridad (Fondo de Emergencia, Inversiones). TIP: Trata esta cantidad como una factura obligatoria. Págate a ti mismo primero tan pronto como recibas tus ingresos.</string>
-    <string name="hint_general">Evita la trampa de subir tu costo de vida cada vez que aumenten tus ingresos.</string>
+    <string name="hint_groups_overview">Las metas financieras a continuación se basan en el valor definido en su Planificación Mensual. Puede ajustar este valor en la Configuración en cualquier momento.</string>
+    <string name="hint_group_needs" formatted="false">Gastos vitales para la supervivencia (Vivienda, Alimentación, Salud).\n\nTIP: Si este grupo supera el 50%, es posible que estés viviendo por encima de tus medios actuales.</string>
+    <string name="hint_group_lifestyle">Gastos de comodidad y placer, mas no vitales (Ocio, Suscripciones, Pasatiempos).\n\nTIP: Este es el primer lugar para reducir gastos si necesitas ahorrar.</string>
+    <string name="hint_group_savings">Dinero destinado a tu futuro y seguridad (Fondo de Emergencia, Inversiones).\n\nTIP: Trata esta cantidad como una factura obligatoria. Págate a ti mismo primero tan pronto como recibas tus ingresos.</string>
+    <string name="hint_general">Evita la trampa de subir tu costo de vida cada vez que aumenten teus ingresos.</string>
+    <string name="hint_cash_flow_title">Flujo de Caja vs. Presupuesto</string>
+    <string name="hint_cash_flow_desc">El saldo disponible refleja su dinero real hoy (Ingresos - Gastos). Para actualizarlo, registre sus ganancias (salario, ingresos extra, etc.) como \'Ingresos\' en \'Nueva Transação\'.</string>
+    <string name="hint_income_planning_settings">CONSEJO: Reajustar este valor recalcula automáticamente todas suas metas de gasto. Tu saldo disponible real se sigue actualizando a través de \'Nueva Transação\'.</string>
 
     <!-- Settings -->
     <string name="settings">Configuraciones</string>

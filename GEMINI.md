@@ -53,7 +53,9 @@ BudgetFlow is a native Android application designed for personal finance managem
 - Dashboard: Visual progress, remaining balance, and limit alerts.
 
 ## Implementation Principles
-- **Educational Value (Hints):** Every major feature should include educational "hints" or tips. Standardize hints using a "Definition + Practical Tip" pattern to improve user financial literacy.
-- **Pragmatism:** Avoid overengineering. Do not create interfaces for everything if not needed for testing or scalability.
+- **Educational Value (Hints):** Every major feature should include educational "hints" or tips. Standardize hints using a "Definition + Practical Tip" pattern.
+- **Neutrality & Empowerment:** The app MUST NOT make prescriptive life suggestions (e.g., "buy a car" or "stop spending on X"). It must provide neutral, high-quality data analysis so the user can make their own informed decisions. Insights should focus on financial principles and mathematical facts, never on personal choices.
+- **Pragmatism:** Avoid overengineering. 
+ Do not create interfaces for everything if not needed for testing or scalability.
 - **Scalability:** Ensure the architecture supports a future backend migration with minimal friction.
 - **Documentation:** Maintain `GEMINI.md` as the source of truth for engineering standards.

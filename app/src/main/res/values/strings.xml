@@ -6,29 +6,29 @@
     <string name="welcome_description">Organize sua renda com métodos comprovados pelos maiores educadores financeiros.</string>
     <string name="start_now">Começar Agora</string>
     
-    <string name="income_title">Qual sua renda?</string>
-    <string name="income_description">Informe seu salário principal e, se houver, uma renda extra mensal.</string>
-    <string name="income_main_label">Renda Principal</string>
-    <string name="income_extra_label">Renda Extra (Opcional)</string>
+    <string name="income_title">Planejamento Mensal</string>
+    <string name="income_description">Informe o valor total que você planeja receber este mês. Usaremos este valor como referência para definir suas metas de gastos.</string>
+    <string name="income_main_label">Valor planejado para o mês</string>
+    <string name="hint_income_planning">DICA: Este valor serve apenas para definir seus limites de gastos e planejar suas metas. Seu saldo real do mês só atualiza quando você registra seus ganhos como \'Receita\' em \'Nova Transação\'.</string>
     <string name="next">Próximo</string>
     <string name="back">Voltar</string>
     
-    <string name="percentages_title">Como quer dividir sua renda?</string>
+    <string name="percentages_title">Como quer dividir seu plano?</string>
     <string name="total_label">Total: %1$d%%</string>
     <string name="total_error" formatted="false">A soma deve ser exatamente 100%.</string>
     
     <string name="summary_title">Tudo pronto!</string>
-    <string name="summary_income_total">Renda Total</string>
+    <string name="summary_income_total">Planejamento Total</string>
     <string name="finish">Finalizar</string>
     <string name="saving_success">Transação salva com sucesso!</string>
 
     <!-- Dashboard -->
     <string name="available_balance">Saldo Disponível</string>
-    <string name="income_label">Renda</string>
-    <string name="spent_label">Gasto</string>
+    <string name="income_label">Receitas</string>
+    <string name="spent_label">Despesas</string>
     <string name="my_groups">Meus Grupos</string>
     <string name="spent_value">Gasto: %1$s</string>
-    <string name="limit_value">Limite: %1$s</string>
+    <string name="limit_value">Meta: %1$s</string>
     <string name="exceeded_by">Excedido em %1$s</string>
     <string name="remains_value">Resta %1$s</string>
     <string name="history">Histórico</string>
@@ -102,10 +102,14 @@
     <string name="preset_custom">Personalizado</string>
 
     <!-- Educational Hints -->
-    <string name="hint_group_needs" formatted="false">Gastos vitais para sua sobrevivência e manutenção (Moradia, Alimentação, Saúde). DICA: Se este grupo passar de 50%, você pode estar vivendo um padrão acima da sua renda atual.</string>
-    <string name="hint_group_lifestyle">Gastos que trazem conforto e prazer, mas não são vitais (Lazer, Assinaturas, Hobbies). DICA: Este é o primeiro lugar para reduzir custos se precisar economizar.</string>
-    <string name="hint_group_savings">Dinheiro destinado ao seu futuro e segurança (Reserva, Investimentos). DICA: Trate este valor como um boleto obrigatório. Pague-se primeiro assim que receber sua renda.</string>
+    <string name="hint_groups_overview">As metas financeiras abaixo são baseadas no valor definido em seu Planejamento Mensal. Você pode ajustar esse valor nas Configurações a qualquer momento.</string>
+    <string name="hint_group_needs" formatted="false">Gastos vitais para sua sobrevivência e manutenção (Moradia, Alimentação, Saúde).\n\nDICA: Se este grupo passar de 50%, você pode estar vivendo um padrão acima da sua renda atual.</string>
+    <string name="hint_group_lifestyle">Gastos que trazem conforto e prazer, mas não são vitais (Lazer, Assinaturas, Hobbies).\n\nDICA: Este é o primeiro lugar para reduzir custos se precisar economizar.</string>
+    <string name="hint_group_savings">Dinheiro destinado ao seu futuro e segurança (Reserva, Investimentos).\n\nDICA: Trate este valor como um boleto obrigatório. Pague-se primeiro assim que receber sua renda.</string>
     <string name="hint_general">Evite a armadilha de subir seu custo de vida sempre que sua renda aumentar.</string>
+    <string name="hint_cash_flow_title">Fluxo de Caixa vs. Orçamento</string>
+    <string name="hint_cash_flow_desc">O saldo disponível reflete seu dinheiro real hoje (Entradas - Saídas). Para atualizá-lo, registre seus recebimentos (salário, renda extra, etc.) como \'Receita\' em \'Nova Transação\'.</string>
+    <string name="hint_income_planning_settings">DICA: Reajustar este valor recalcula automaticamente todas as suas metas de gastos. O seu saldo disponível real continua sendo atualizado através de \'Nova Transação\'.</string>
 
     <!-- Settings -->
     <string name="settings">Configurações</string>

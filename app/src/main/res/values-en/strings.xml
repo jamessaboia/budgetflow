@@ -6,29 +6,29 @@
     <string name="welcome_description">Organize your income with methods proven by top financial educators.</string>
     <string name="start_now">Start Now</string>
     
-    <string name="income_title">What is your income?</string>
-    <string name="income_description">Enter your main salary and, if any, an optional monthly extra income.</string>
-    <string name="income_main_label">Main Income</string>
-    <string name="income_extra_label">Extra Income (Optional)</string>
+    <string name="income_title">Monthly Planning</string>
+    <string name="income_description">Enter the total amount you plan to receive this month. We will use this value as a reference to define your spending goals.</string>
+    <string name="income_main_label">Planned amount for the month</string>
+    <string name="hint_income_planning">TIP: This value is only used to define your spending limits and plan your goals. Your real pocket balance will only change when you record \'Income\' transactions daily.</string>
     <string name="next">Next</string>
     <string name="back">Back</string>
     
-    <string name="percentages_title">How do you want to divide your income?</string>
+    <string name="percentages_title">How do you want to divide your plan?</string>
     <string name="total_label">Total: %1$d%%</string>
     <string name="total_error" formatted="false">The sum must be exactly 100%.</string>
     
     <string name="summary_title">All set!</string>
-    <string name="summary_income_total">Total Income</string>
+    <string name="summary_income_total">Total Planning</string>
     <string name="finish">Finish</string>
     <string name="saving_success">Transaction saved successfully!</string>
 
     <!-- Dashboard -->
     <string name="available_balance">Available Balance</string>
     <string name="income_label">Income</string>
-    <string name="spent_label">Spent</string>
+    <string name="spent_label">Expenses</string>
     <string name="my_groups">My Groups</string>
     <string name="spent_value">Spent: %1$s</string>
-    <string name="limit_value">Limit: %1$s</string>
+    <string name="limit_value">Goal: %1$s</string>
     <string name="exceeded_by">Exceeded by %1$s</string>
     <string name="remains_value">%1$s remaining</string>
     <string name="history">History</string>
@@ -79,7 +79,7 @@
     <string name="hint_leisure">Movies, outings, travel, and hobbies.</string>
     <string name="hint_lifestyle">Expenses that improve your quality of life (e.g., gym, grooming).</string>
     <string name="hint_shopping">Clothing, electronics, and other non-essential items.</string>
-    <string name="hint_subscriptions">Netflix, Spotify, apps, and recurring services.</string>
+    <string name="hint_subscriptions">Netflix, Spotify, apps and recurring services.</string>
     <string name="hint_emergency">Money set aside for unforeseen events and immediate security.</string>
     <string name="hint_investments">Funds allocated to generate passive income in the long term.</string>
     <string name="hint_goals">Targeted savings for specific dreams (e.g., travel, car).</string>
@@ -102,10 +102,14 @@
     <string name="preset_custom">Custom</string>
 
     <!-- Educational Hints -->
-    <string name="hint_group_needs" formatted="false">Vital expenses for survival (Housing, Food, Health). TIP: If this group exceeds 50%, you might be living above your current means.</string>
-    <string name="hint_group_lifestyle">Expenses for comfort and pleasure, but not vital (Leisure, Subscriptions, Hobbies). TIP: This is the first place to cut costs if you need to save.</string>
-    <string name="hint_group_savings">Money destined for your future and security (Emergency Fund, Investments). TIP: Treat this amount as a mandatory bill. Pay yourself first as soon as you receive your income.</string>
+    <string name="hint_groups_overview">The financial goals below are based on the value defined in your Monthly Planning. You can adjust this value in the Settings at any time.</string>
+    <string name="hint_group_needs" formatted="false">Vital expenses for survival (Housing, Food, Health).\n\nTIP: If this group exceeds 50%, you might be living above your current means.</string>
+    <string name="hint_group_lifestyle">Expenses for comfort and pleasure, but not vital (Leisure, Subscriptions, Hobbies).\n\nTIP: This is the first place to cut costs if you need to save.</string>
+    <string name="hint_group_savings">Money destined for your future and security (Emergency Fund, Investments).\n\nTIP: Treat this amount as a mandatory bill. Pay yourself first as soon as you receive your income.</string>
     <string name="hint_general">Avoid the trap of increasing your cost of living whenever your income increases.</string>
+    <string name="hint_cash_flow_title">Cash Flow vs. Budget</string>
+    <string name="hint_cash_flow_desc">Available balance reflects your real money today (Income - Expenses). To update it, record your earnings (salary, extra income, etc.) as \'Income\' in \'New Transaction\'.</string>
+    <string name="hint_income_planning_settings">TIP: Readjusting this value automatically recalculates all your spending goals. Your real available balance continues to be updated through \'New Transaction\'.</string>
 
     <!-- Settings -->
     <string name="settings">Settings</string>
