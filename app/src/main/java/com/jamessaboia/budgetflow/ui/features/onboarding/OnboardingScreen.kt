@@ -137,7 +137,7 @@ fun IntroSlider(onFinish: () -> Unit) {
         IntroPageData(
             titleRes = R.string.planning_title,
             descRes = R.string.planning_desc,
-            icon = Icons.Default.Assignment
+            icon = Icons.Default.   Assignment
         ),
         IntroPageData(
             titleRes = R.string.cashflow_title,

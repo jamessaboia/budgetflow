@@ -7,8 +7,8 @@
 
     <!-- Splash Screen theme. -->
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
-        <item name="windowSplashScreenBackground">@color/white</item> <!-- backgroundLight is #F7FBF1, but white is safer for initial boot -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="windowSplashScreenBackground">#3C6939</item>
         <item name="postSplashScreenTheme">@style/Theme.BudgetFlow</item>
     </style>
 </resources>

@@ -1,6 +1,8 @@
 package com.jamessaboia.budgetflow
 
 import android.os.Bundle
+import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.DecelerateInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -33,24 +35,34 @@ class MainActivity : ComponentActivity() {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         
-        
-        
-        
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.dark(0xFF3C6939.toInt()),
             navigationBarStyle = SystemBarStyle.dark(0xFF3C6939.toInt())
         )
 
-
-        
+        // Premium "Subtle Growth" Reveal Animation
         splashScreen.setOnExitAnimationListener { splashScreenProvider ->
             val iconView = splashScreenProvider.iconView
+            val view = splashScreenProvider.view
+
+            // 1. Icon Animation: Subtle scale up (breath effect) + smooth fade
             iconView.animate()
-                .scaleX(0f)
-                .scaleY(0f)
+                .scaleX(2.5f) // Much more elegant and sharp
+                .scaleY(2.5f)
                 .alpha(0f)
                 .setDuration(500L)
-                .withEndAction { splashScreenProvider.remove() }
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .start()
+
+            // 2. Background Animation: Smooth slide reveal upward
+            view.animate()
+                .translationY(-view.height.toFloat())
+                .setDuration(700L)
+                .setStartDelay(100L)
+                .setInterpolator(DecelerateInterpolator())
+                .withEndAction {
+                    splashScreenProvider.remove()
+                }
                 .start()
         }
 

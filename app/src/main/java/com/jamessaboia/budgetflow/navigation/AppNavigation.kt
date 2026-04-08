@@ -1,6 +1,8 @@
 package com.jamessaboia.budgetflow.navigation
 
 import androidx.compose.animation.*
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -21,17 +23,30 @@ fun AppNavigation(
     NavHost(
         navController = navController,
         startDestination = startDestination,
+        // Global Premium Transitions (Shared Axis Style)
         enterTransition = {
-            slideInHorizontally(initialOffsetX = { it }) + fadeIn()
+            slideInHorizontally(
+                initialOffsetX = { 300 },
+                animationSpec = tween(450, easing = FastOutSlowInEasing)
+            ) + fadeIn(animationSpec = tween(450))
         },
         exitTransition = {
-            slideOutHorizontally(targetOffsetX = { -it }) + fadeOut()
+            slideOutHorizontally(
+                targetOffsetX = { -300 },
+                animationSpec = tween(450, easing = FastOutSlowInEasing)
+            ) + fadeOut(animationSpec = tween(450))
         },
         popEnterTransition = {
-            slideInHorizontally(initialOffsetX = { -it }) + fadeIn()
+            slideInHorizontally(
+                initialOffsetX = { -300 },
+                animationSpec = tween(450, easing = FastOutSlowInEasing)
+            ) + fadeIn(animationSpec = tween(450))
         },
         popExitTransition = {
-            slideOutHorizontally(targetOffsetX = { it }) + fadeOut()
+            slideOutHorizontally(
+                targetOffsetX = { 300 },
+                animationSpec = tween(450, easing = FastOutSlowInEasing)
+            ) + fadeOut(animationSpec = tween(450))
         }
     ) {
         composable(Screen.Onboarding.route) {

@@ -4,21 +4,56 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
     
-    <!-- Minimalist Background Shape (Shield-like) -->
-    <path
-        android:pathData="M54,12C38,12 24,18 24,34C24,60 54,92 54,92C54,92 84,60 84,34C84,18 70,12 54,12Z"
-        android:fillColor="#3C6939"/> <!-- primaryLight -->
-
-    <!-- Growth Line / Trend -->
-    <path
-        android:pathData="M38,58L48,48L58,54L70,38"
-        android:strokeWidth="4"
-        android:strokeColor="#BCF0B4"
-        android:strokeLineCap="round"
-        android:strokeLineJoin="round"/> <!-- primaryContainerLight -->
+    <!-- Central Mark: The Apex of Metrics -->
+    <!-- Symmetric, professional, and technology-driven design -->
+    <group
+        android:translateX="14"
+        android:translateY="14">
         
-    <!-- Circle at the end of growth line -->
-    <path
-        android:pathData="M70,38m-3,0a3,3 0,1 1,6 0a3,3 0,1 1,-6 0"
-        android:fillColor="#BCF0B4"/>
+        <!-- 1. Left Outer Bar (Level 1) -->
+        <path
+            android:pathData="M5,65 L15,65 L15,45 L5,55 Z"
+            android:fillColor="#FFFFFF"
+            android:fillAlpha="0.4"/>
+
+        <!-- 2. Left Inner Bar (Level 2) -->
+        <path
+            android:pathData="M20,65 L30,65 L30,30 L20,40 Z"
+            android:fillColor="#FFFFFF"
+            android:fillAlpha="0.7"/>
+
+        <!-- 3. Right Inner Bar (Level 2 Mirrored) -->
+        <path
+            android:pathData="M50,65 L60,65 L60,30 L50,40 Z"
+            android:fillColor="#FFFFFF"
+            android:fillAlpha="0.7"/>
+
+        <!-- 4. Right Outer Bar (Level 1 Mirrored) -->
+        <path
+            android:pathData="M65,65 L75,65 L75,45 L65,55 Z"
+            android:fillColor="#FFFFFF"
+            android:fillAlpha="0.4"/>
+
+        <!-- 5. The Central Growth Arrow (The Core) -->
+        <!-- Sharp, angled, and piercing the top -->
+        <path
+            android:pathData="M40,15 L52,0 L64,15 L52,15 L52,65 L28,65 L28,15 Z"
+            android:fillAlpha="0"/> <!-- Helper for structure -->
+            
+        <!-- Arrow Body & Head (Actual geometry) -->
+        <path
+            android:pathData="M35,65 L45,65 L45,25 L32,25 L40,12 L48,25 L35,25 Z"
+            android:fillAlpha="0"/> <!-- Helper for structure -->
+
+        <!-- Final Arrow Shape -->
+        <path
+            android:pathData="M35,15 L40,5 L45,15 L40,15 L40,65 L35,65 Z"
+            android:fillAlpha="0"/> <!-- Simple version -->
+
+        <!-- THE ARROW (Refined Geometry) -->
+        <path
+            android:pathData="M34,65 L46,65 L46,25 L54,25 L40,5 L26,25 L34,25 Z"
+            android:fillColor="#FFFFFF"/>
+            
+    </group>
 </vector>
